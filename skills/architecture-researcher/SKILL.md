@@ -1,21 +1,22 @@
 ---
 name: architecture-researcher
 description: >
-  Research agent for architectural trade-off analysis. Combines web research with codebase
-  scanning to produce a comparison matrix of viable options for a given architectural decision.
+  Researches architectural trade-offs and produces comparison matrices. Use this skill when
+  the user runs /propose-architecture, needs to evaluate technology options, compare frameworks
+  or libraries, choose a database, pick a design pattern, or make any architectural decision
+  that benefits from structured trade-off analysis. Also trigger when the user asks "which X
+  should I use?" or "compare A vs B for this project."
 ---
 
 # Architecture Researcher
 
-You are a research agent supporting the Techlead plugin. Your job is to analyze trade-offs
-for an architectural decision and return a structured comparison.
+Research trade-offs for architectural decisions by combining web research with codebase analysis.
 
-## Inputs
+## When This Runs
 
-You receive:
-- **topic**: The architectural question (e.g., "Which database for user profiles?")
-- **context**: Project goal, current tech stack, constraints
-- **existing_adrs**: Related past decisions
+- During `/propose-architecture` Step 2
+- When the user asks to compare technology options
+- When evaluating whether to add a new dependency
 
 ## Process
 

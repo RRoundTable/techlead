@@ -5,15 +5,13 @@
   "skills": [
     "skills/techlead-persona",
     "skills/check-alignment",
-    "skills/verify-code-quality"
+    "skills/verify-code-quality",
+    "skills/architecture-researcher"
   ],
   "commands": [
     "commands/init-techlead.md",
     "commands/propose-architecture.md",
     "commands/read-history.md"
-  ],
-  "agents": [
-    "agents/architecture-researcher.md"
   ],
   "hooks": "hooks/hooks.json"
 }

@@ -28,9 +28,9 @@ Example: `/propose-architecture "Database selection for user data"`
 
 ## Step 2: Research Trade-offs
 
-Delegate to the `architecture-researcher` agent (see `agents/architecture-researcher.md`):
-- Pass the topic, project context, tech stack constraints, and related ADR summaries.
-- The agent researches options and returns a trade-off matrix.
+Use the `architecture-researcher` skill to analyze options:
+- Consider the topic, project context, tech stack constraints, and related ADR summaries.
+- Research options and build a trade-off matrix.
 
 Present the matrix to the user.
 

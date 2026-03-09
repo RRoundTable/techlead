@@ -58,7 +58,7 @@ Bootstrap a project with Techlead's document hierarchy. Asks for your goal, prio
 Structured workflow for architectural decisions:
 
 1. Gathers project context (goal, stack, existing ADRs)
-2. Researches trade-offs via the architecture-researcher agent
+2. Researches trade-offs via the architecture-researcher skill
 3. Recommends one option with rationale specific to your project
 4. Records the decision as an ADR
 
@@ -85,14 +85,11 @@ Search and display Architecture Decision Records.
 | **techlead-persona** | Always active | Sets the pragmatic senior developer tone and philosophy |
 | **check-alignment** | Before writing/editing code | Verifies the task matches GOAL.md and is in ROADMAP.md's "Now" section |
 | **verify-code-quality** | Before commits | Checks code against all 5 philosophies |
+| **architecture-researcher** | During `/propose-architecture` | Web research + codebase analysis for trade-off matrices |
 
 ### Hooks
 
 A `PreToolUse` hook fires before every `Write` or `Edit` tool call, prompting Claude to verify alignment with GOAL.md and ROADMAP.md before making changes.
-
-### Agent
-
-The **architecture-researcher** agent is used by `/propose-architecture` to perform web research and codebase analysis, producing a trade-off matrix for architectural decisions.
 
 ## Document Hierarchy
 
@@ -116,13 +113,12 @@ techlead/
 ├── skills/
 │   ├── techlead-persona/SKILL.md    # Core persona + philosophies
 │   ├── check-alignment/SKILL.md     # Goal/roadmap alignment gate
-│   └── verify-code-quality/SKILL.md # Code quality verification
+│   ├── verify-code-quality/SKILL.md # Code quality verification
+│   └── architecture-researcher/SKILL.md # Trade-off research
 ├── commands/
 │   ├── init-techlead.md             # Project bootstrapping
 │   ├── propose-architecture.md      # Architectural decision workflow
 │   └── read-history.md              # ADR lookup
-├── agents/
-│   └── architecture-researcher.md   # Trade-off research agent
 ├── hooks/
 │   └── hooks.json                   # Pre-write alignment check
 └── templates/
