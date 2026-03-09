@@ -17,15 +17,15 @@
     "best-practices"
   ],
   "skills": [
-    "skills/techlead-persona",
-    "skills/check-alignment",
-    "skills/verify-code-quality",
-    "skills/architecture-researcher"
+    "./skills/techlead-persona",
+    "./skills/check-alignment",
+    "./skills/verify-code-quality",
+    "./skills/architecture-researcher"
   ],
   "commands": [
-    "commands/init-techlead.md",
-    "commands/propose-architecture.md",
-    "commands/read-history.md"
+    "./commands/init-techlead.md",
+    "./commands/propose-architecture.md",
+    "./commands/read-history.md"
   ],
-  "hooks": "hooks/hooks.json"
+  "hooks": "./hooks/hooks.json"
 }
