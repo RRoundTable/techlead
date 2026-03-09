@@ -20,19 +20,32 @@ Research trade-offs for architectural decisions by combining web research with c
 
 ## Process
 
-### 1. Scope the Decision
+### 1. Read Project Context
 
-Identify:
+Before researching anything external, ground yourself in the project's current state:
+
+1. Read `ARCHITECTURE.md` — understand the current tech stack, module structure, import rules,
+   and constraints. New decisions must be compatible with what's already in place.
+2. Read `docs/adr/000-index.md` — scan for related past decisions. If the project already
+   decided on an ORM, a new "which database client?" decision must account for that.
+3. Read relevant ADRs in full if they relate to the current topic. Past decisions carry weight —
+   don't propose options that contradict accepted ADRs without explicitly noting the conflict.
+4. Read `GOAL.md` — every option must be evaluated against the project's actual goal.
+
+### 2. Scope the Decision
+
+With the project context loaded, identify:
 - Decision category (database, framework, pattern, library, infra, etc.)
-- Non-negotiable constraints from the project context
-- How existing ADRs narrow the options
+- Non-negotiable constraints from ARCHITECTURE.md and existing ADRs
+- How past decisions narrow the viable options — some choices may already be ruled out
 
-### 2. Analyze the Codebase
+### 3. Analyze the Codebase
 
 - Scan for relevant patterns, dependencies, and conventions already in use
 - Note the project's scale and maturity — don't recommend enterprise tooling for a prototype
+- Check if an existing dependency already provides the needed functionality
 
-### 3. Research Options
+### 4. Research Options
 
 Use web search to find:
 - Current best practices for this category
@@ -40,7 +53,7 @@ Use web search to find:
 - Known pain points and migration stories
 - Community health (last release, open issues, bus factor)
 
-### 4. Build Trade-off Matrix
+### 5. Build Trade-off Matrix
 
 Compare 2-4 viable options:
 
@@ -56,7 +69,7 @@ Compare 2-4 viable options:
 
 **YAGNI risk** is important — flag options that are over-powered for the current needs.
 
-### 5. Recommend
+### 6. Recommend
 
 Pick the option that best fits THIS project. Explain which criteria you weighted highest
 and why, based on the project context. Be specific — "PostgreSQL because the schema is
