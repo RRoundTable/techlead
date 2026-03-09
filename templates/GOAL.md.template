@@ -1,0 +1,19 @@
+# Goal
+
+## Primary Goal
+
+<!-- One sentence. If you need two sentences, the goal isn't focused enough. -->
+{{GOAL}}
+
+## Success Criteria
+
+<!-- Measurable outcomes that define "done". When all boxes are checked, the goal is achieved. -->
+- [ ] {{CRITERION_1}}
+- [ ] {{CRITERION_2}}
+- [ ] {{CRITERION_3}}
+
+## Out of Scope
+
+<!-- Things this project will NOT do, even if they seem related. Be explicit. -->
+- {{OUT_OF_SCOPE_1}}
+- {{OUT_OF_SCOPE_2}}

@@ -1,0 +1,43 @@
+# Architecture
+
+## Tech Stack
+
+| Layer | Choice | ADR |
+|-------|--------|-----|
+| Language | {{LANGUAGE}} | — |
+| Framework | {{FRAMEWORK}} | — |
+| Database | {{DATABASE}} | — |
+| Testing | {{TESTING}} | — |
+
+## Module Structure
+
+<!-- Adapt this to your project. The key rule: feature modules don't import each other. -->
+
+```
+src/
+├── core/          # Domain logic, no external dependencies
+├── features/      # Feature modules (isolated — no cross-imports)
+├── infra/         # External service adapters (DB, APIs, etc.)
+└── shared/        # Truly shared utilities (logging, config, types)
+```
+
+## Import Rules
+
+<!-- These prevent coupling from creeping in. Violations are caught by verify-code-quality. -->
+
+- `features/*` → may import from `core/`, `shared/`, `infra/`
+- `features/A` → must NOT import from `features/B` (use `core/` or events)
+- `core/` → must not import from `features/` or `infra/`
+- `shared/` → must not import from `features/`, `core/`, or `infra/`
+
+## Key Patterns
+
+<!-- Recurring patterns used in this project. Each should reference an ADR. -->
+
+(None yet — patterns are added via `/propose-architecture`)
+
+## Constraints
+
+<!-- Hard limits. Non-negotiable. -->
+
+- {{CONSTRAINT_1}}
