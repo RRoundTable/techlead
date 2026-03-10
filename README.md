@@ -12,6 +12,8 @@ Techlead automatically checks your work against five principles:
 4. **High Cohesion / Low Coupling** — Feature modules don't import each other. Cross-cutting logic goes through `core/`.
 5. **Fail Fast** — No `TODO`/`FIXME`/`HACK` in committed code. Errors are handled, not swallowed.
 
+See [The 5 Philosophies](docs/philosophy.md) for definitions, rationale, and anti-patterns.
+
 ## Installation
 
 ```bash
@@ -118,6 +120,9 @@ techlead/
 │   ├── init-techlead.md             # Project bootstrapping
 │   ├── propose-architecture.md      # Architectural decision workflow
 │   └── read-history.md              # ADR lookup
+├── docs/
+│   ├── guide.md                     # User guide and workflow
+│   └── philosophy.md                # The 5 philosophies deep reference
 ├── hooks/
 │   └── hooks.json                   # Pre-write alignment check
 └── templates/

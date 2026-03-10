@@ -112,6 +112,8 @@ This file evolves through ADRs. When `/propose-architecture` records a decision,
 
 ## The 5 Philosophies in Practice
 
+> For full definitions, rationale, and anti-patterns, see [The 5 Philosophies](philosophy.md).
+
 ### Single Goal
 
 **What it means:** Every coding task must connect to `GOAL.md`. If you can't draw a line from the task to the goal, either the task is wrong or the goal needs updating.
