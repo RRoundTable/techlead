@@ -171,12 +171,14 @@ techlead/
 │   └── architecture-researcher/
 │       ├── SKILL.md                 # Trade-off research
 │       └── evals/                   # Evals + fixtures (GOAL.md, ROADMAP.md, ARCHITECTURE.md)
+├── .claude/
+│   └── commands/
+│       ├── eval-trigger.md          # Trigger eval runner (developer)
+│       └── eval-behavior.md         # Behavioral eval runner (developer)
 ├── commands/
 │   ├── init-techlead.md             # Project bootstrapping
 │   ├── propose-architecture.md      # Architectural decision workflow
-│   ├── read-history.md              # ADR lookup
-│   ├── eval-trigger.md              # Trigger eval runner
-│   └── eval-behavior.md             # Behavioral eval runner
+│   └── read-history.md              # ADR lookup
 ├── docs/
 │   ├── guide.md                     # User guide and workflow
 │   └── philosophy.md                # The 5 philosophies deep reference
