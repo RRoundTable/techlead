@@ -77,6 +77,33 @@ Search and display Architecture Decision Records from git tags.
 /read-history database     # Search ADRs for "database"
 ```
 
+## Workflow
+
+```mermaid
+flowchart TD
+    A["/init-techlead"] --> B["GOAL.md + ROADMAP.md + ARCHITECTURE.md"]
+    B --> C{"User requests code change"}
+
+    C --> D["PreToolUse Hook fires"]
+    D --> E{"check-alignment\nMatches GOAL.md?\nIn ROADMAP Now?"}
+
+    E -- Yes --> F["Write / Edit code"]
+    E -- No --> G["Stop — ask user to\nclarify or reprioritize"]
+    G --> C
+
+    F --> H{"User commits"}
+    H --> I["verify-code-quality\nChecks all 5 philosophies"]
+    I -- Pass --> J["Commit"]
+    I -- Violation --> K["Report file:line + fix\nResolve before commit"]
+    K --> F
+
+    C --> L{"/propose-architecture"}
+    L --> M["architecture-researcher\nResearch + trade-offs"]
+    M --> N["Recommend option\nwith project-specific rationale"]
+    N --> O["Record ADR\n(git branch + commit + tag)"]
+    O --> C
+```
+
 ## How It Works
 
 ### Skills (automatic)
