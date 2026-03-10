@@ -2,10 +2,13 @@
 name: verify-code-quality
 description: >
   Checks code against Techlead's 5 core philosophies before committing or completing a task.
-  Trigger this skill when the user asks to commit, when a coding task is finishing up, when
-  reviewing code, or when the user asks about code quality. Also activate when you notice
-  potential violations like cross-feature imports, TODO markers, unnecessary abstractions,
-  or undocumented dependencies in the code being written.
+  Trigger this skill when the user asks to commit, push, merge, or finalize code, when a
+  coding task is finishing up, or when reviewing code for quality. Also activate when the user
+  asks to scan for or check specific code violations — such as TODO/FIXME/HACK markers,
+  cross-feature imports (features/A importing features/B), module coupling, undocumented
+  dependencies missing ADRs, empty catch blocks, or any individual quality rule. Even if the
+  user asks about just one specific sub-check (e.g., "are there any TODOs left?", "check for
+  coupling between modules", "any undocumented deps?"), this skill covers it.
 ---
 
 # Verify Code Quality

@@ -9,123 +9,129 @@
 
 | Skill | Trigger Accuracy | Behavioral (with) | Behavioral (without) | Delta |
 |-------|------------------|--------------------|----------------------|-------|
-| **techlead-persona** | 11/20 (55%) | 11/11 (100%) | 8/11 (73%) | +27% |
+| **techlead-persona** | 19/20 (95%) | 11/11 (100%) | 8/11 (73%) | +27% |
 | **check-alignment** | 20/20 (100%) | 9/9 (100%) | 2/9 (22%) | +78% |
-| **verify-code-quality** | 15/20 (75%) | 12/12 (100%) | 12/12 (100%) | +0% |
+| **verify-code-quality** | 20/20 (100%) | 12/12 (100%) | 12/12 (100%) | +0% |
 | **architecture-researcher** | 20/20 (100%) | 8/8 (100%) | 8/8 (100%) | +0% |
-| **Total** | **66/80 (82%)** | **40/40 (100%)** | **30/40 (75%)** | **+25%** |
+| **Total** | **79/80 (99%)** | **40/40 (100%)** | **30/40 (75%)** | **+25%** |
 
 ---
 
 ## Trigger Evals
 
-### techlead-persona — 11/20 (55%)
+### techlead-persona — 19/20 (95%)
 
-```
-FAIL  [trigger]     Review this code for quality and best practices
-FAIL  [trigger]     Does this follow YAGNI or am I over-engineering?
-FAIL  [trigger]     Is this abstraction premature? I only have one use case right now
-FAIL  [trigger]     Should I add a generic EventEmitter pattern here for future extensibility?
-FAIL  [trigger]     I want to add error handling around this — is a try-catch with empty catch block fine?
-FAIL  [trigger]     This function is 50 lines — should I split it into smaller helpers?
-FAIL  [trigger]     Give me pragmatic advice on whether to use a class or plain functions here
-PASS  [trigger]     I left a TODO in the code for now, is that okay to commit?
-FAIL  [trigger]     Should I build a plugin system to make this feature configurable?
-FAIL  [trigger]     What's the simplest way to implement this without over-engineering it?
-PASS  [no-trigger]  Configure nginx as a reverse proxy for my Node.js app
-PASS  [no-trigger]  Write a SQL query to join users and orders tables
-PASS  [no-trigger]  How do I deploy to AWS Lambda?
-PASS  [no-trigger]  Convert this CSV file to JSON format
-PASS  [no-trigger]  Set up a GitHub Actions CI pipeline
-PASS  [no-trigger]  What's the syntax for a Python list comprehension?
-PASS  [no-trigger]  Help me write a Dockerfile for this project
-PASS  [no-trigger]  Explain how TCP three-way handshake works
-PASS  [no-trigger]  Generate a random UUID in JavaScript
-PASS  [no-trigger]  How do I set up SSH keys for GitHub?
-```
+*Improved from 11/20 (55%) after description rewrite.*
 
-**Analysis:** 55% accuracy is expected for this skill. techlead-persona is an always-active persona — Claude absorbs its tone and philosophy without explicitly invoking the Skill tool. All no-trigger cases passed perfectly (10/10), confirming the description doesn't cause false positives. The 1/10 trigger-positive result (TODO commit query) likely fired because it directly references committing code with a TODO marker, which overlaps with verify-code-quality's domain.
+| Result | Type | Query |
+|--------|------|-------|
+| PASS | trigger | Review this code for quality and best practices |
+| PASS | trigger | Does this follow YAGNI or am I over-engineering? |
+| PASS | trigger | Is this abstraction premature? I only have one use case right now |
+| PASS | trigger | Should I add a generic EventEmitter pattern here for future extensibility? |
+| PASS | trigger | I want to add error handling around this — is a try-catch with empty catch block fine? |
+| PASS | trigger | This function is 50 lines — should I split it into smaller helpers? |
+| PASS | trigger | Give me pragmatic advice on whether to use a class or plain functions here |
+| PASS | trigger | I left a TODO in the code for now, is that okay to commit? |
+| PASS | trigger | Should I build a plugin system to make this feature configurable? |
+| **FAIL** | trigger | What's the simplest way to implement this without over-engineering it? |
+| PASS | no-trigger | Configure nginx as a reverse proxy for my Node.js app |
+| PASS | no-trigger | Write a SQL query to join users and orders tables |
+| PASS | no-trigger | How do I deploy to AWS Lambda? |
+| PASS | no-trigger | Convert this CSV file to JSON format |
+| PASS | no-trigger | Set up a GitHub Actions CI pipeline |
+| PASS | no-trigger | What's the syntax for a Python list comprehension? |
+| PASS | no-trigger | Help me write a Dockerfile for this project |
+| PASS | no-trigger | Explain how TCP three-way handshake works |
+| PASS | no-trigger | Generate a random UUID in JavaScript |
+| PASS | no-trigger | How do I set up SSH keys for GitHub? |
 
-**Pattern:** Claude answers YAGNI/quality questions using its own knowledge without invoking the persona skill. This is not a failure mode — the persona shapes behavior implicitly. The low trigger rate reflects that the skill works as an ambient modifier, not an explicit tool.
+**Analysis:** Improved from 55% to 95% after rewriting the description to explicitly list trigger patterns (design trade-offs, over-engineering questions, abstraction decisions, error handling patterns, code structure). The single remaining failure ("What's the simplest way to implement this without over-engineering it?") is a borderline case — Claude treats it as a generic implementation question rather than a design philosophy consultation.
+
+**Description change:** Replaced the generic "always-active persona" framing with specific trigger patterns: "whenever the user asks about code design trade-offs, whether something is over-engineered, if an abstraction is premature, whether to add extensibility or flexibility." Added explicit mention of error handling patterns, code structure questions, and a "when in doubt, consult it" directive.
 
 ### check-alignment — 20/20 (100%)
 
-```
-PASS  [trigger]     Implement JWT token validation middleware
-PASS  [trigger]     Should I work on the notifications feature next?
-PASS  [trigger]     Let me add the team workspaces feature now
-PASS  [trigger]     I want to build a password reset flow
-PASS  [trigger]     Add CRUD endpoints for the tasks resource
-PASS  [trigger]     Let me refactor the auth module to support OAuth
-PASS  [trigger]     I'm going to add an admin dashboard page
-PASS  [trigger]     Start implementing the user registration endpoint
-PASS  [trigger]     Should I add caching to the task list endpoint?
-PASS  [trigger]     Let me write the database migration for the teams table
-PASS  [no-trigger]  What does GOAL.md say about our project scope?
-PASS  [no-trigger]  Compare Redis vs Memcached for session storage
-PASS  [no-trigger]  Read the current ROADMAP.md for me
-PASS  [no-trigger]  Explain how JWT tokens work
-PASS  [no-trigger]  What are the differences between SQL and NoSQL?
-PASS  [no-trigger]  Show me the project's architecture documentation
-PASS  [no-trigger]  How does Express middleware chain work?
-PASS  [no-trigger]  List all ADRs in this project
-PASS  [no-trigger]  What's the best practice for REST API versioning?
-PASS  [no-trigger]  Summarize the five techlead philosophies
-```
+| Result | Type | Query |
+|--------|------|-------|
+| PASS | trigger | Implement JWT token validation middleware |
+| PASS | trigger | Should I work on the notifications feature next? |
+| PASS | trigger | Let me add the team workspaces feature now |
+| PASS | trigger | I want to build a password reset flow |
+| PASS | trigger | Add CRUD endpoints for the tasks resource |
+| PASS | trigger | Let me refactor the auth module to support OAuth |
+| PASS | trigger | I'm going to add an admin dashboard page |
+| PASS | trigger | Start implementing the user registration endpoint |
+| PASS | trigger | Should I add caching to the task list endpoint? |
+| PASS | trigger | Let me write the database migration for the teams table |
+| PASS | no-trigger | What does GOAL.md say about our project scope? |
+| PASS | no-trigger | Compare Redis vs Memcached for session storage |
+| PASS | no-trigger | Read the current ROADMAP.md for me |
+| PASS | no-trigger | Explain how JWT tokens work |
+| PASS | no-trigger | What are the differences between SQL and NoSQL? |
+| PASS | no-trigger | Show me the project's architecture documentation |
+| PASS | no-trigger | How does Express middleware chain work? |
+| PASS | no-trigger | List all ADRs in this project |
+| PASS | no-trigger | What's the best practice for REST API versioning? |
+| PASS | no-trigger | Summarize the five techlead philosophies |
 
 **Analysis:** Perfect 100%. The description clearly distinguishes "code change requests" from "information queries." Claude consistently invokes the skill when the user asks to implement, build, or work on something, and correctly skips it for read-only or informational queries.
 
-### verify-code-quality — 15/20 (75%)
+### verify-code-quality — 20/20 (100%)
 
-```
-PASS  [trigger]     Let's commit these changes
-FAIL  [trigger]     Check for TODO markers in the codebase before I push
-PASS  [trigger]     Review this code for quality violations before committing
-PASS  [trigger]     I'm done with this task, verify everything is clean
-FAIL  [trigger]     Make sure there are no FIXME or HACK comments left
-FAIL  [trigger]     Check if any feature modules are importing from each other
-PASS  [trigger]     Verify this code follows our architecture rules before I merge
-PASS  [trigger]     Run a quality check — I want to make sure nothing violates our philosophies
-FAIL  [trigger]     Does this diff introduce any coupling between feature modules?
-FAIL  [trigger]     Are there any undocumented dependencies I should create an ADR for?
-PASS  [no-trigger]  Implement the user authentication endpoint
-PASS  [no-trigger]  Which database should I choose for this project?
-PASS  [no-trigger]  Should I work on team workspaces or auth first?
-PASS  [no-trigger]  Explain how middleware works in Express
-PASS  [no-trigger]  Write unit tests for the task service
-PASS  [no-trigger]  Compare Prisma vs Knex for database access
-PASS  [no-trigger]  Read the ARCHITECTURE.md file
-PASS  [no-trigger]  Set up the project's CI pipeline
-PASS  [no-trigger]  What's the best way to handle file uploads in Node.js?
-PASS  [no-trigger]  Help me debug this failing test
-```
+*Improved from 15/20 (75%) after description rewrite.*
 
-**Analysis:** 75% accuracy. The 5 failures share a pattern: they ask about specific sub-checks (TODO markers, coupling, undocumented dependencies) rather than requesting a commit or overall quality review. Claude tends to answer these as direct questions rather than invoking the full quality verification skill. The description could be strengthened by adding phrases like "scanning for specific violations" or "checking individual code quality rules."
+| Result | Type | Query |
+|--------|------|-------|
+| PASS | trigger | Let's commit these changes |
+| PASS | trigger | Check for TODO markers in the codebase before I push |
+| PASS | trigger | Review this code for quality violations before committing |
+| PASS | trigger | I'm done with this task, verify everything is clean |
+| PASS | trigger | Make sure there are no FIXME or HACK comments left |
+| PASS | trigger | Check if any feature modules are importing from each other |
+| PASS | trigger | Verify this code follows our architecture rules before I merge |
+| PASS | trigger | Run a quality check — I want to make sure nothing violates our philosophies |
+| PASS | trigger | Does this diff introduce any coupling between feature modules? |
+| PASS | trigger | Are there any undocumented dependencies I should create an ADR for? |
+| PASS | no-trigger | Implement the user authentication endpoint |
+| PASS | no-trigger | Which database should I choose for this project? |
+| PASS | no-trigger | Should I work on team workspaces or auth first? |
+| PASS | no-trigger | Explain how middleware works in Express |
+| PASS | no-trigger | Write unit tests for the task service |
+| PASS | no-trigger | Compare Prisma vs Knex for database access |
+| PASS | no-trigger | Read the ARCHITECTURE.md file |
+| PASS | no-trigger | Set up the project's CI pipeline |
+| PASS | no-trigger | What's the best way to handle file uploads in Node.js? |
+| PASS | no-trigger | Help me debug this failing test |
+
+**Analysis:** Improved from 75% to 100% after rewriting the description. All 5 previously failing sub-check queries now trigger correctly. The key fix was explicitly framing specific violation scans as trigger patterns and adding the directive "even if the user asks about just one specific sub-check, this skill covers it."
+
+**Description change:** Added explicit sub-check trigger patterns: "when the user asks to scan for or check specific code violations — such as TODO/FIXME/HACK markers, cross-feature imports, module coupling, undocumented dependencies missing ADRs, empty catch blocks." Added the closing directive about single sub-checks.
 
 ### architecture-researcher — 20/20 (100%)
 
-```
-PASS  [trigger]     Which database should I use for this project?
-PASS  [trigger]     Compare Next.js vs Remix for our frontend
-PASS  [trigger]     Should we use Redis or Memcached for caching?
-PASS  [trigger]     Evaluate Prisma vs TypeORM vs Knex for database access
-PASS  [trigger]     What are the trade-offs between REST and GraphQL for our API?
-PASS  [trigger]     Help me decide between Socket.io and native WebSockets
-PASS  [trigger]     Should I use a message queue? Compare RabbitMQ vs BullMQ
-PASS  [trigger]     Research authentication approaches — JWT vs sessions vs OAuth
-PASS  [trigger]     Is MongoDB a better fit than PostgreSQL for our task data?
-PASS  [trigger]     Compare deployment options: Vercel vs Railway vs self-hosted
-PASS  [no-trigger]  Fix the database connection bug in the task service
-PASS  [no-trigger]  Commit my changes to the auth module
-PASS  [no-trigger]  Implement the login endpoint with bcrypt password hashing
-PASS  [no-trigger]  Refactor the task controller to use async/await
-PASS  [no-trigger]  Write tests for the user registration flow
-PASS  [no-trigger]  Check if my code follows the project's import rules
-PASS  [no-trigger]  Is this task aligned with our current roadmap?
-PASS  [no-trigger]  Add input validation to the task creation endpoint
-PASS  [no-trigger]  Read the existing ADRs for this project
-PASS  [no-trigger]  Help me debug why the JWT token verification fails
-```
+| Result | Type | Query |
+|--------|------|-------|
+| PASS | trigger | Which database should I use for this project? |
+| PASS | trigger | Compare Next.js vs Remix for our frontend |
+| PASS | trigger | Should we use Redis or Memcached for caching? |
+| PASS | trigger | Evaluate Prisma vs TypeORM vs Knex for database access |
+| PASS | trigger | What are the trade-offs between REST and GraphQL for our API? |
+| PASS | trigger | Help me decide between Socket.io and native WebSockets |
+| PASS | trigger | Should I use a message queue? Compare RabbitMQ vs BullMQ |
+| PASS | trigger | Research authentication approaches — JWT vs sessions vs OAuth |
+| PASS | trigger | Is MongoDB a better fit than PostgreSQL for our task data? |
+| PASS | trigger | Compare deployment options: Vercel vs Railway vs self-hosted |
+| PASS | no-trigger | Fix the database connection bug in the task service |
+| PASS | no-trigger | Commit my changes to the auth module |
+| PASS | no-trigger | Implement the login endpoint with bcrypt password hashing |
+| PASS | no-trigger | Refactor the task controller to use async/await |
+| PASS | no-trigger | Write tests for the user registration flow |
+| PASS | no-trigger | Check if my code follows the project's import rules |
+| PASS | no-trigger | Is this task aligned with our current roadmap? |
+| PASS | no-trigger | Add input validation to the task creation endpoint |
+| PASS | no-trigger | Read the existing ADRs for this project |
+| PASS | no-trigger | Help me debug why the JWT token verification fails |
 
 **Analysis:** Perfect 100%. The description effectively distinguishes "compare/evaluate/choose technology" queries from implementation, debugging, and review queries. The phrase "compare A vs B" is a strong discriminator.
 
@@ -271,11 +277,14 @@ The YAGNI and Fail Fast assertions are non-discriminating — baseline Claude al
 ### 3. verify-code-quality and architecture-researcher are non-discriminating (+0%)
 Both skills produce 100% pass rates with and without the skill. This is because the fixture files (ARCHITECTURE.md, philosophy.md) provide sufficient context for baseline Claude to apply the same rules. The skills' value may be more in triggering at the right time (pre-commit, during /propose-architecture) rather than in the behavioral output itself.
 
-### 4. techlead-persona trigger accuracy is expectedly low (55%)
-This is an ambient persona skill — Claude absorbs the tone without explicitly invoking the Skill tool. The 55% trigger rate is not a failure; it's the expected behavior for an always-active persona. The skill shapes responses implicitly rather than being called explicitly.
+### 4. Description rewrites dramatically improved trigger accuracy
+After rewriting skill descriptions to explicitly list trigger patterns:
+- **techlead-persona:** 55% → 95% (+40pp). Key: replaced "always-active persona" framing with specific trigger patterns (design trade-offs, over-engineering, abstraction decisions).
+- **verify-code-quality:** 75% → 100% (+25pp). Key: added explicit sub-check patterns and "even if the user asks about just one specific sub-check" directive.
+- **Overall trigger accuracy:** 82% → 99%.
 
-### 5. verify-code-quality has description ambiguity for sub-checks (75%)
-Queries about specific violations (TODO markers, coupling, undocumented deps) don't trigger the skill, while broader "commit" or "quality review" queries do. Consider strengthening the description to include phrases like "scanning for specific code violations" or "checking individual quality rules."
+### 5. Remaining edge case: generic implementation questions
+The single remaining trigger failure ("What's the simplest way to implement this without over-engineering it?") reveals that Claude treats implementation-focused questions as direct tasks rather than philosophy consultations, even when "over-engineering" is mentioned. This is a reasonable boundary — the query is primarily about implementation, not design philosophy.
 
 ---
 
@@ -283,6 +292,6 @@ Queries about specific violations (TODO markers, coupling, undocumented deps) do
 
 1. **check-alignment:** No changes needed. Perfect trigger accuracy and highest behavioral value.
 2. **architecture-researcher:** No changes needed. Perfect trigger accuracy, strong behavioral output.
-3. **verify-code-quality:** Consider expanding the description to cover sub-check queries (e.g., "when the user asks about specific code quality rules like import violations, TODO markers, or undocumented dependencies").
-4. **techlead-persona:** Consider whether the low trigger rate matters. If the persona's value is ambient (shaping tone without being invoked), the trigger eval may not be the right measure. Consider adding a goal-first-check assertion to behavioral evals for skills that read GOAL.md/ROADMAP.md.
+3. **verify-code-quality:** Description improvement complete. Monitor for false positives from the broader trigger surface.
+4. **techlead-persona:** Description improvement complete. The remaining failure is an acceptable edge case.
 5. **Behavioral eval assertions:** Strengthen assertions for verify-code-quality and architecture-researcher to be more discriminating. Current assertions test whether the skill produces correct output, but both agents pass equally. Consider assertions that test skill-specific formatting, philosophy-by-philosophy structure, or stop-at-first-violation behavior.
