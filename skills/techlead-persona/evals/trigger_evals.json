@@ -1,0 +1,82 @@
+[
+  {
+    "query": "Review this code for quality and best practices",
+    "should_trigger": true
+  },
+  {
+    "query": "Does this follow YAGNI or am I over-engineering?",
+    "should_trigger": true
+  },
+  {
+    "query": "Is this abstraction premature? I only have one use case right now",
+    "should_trigger": true
+  },
+  {
+    "query": "Should I add a generic EventEmitter pattern here for future extensibility?",
+    "should_trigger": true
+  },
+  {
+    "query": "I want to add error handling around this — is a try-catch with empty catch block fine?",
+    "should_trigger": true
+  },
+  {
+    "query": "This function is 50 lines — should I split it into smaller helpers?",
+    "should_trigger": true
+  },
+  {
+    "query": "Give me pragmatic advice on whether to use a class or plain functions here",
+    "should_trigger": true
+  },
+  {
+    "query": "I left a TODO in the code for now, is that okay to commit?",
+    "should_trigger": true
+  },
+  {
+    "query": "Should I build a plugin system to make this feature configurable?",
+    "should_trigger": true
+  },
+  {
+    "query": "What's the simplest way to implement this without over-engineering it?",
+    "should_trigger": true
+  },
+  {
+    "query": "Configure nginx as a reverse proxy for my Node.js app",
+    "should_trigger": false
+  },
+  {
+    "query": "Write a SQL query to join users and orders tables",
+    "should_trigger": false
+  },
+  {
+    "query": "How do I deploy to AWS Lambda?",
+    "should_trigger": false
+  },
+  {
+    "query": "Convert this CSV file to JSON format",
+    "should_trigger": false
+  },
+  {
+    "query": "Set up a GitHub Actions CI pipeline",
+    "should_trigger": false
+  },
+  {
+    "query": "What's the syntax for a Python list comprehension?",
+    "should_trigger": false
+  },
+  {
+    "query": "Help me write a Dockerfile for this project",
+    "should_trigger": false
+  },
+  {
+    "query": "Explain how TCP three-way handshake works",
+    "should_trigger": false
+  },
+  {
+    "query": "Generate a random UUID in JavaScript",
+    "should_trigger": false
+  },
+  {
+    "query": "How do I set up SSH keys for GitHub?",
+    "should_trigger": false
+  }
+]

@@ -1,0 +1,77 @@
+{
+  "skill_name": "check-alignment",
+  "evals": [
+    {
+      "id": 1,
+      "name": "aligned-task",
+      "prompt": "Implement JWT token validation middleware for the Express API. The middleware should extract the Bearer token from the Authorization header, verify it using jsonwebtoken, and attach the decoded payload to req.user.",
+      "expected_output": "Proceeds with the implementation without announcing alignment. JWT auth is in GOAL.md success criteria and in ROADMAP.md 'Now' section — the skill should silently pass and let the work continue.",
+      "files": [
+        "skills/check-alignment/evals/fixtures/GOAL.md",
+        "skills/check-alignment/evals/fixtures/ROADMAP.md"
+      ],
+      "assertions": [
+        {
+          "id": "proceeds-silently",
+          "description": "Does NOT announce or explain that the task is aligned — just proceeds with the implementation"
+        },
+        {
+          "id": "implements-jwt",
+          "description": "Actually implements the JWT validation middleware as requested"
+        },
+        {
+          "id": "no-blocking-message",
+          "description": "Does not block, reject, or ask the user to reprioritize"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "wrong-milestone",
+      "prompt": "Let's implement the team workspaces feature. I want to create a teams table, add team membership, and set up team-based access control for tasks.",
+      "expected_output": "Identifies that team workspaces is in the 'Next' milestone, not 'Now'. Points out that 'User authentication (JWT)' is the current priority. Asks the user to reprioritize or finish the current milestone first.",
+      "files": [
+        "skills/check-alignment/evals/fixtures/GOAL.md",
+        "skills/check-alignment/evals/fixtures/ROADMAP.md"
+      ],
+      "assertions": [
+        {
+          "id": "wrong-milestone-identified",
+          "description": "Identifies that team workspaces is in 'Next', not 'Now'"
+        },
+        {
+          "id": "current-priority-cited",
+          "description": "Cites the current 'Now' milestone (User authentication / JWT) as what should be worked on"
+        },
+        {
+          "id": "asks-to-reprioritize",
+          "description": "Asks the user to reprioritize or confirm before proceeding — does not silently implement"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "off-goal",
+      "prompt": "I want to add a blog feature to the API — CRUD for blog posts with rich text support, categories, and tags. Users should be able to create and publish posts.",
+      "expected_output": "Blocks the request. A blog feature is not in GOAL.md (task management API) and is explicitly not listed in success criteria or roadmap. Cites the goal text and rejects the work as misaligned.",
+      "files": [
+        "skills/check-alignment/evals/fixtures/GOAL.md",
+        "skills/check-alignment/evals/fixtures/ROADMAP.md"
+      ],
+      "assertions": [
+        {
+          "id": "blocks-request",
+          "description": "Does NOT proceed with implementing the blog feature"
+        },
+        {
+          "id": "cites-goal",
+          "description": "References the project goal (task management API) as the reason the blog feature is misaligned"
+        },
+        {
+          "id": "clear-rejection",
+          "description": "Clearly communicates that this work should not be done, rather than just asking for clarification"
+        }
+      ]
+    }
+  ]
+}

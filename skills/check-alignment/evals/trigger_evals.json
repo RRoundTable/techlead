@@ -1,0 +1,82 @@
+[
+  {
+    "query": "Implement JWT token validation middleware",
+    "should_trigger": true
+  },
+  {
+    "query": "Should I work on the notifications feature next?",
+    "should_trigger": true
+  },
+  {
+    "query": "Let me add the team workspaces feature now",
+    "should_trigger": true
+  },
+  {
+    "query": "I want to build a password reset flow",
+    "should_trigger": true
+  },
+  {
+    "query": "Add CRUD endpoints for the tasks resource",
+    "should_trigger": true
+  },
+  {
+    "query": "Let me refactor the auth module to support OAuth",
+    "should_trigger": true
+  },
+  {
+    "query": "I'm going to add an admin dashboard page",
+    "should_trigger": true
+  },
+  {
+    "query": "Start implementing the user registration endpoint",
+    "should_trigger": true
+  },
+  {
+    "query": "Should I add caching to the task list endpoint?",
+    "should_trigger": true
+  },
+  {
+    "query": "Let me write the database migration for the teams table",
+    "should_trigger": true
+  },
+  {
+    "query": "What does GOAL.md say about our project scope?",
+    "should_trigger": false
+  },
+  {
+    "query": "Compare Redis vs Memcached for session storage",
+    "should_trigger": false
+  },
+  {
+    "query": "Read the current ROADMAP.md for me",
+    "should_trigger": false
+  },
+  {
+    "query": "Explain how JWT tokens work",
+    "should_trigger": false
+  },
+  {
+    "query": "What are the differences between SQL and NoSQL?",
+    "should_trigger": false
+  },
+  {
+    "query": "Show me the project's architecture documentation",
+    "should_trigger": false
+  },
+  {
+    "query": "How does Express middleware chain work?",
+    "should_trigger": false
+  },
+  {
+    "query": "List all ADRs in this project",
+    "should_trigger": false
+  },
+  {
+    "query": "What's the best practice for REST API versioning?",
+    "should_trigger": false
+  },
+  {
+    "query": "Summarize the five techlead philosophies",
+    "should_trigger": false
+  }
+]

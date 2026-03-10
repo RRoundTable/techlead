@@ -1,0 +1,92 @@
+{
+  "skill_name": "verify-code-quality",
+  "evals": [
+    {
+      "id": 1,
+      "name": "cross-feature-import",
+      "prompt": "I'm about to commit this billing module that charges users for premium team features. Here's the key file:\n\n```javascript\n// src/features/billing/billingService.js\nimport { getUserById } from '../auth/userRepository.js';\nimport { getTeamMembers } from '../teams/teamRepository.js';\n\nexport async function chargePremiumTeam(teamId) {\n  const members = await getTeamMembers(teamId);\n  for (const member of members) {\n    const user = await getUserById(member.userId);\n    await processCharge(user.stripeCustomerId, 9.99);\n  }\n}\n```\n\nReady to commit?",
+      "expected_output": "Flags the cross-feature imports as a High Cohesion / Low Coupling violation. features/billing imports from features/auth and features/teams — this creates coupling between feature modules. Suggests moving shared logic (getUserById, getTeamMembers) to core/ or exposing a service interface through shared/.",
+      "files": [
+        "skills/verify-code-quality/evals/fixtures/GOAL.md",
+        "skills/verify-code-quality/evals/fixtures/ROADMAP.md",
+        "skills/verify-code-quality/evals/fixtures/ARCHITECTURE.md"
+      ],
+      "assertions": [
+        {
+          "id": "cross-import-flagged",
+          "description": "Flags the imports from features/auth and features/teams as a coupling violation"
+        },
+        {
+          "id": "architecture-rule-cited",
+          "description": "References the import rule that features/A cannot import from features/B"
+        },
+        {
+          "id": "fix-suggested",
+          "description": "Suggests moving shared dependencies to core/ or shared/ to fix the coupling"
+        },
+        {
+          "id": "blocks-commit",
+          "description": "Does NOT approve the commit — requires the violation to be fixed first"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "todo-marker-detection",
+      "prompt": "Here's the task update handler. I think it's ready to commit:\n\n```javascript\n// src/features/tasks/taskController.js\nexport async function updateTask(req, res) {\n  const { id } = req.params;\n  const updates = req.body;\n\n  // FIXME: validation is incomplete — only checks title length\n  if (updates.title && updates.title.length > 200) {\n    return res.status(400).json({ error: 'Title too long' });\n  }\n\n  // HACK: bypassing ORM because of a bug with partial updates\n  const result = await db.raw(\n    'UPDATE tasks SET ? WHERE id = ?',\n    [updates, id]\n  );\n\n  return res.json(result);\n}\n```\n\nCommit this?",
+      "expected_output": "Flags both markers: FIXME (incomplete validation) and HACK (ORM bypass). Both violate Fail Fast — deferred problems must be fixed before committing, not marked for later. Demands the validation be completed and the ORM issue resolved or documented in an ADR.",
+      "files": [
+        "skills/verify-code-quality/evals/fixtures/GOAL.md",
+        "skills/verify-code-quality/evals/fixtures/ROADMAP.md",
+        "skills/verify-code-quality/evals/fixtures/ARCHITECTURE.md"
+      ],
+      "assertions": [
+        {
+          "id": "fixme-flagged",
+          "description": "Flags the FIXME comment about incomplete validation"
+        },
+        {
+          "id": "hack-flagged",
+          "description": "Flags the HACK comment about bypassing the ORM"
+        },
+        {
+          "id": "fail-fast-cited",
+          "description": "References Fail Fast philosophy — no TODO/FIXME/HACK in committed code"
+        },
+        {
+          "id": "blocks-commit",
+          "description": "Does NOT approve the commit — requires both issues to be fixed first"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "undocumented-dependency",
+      "prompt": "I added lodash to help with deep object merging in the task update flow. Here's the change:\n\n```javascript\n// src/features/tasks/taskService.js\nimport _ from 'lodash';\n\nexport function mergeTaskUpdate(existing, updates) {\n  return _.merge({}, existing, updates);\n}\n```\n\nI ran npm install lodash already. Ready to commit?",
+      "expected_output": "Flags the undocumented dependency. Adding lodash is an architectural decision (new external dependency) that requires an ADR via /propose-architecture. Questions whether the full lodash library is needed for a single merge operation — YAGNI applies. Suggests structuredClone + spread or a targeted package like lodash.merge.",
+      "files": [
+        "skills/verify-code-quality/evals/fixtures/GOAL.md",
+        "skills/verify-code-quality/evals/fixtures/ROADMAP.md",
+        "skills/verify-code-quality/evals/fixtures/ARCHITECTURE.md"
+      ],
+      "assertions": [
+        {
+          "id": "undocumented-dep-flagged",
+          "description": "Flags that lodash was added without an ADR or architectural decision record"
+        },
+        {
+          "id": "adr-suggested",
+          "description": "Suggests using /propose-architecture to document the dependency decision"
+        },
+        {
+          "id": "yagni-questioned",
+          "description": "Questions whether the full lodash library is needed for one merge operation — YAGNI concern"
+        },
+        {
+          "id": "simpler-alternative",
+          "description": "Suggests a simpler alternative (e.g., structuredClone, spread operator, or lodash.merge)"
+        }
+      ]
+    }
+  ]
+}

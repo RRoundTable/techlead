@@ -1,0 +1,82 @@
+[
+  {
+    "query": "Which database should I use for this project?",
+    "should_trigger": true
+  },
+  {
+    "query": "Compare Next.js vs Remix for our frontend",
+    "should_trigger": true
+  },
+  {
+    "query": "Should we use Redis or Memcached for caching?",
+    "should_trigger": true
+  },
+  {
+    "query": "Evaluate Prisma vs TypeORM vs Knex for database access",
+    "should_trigger": true
+  },
+  {
+    "query": "What are the trade-offs between REST and GraphQL for our API?",
+    "should_trigger": true
+  },
+  {
+    "query": "Help me decide between Socket.io and native WebSockets",
+    "should_trigger": true
+  },
+  {
+    "query": "Should I use a message queue? Compare RabbitMQ vs BullMQ",
+    "should_trigger": true
+  },
+  {
+    "query": "Research authentication approaches — JWT vs sessions vs OAuth",
+    "should_trigger": true
+  },
+  {
+    "query": "Is MongoDB a better fit than PostgreSQL for our task data?",
+    "should_trigger": true
+  },
+  {
+    "query": "Compare deployment options: Vercel vs Railway vs self-hosted",
+    "should_trigger": true
+  },
+  {
+    "query": "Fix the database connection bug in the task service",
+    "should_trigger": false
+  },
+  {
+    "query": "Commit my changes to the auth module",
+    "should_trigger": false
+  },
+  {
+    "query": "Implement the login endpoint with bcrypt password hashing",
+    "should_trigger": false
+  },
+  {
+    "query": "Refactor the task controller to use async/await",
+    "should_trigger": false
+  },
+  {
+    "query": "Write tests for the user registration flow",
+    "should_trigger": false
+  },
+  {
+    "query": "Check if my code follows the project's import rules",
+    "should_trigger": false
+  },
+  {
+    "query": "Is this task aligned with our current roadmap?",
+    "should_trigger": false
+  },
+  {
+    "query": "Add input validation to the task creation endpoint",
+    "should_trigger": false
+  },
+  {
+    "query": "Read the existing ADRs for this project",
+    "should_trigger": false
+  },
+  {
+    "query": "Help me debug why the JWT token verification fails",
+    "should_trigger": false
+  }
+]

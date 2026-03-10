@@ -1,0 +1,63 @@
+{
+  "skill_name": "architecture-researcher",
+  "evals": [
+    {
+      "id": 1,
+      "name": "trade-off-matrix",
+      "prompt": "We need to choose a database for the TaskFlow project. The current ARCHITECTURE.md says PostgreSQL but we haven't started building yet. Should we stick with PostgreSQL, or would MongoDB or SQLite be a better fit? Build a trade-off analysis.",
+      "expected_output": "Builds a trade-off matrix comparing PostgreSQL, MongoDB, and SQLite across dimensions like goal alignment, learning curve, performance for task CRUD, maintenance burden, community health, migration cost, and YAGNI risk. Recommends with project-specific reasoning — e.g., PostgreSQL fits structured task data + team ACL well, SQLite is simpler but limited for team features, MongoDB is flexible but adds complexity for relational team data.",
+      "files": [
+        "skills/architecture-researcher/evals/fixtures/GOAL.md",
+        "skills/architecture-researcher/evals/fixtures/ROADMAP.md",
+        "skills/architecture-researcher/evals/fixtures/ARCHITECTURE.md"
+      ],
+      "assertions": [
+        {
+          "id": "matrix-built",
+          "description": "Produces a structured trade-off matrix or comparison table with multiple evaluation dimensions"
+        },
+        {
+          "id": "project-specific-reasoning",
+          "description": "Ties the recommendation to TaskFlow's specific needs (task CRUD, JWT auth, team ACL) rather than generic advice"
+        },
+        {
+          "id": "yagni-risk-assessed",
+          "description": "Evaluates YAGNI risk — flags options that introduce unnecessary complexity for the current scope"
+        },
+        {
+          "id": "clear-recommendation",
+          "description": "Makes a clear recommendation rather than leaving the decision entirely open"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "dependency-evaluation",
+      "prompt": "I'm thinking about adding Redis for caching task list queries. Right now we have about 50 users and the task list endpoint takes 200ms. Is Redis the right choice, or should I use in-memory caching?",
+      "expected_output": "Evaluates Redis vs in-memory caching for the current scale. Warns against over-engineering — 50 users and 200ms may not justify an external Redis dependency. Assesses YAGNI risk: Redis adds operational complexity (deployment, monitoring, connection management) for a problem that in-memory caching or query optimization might solve. Recommends the simpler option with a clear threshold for when Redis would become necessary.",
+      "files": [
+        "skills/architecture-researcher/evals/fixtures/GOAL.md",
+        "skills/architecture-researcher/evals/fixtures/ROADMAP.md",
+        "skills/architecture-researcher/evals/fixtures/ARCHITECTURE.md"
+      ],
+      "assertions": [
+        {
+          "id": "scale-evaluated",
+          "description": "Evaluates whether the current scale (50 users, 200ms) justifies the proposed solution"
+        },
+        {
+          "id": "over-engineering-warned",
+          "description": "Warns against over-engineering or flags that Redis may be premature for the current load"
+        },
+        {
+          "id": "simpler-option-considered",
+          "description": "Considers simpler alternatives (in-memory cache, query optimization) before recommending Redis"
+        },
+        {
+          "id": "threshold-suggested",
+          "description": "Suggests a threshold or condition under which upgrading to Redis would make sense"
+        }
+      ]
+    }
+  ]
+}

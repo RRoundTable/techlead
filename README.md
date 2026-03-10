@@ -119,6 +119,26 @@ flowchart TD
 
 A `PreToolUse` hook fires before every `Write` or `Edit` tool call, prompting Claude to verify alignment with GOAL.md and ROADMAP.md before making changes.
 
+## Evaluation (Developer)
+
+Techlead includes an eval framework for plugin developers to verify that skills work correctly. There are two eval types:
+
+**Trigger evals** test whether a skill's description causes Claude to invoke it for the right queries (and not invoke it for unrelated ones). Each skill has a `trigger_evals.json` with labeled queries.
+
+```
+/eval-trigger <skill-name>
+```
+
+**Behavioral evals** test whether a skill produces correct output by running paired agents (with-skill vs without-skill) in isolated worktrees and grading against assertions. Each skill has an `evals.json` with prompts, expected outputs, and assertions.
+
+```
+/eval-behavior <skill-name>
+```
+
+**Metrics:**
+- Trigger accuracy % — how often the skill fires (or doesn't) correctly
+- Behavioral delta % — pass rate difference between with-skill and without-skill runs
+
 ## Document Hierarchy
 
 Techlead uses a layered document system, read in priority order:
@@ -139,14 +159,24 @@ techlead/
 ├── .claude-plugin/
 │   └── plugin.json                  # Plugin metadata
 ├── skills/
-│   ├── techlead-persona/SKILL.md    # Core persona + philosophies
-│   ├── check-alignment/SKILL.md     # Goal/roadmap alignment gate
-│   ├── verify-code-quality/SKILL.md # Code quality verification
-│   └── architecture-researcher/SKILL.md # Trade-off research
+│   ├── techlead-persona/
+│   │   ├── SKILL.md                 # Core persona + philosophies
+│   │   └── evals/                   # Trigger + behavioral evals
+│   ├── check-alignment/
+│   │   ├── SKILL.md                 # Goal/roadmap alignment gate
+│   │   └── evals/                   # Evals + fixtures (GOAL.md, ROADMAP.md)
+│   ├── verify-code-quality/
+│   │   ├── SKILL.md                 # Code quality verification
+│   │   └── evals/                   # Evals + fixtures (GOAL.md, ROADMAP.md, ARCHITECTURE.md)
+│   └── architecture-researcher/
+│       ├── SKILL.md                 # Trade-off research
+│       └── evals/                   # Evals + fixtures (GOAL.md, ROADMAP.md, ARCHITECTURE.md)
 ├── commands/
 │   ├── init-techlead.md             # Project bootstrapping
 │   ├── propose-architecture.md      # Architectural decision workflow
-│   └── read-history.md              # ADR lookup
+│   ├── read-history.md              # ADR lookup
+│   ├── eval-trigger.md              # Trigger eval runner
+│   └── eval-behavior.md             # Behavioral eval runner
 ├── docs/
 │   ├── guide.md                     # User guide and workflow
 │   └── philosophy.md                # The 5 philosophies deep reference

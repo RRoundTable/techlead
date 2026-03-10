@@ -1,0 +1,82 @@
+[
+  {
+    "query": "Let's commit these changes",
+    "should_trigger": true
+  },
+  {
+    "query": "Check for TODO markers in the codebase before I push",
+    "should_trigger": true
+  },
+  {
+    "query": "Review this code for quality violations before committing",
+    "should_trigger": true
+  },
+  {
+    "query": "I'm done with this task, verify everything is clean",
+    "should_trigger": true
+  },
+  {
+    "query": "Make sure there are no FIXME or HACK comments left",
+    "should_trigger": true
+  },
+  {
+    "query": "Check if any feature modules are importing from each other",
+    "should_trigger": true
+  },
+  {
+    "query": "Verify this code follows our architecture rules before I merge",
+    "should_trigger": true
+  },
+  {
+    "query": "Run a quality check — I want to make sure nothing violates our philosophies",
+    "should_trigger": true
+  },
+  {
+    "query": "Does this diff introduce any coupling between feature modules?",
+    "should_trigger": true
+  },
+  {
+    "query": "Are there any undocumented dependencies I should create an ADR for?",
+    "should_trigger": true
+  },
+  {
+    "query": "Implement the user authentication endpoint",
+    "should_trigger": false
+  },
+  {
+    "query": "Which database should I choose for this project?",
+    "should_trigger": false
+  },
+  {
+    "query": "Should I work on team workspaces or auth first?",
+    "should_trigger": false
+  },
+  {
+    "query": "Explain how middleware works in Express",
+    "should_trigger": false
+  },
+  {
+    "query": "Write unit tests for the task service",
+    "should_trigger": false
+  },
+  {
+    "query": "Compare Prisma vs Knex for database access",
+    "should_trigger": false
+  },
+  {
+    "query": "Read the ARCHITECTURE.md file",
+    "should_trigger": false
+  },
+  {
+    "query": "Set up the project's CI pipeline",
+    "should_trigger": false
+  },
+  {
+    "query": "What's the best way to handle file uploads in Node.js?",
+    "should_trigger": false
+  },
+  {
+    "query": "Help me debug this failing test",
+    "should_trigger": false
+  }
+]

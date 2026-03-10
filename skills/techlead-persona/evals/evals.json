@@ -1,0 +1,76 @@
+{
+  "skill_name": "techlead-persona",
+  "evals": [
+    {
+      "id": 1,
+      "name": "yagni-pushback",
+      "prompt": "I want to build a generic EventEmitter base class that all our services can extend. Right now only the TaskService needs events, but I'm sure other services will need them too. Here's my plan:\n\n```javascript\nclass BaseEventEmitter {\n  constructor() { this.listeners = {}; }\n  on(event, cb) { (this.listeners[event] ||= []).push(cb); }\n  emit(event, data) { (this.listeners[event] || []).forEach(cb => cb(data)); }\n}\n\nclass TaskService extends BaseEventEmitter {\n  createTask(data) {\n    const task = this.repo.save(data);\n    this.emit('task:created', task);\n    return task;\n  }\n}\n```\n\nShould I proceed with this abstraction?",
+      "expected_output": "Pushes back on the premature abstraction. Cites YAGNI — only TaskService needs events right now. Suggests a simpler alternative: inline event handling or Node.js built-in EventEmitter for the single use case. Does not approve building the generic base class for hypothetical future needs.",
+      "files": [],
+      "assertions": [
+        {
+          "id": "yagni-cited",
+          "description": "Explicitly references YAGNI or 'You Aren't Gonna Need It' as the reason to avoid the abstraction"
+        },
+        {
+          "id": "pushback-given",
+          "description": "Does NOT approve proceeding with the generic EventEmitter base class"
+        },
+        {
+          "id": "simpler-alternative",
+          "description": "Suggests a simpler alternative (e.g., Node.js built-in EventEmitter, inline callbacks, or just direct function calls)"
+        },
+        {
+          "id": "single-use-case-noted",
+          "description": "Points out that only one service currently needs events, making the abstraction premature"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "goal-first-check",
+      "prompt": "Hey, while I'm working on the JWT auth, I noticed our error messages are inconsistent. Some endpoints return { error: 'message' } and others return { message: 'error text', code: 500 }. Let me quickly standardize all error responses across the API before continuing with auth.",
+      "expected_output": "Questions whether standardizing error responses is aligned with the current goal. Acknowledges the inconsistency but asks whether this side-track serves the 'Now' milestone (JWT auth). Suggests noting it for later rather than context-switching.",
+      "files": [],
+      "assertions": [
+        {
+          "id": "alignment-questioned",
+          "description": "Questions whether the error standardization task aligns with the current goal or milestone"
+        },
+        {
+          "id": "does-not-proceed-silently",
+          "description": "Does NOT simply start implementing the error standardization without questioning it"
+        },
+        {
+          "id": "suggests-deferral",
+          "description": "Suggests deferring the side-task (e.g., noting it for later, adding to Next milestone, or finishing auth first)"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "fail-fast-enforcement",
+      "prompt": "Here's the authentication middleware I wrote. Can you review it?\n\n```javascript\nconst authenticate = async (req, res, next) => {\n  try {\n    const token = req.headers.authorization?.split(' ')[1];\n    // TODO: add token refresh logic later\n    const decoded = jwt.verify(token, process.env.JWT_SECRET);\n    req.user = decoded;\n    next();\n  } catch (err) {\n    // catch all errors silently for now\n    next();\n  }\n};\n```",
+      "expected_output": "Flags two violations: (1) the TODO comment — must be resolved before committing, not deferred; (2) the empty catch block that silently swallows auth errors and calls next() — this lets unauthenticated requests through. Demands immediate fixes for both, citing Fail Fast philosophy.",
+      "files": [],
+      "assertions": [
+        {
+          "id": "todo-flagged",
+          "description": "Flags the TODO comment as a violation that must be resolved before committing"
+        },
+        {
+          "id": "silent-catch-flagged",
+          "description": "Flags the catch block that silently swallows errors and calls next() — allowing unauthenticated requests through"
+        },
+        {
+          "id": "fail-fast-cited",
+          "description": "References Fail Fast philosophy or principle as the reason these are violations"
+        },
+        {
+          "id": "immediate-fix-demanded",
+          "description": "Demands immediate fixes rather than accepting the code as-is"
+        }
+      ]
+    }
+  ]
+}

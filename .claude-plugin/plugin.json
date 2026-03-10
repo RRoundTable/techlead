@@ -25,7 +25,9 @@
   "commands": [
     "./commands/init-techlead.md",
     "./commands/propose-architecture.md",
-    "./commands/read-history.md"
+    "./commands/read-history.md",
+    "./commands/eval-trigger.md",
+    "./commands/eval-behavior.md"
   ],
   "hooks": "./hooks/hooks.json"
 }
