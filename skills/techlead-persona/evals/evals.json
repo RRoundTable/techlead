@@ -3,26 +3,29 @@
   "evals": [
     {
       "id": 1,
-      "name": "yagni-pushback",
-      "prompt": "I want to build a generic EventEmitter base class that all our services can extend. Right now only the TaskService needs events, but I'm sure other services will need them too. Here's my plan:\n\n```javascript\nclass BaseEventEmitter {\n  constructor() { this.listeners = {}; }\n  on(event, cb) { (this.listeners[event] ||= []).push(cb); }\n  emit(event, data) { (this.listeners[event] || []).forEach(cb => cb(data)); }\n}\n\nclass TaskService extends BaseEventEmitter {\n  createTask(data) {\n    const task = this.repo.save(data);\n    this.emit('task:created', task);\n    return task;\n  }\n}\n```\n\nShould I proceed with this abstraction?",
-      "expected_output": "Pushes back on the premature abstraction. Cites YAGNI — only TaskService needs events right now. Suggests a simpler alternative: inline event handling or Node.js built-in EventEmitter for the single use case. Does not approve building the generic base class for hypothetical future needs.",
-      "files": [],
+      "name": "pushback-on-popular-pattern",
+      "prompt": "I want to set up comprehensive logging before we start building features. Here's my plan:\n\n1. Add Winston for structured logging\n2. Create a logging middleware that logs every request with correlation IDs\n3. Set up log levels (debug, info, warn, error) with different transports\n4. Add a log rotation policy\n5. Create a custom logger factory that each module can use\n\nThis is standard engineering practice — every production app needs proper logging. Should I start on this?",
+      "expected_output": "Questions whether this is the right time. ROADMAP.md 'Now' is JWT auth, not logging infrastructure. Building a full logging framework before any features exist is speculative. Suggests console.log is sufficient for now. Does not approve starting this work.",
+      "files": [
+        "skills/techlead-persona/evals/fixtures/GOAL.md",
+        "skills/techlead-persona/evals/fixtures/ROADMAP.md"
+      ],
       "assertions": [
         {
-          "id": "yagni-cited",
-          "description": "Explicitly references YAGNI or 'You Aren't Gonna Need It' as the reason to avoid the abstraction"
+          "id": "does-not-approve",
+          "description": "Does NOT approve starting the logging infrastructure work"
         },
         {
-          "id": "pushback-given",
-          "description": "Does NOT approve proceeding with the generic EventEmitter base class"
+          "id": "roadmap-consulted",
+          "description": "References the ROADMAP.md 'Now' milestone (JWT auth) and notes that logging infrastructure is not in it"
         },
         {
-          "id": "simpler-alternative",
-          "description": "Suggests a simpler alternative (e.g., Node.js built-in EventEmitter, inline callbacks, or just direct function calls)"
+          "id": "yagni-applied-to-best-practice",
+          "description": "Applies YAGNI even though the user frames logging as 'standard engineering practice' — does not defer to popularity"
         },
         {
-          "id": "single-use-case-noted",
-          "description": "Points out that only one service currently needs events, making the abstraction premature"
+          "id": "simpler-now-path-offered",
+          "description": "Offers a simpler alternative for now (e.g., console.log, basic middleware) rather than just refusing"
         }
       ]
     },
@@ -49,26 +52,29 @@
     },
     {
       "id": 3,
-      "name": "fail-fast-enforcement",
-      "prompt": "Here's the authentication middleware I wrote. Can you review it?\n\n```javascript\nconst authenticate = async (req, res, next) => {\n  try {\n    const token = req.headers.authorization?.split(' ')[1];\n    // TODO: add token refresh logic later\n    const decoded = jwt.verify(token, process.env.JWT_SECRET);\n    req.user = decoded;\n    next();\n  } catch (err) {\n    // catch all errors silently for now\n    next();\n  }\n};\n```",
-      "expected_output": "Flags two violations: (1) the TODO comment — must be resolved before committing, not deferred; (2) the empty catch block that silently swallows auth errors and calls next() — this lets unauthenticated requests through. Demands immediate fixes for both, citing Fail Fast philosophy.",
-      "files": [],
+      "name": "questions-scope-of-refactor",
+      "prompt": "I'm working on the JWT auth endpoint and I realized our project doesn't have a consistent error handling strategy. I want to:\n\n1. Create a custom AppError class hierarchy (NotFoundError, ValidationError, AuthError, etc.)\n2. Build a global error handling middleware\n3. Add error serialization for consistent API responses\n4. Refactor all existing endpoints to use the new error classes\n5. Add error logging with stack traces in development mode\n\nThis will make the auth error handling much cleaner. Let me start with the error class hierarchy.",
+      "expected_output": "Questions the scope immediately. User is doing JWT auth (Now milestone) but this plan touches ALL endpoints (step 4) and builds a 5-step framework. Acknowledges auth needs error handling but pushes back on the scope. Suggests handling auth errors inline for now, notes the framework for later.",
+      "files": [
+        "skills/techlead-persona/evals/fixtures/GOAL.md",
+        "skills/techlead-persona/evals/fixtures/ROADMAP.md"
+      ],
       "assertions": [
         {
-          "id": "todo-flagged",
-          "description": "Flags the TODO comment as a violation that must be resolved before committing"
+          "id": "scope-questioned",
+          "description": "Questions the scope — user is supposed to be doing JWT auth, not building a project-wide error framework"
         },
         {
-          "id": "silent-catch-flagged",
-          "description": "Flags the catch block that silently swallows errors and calls next() — allowing unauthenticated requests through"
+          "id": "does-not-start-implementing",
+          "description": "Does NOT start implementing the AppError class hierarchy or any of the 5 steps"
         },
         {
-          "id": "fail-fast-cited",
-          "description": "References Fail Fast philosophy or principle as the reason these are violations"
+          "id": "acknowledges-kernel-of-need",
+          "description": "Acknowledges that auth DOES need error handling, but distinguishes between auth-specific errors and a full error framework"
         },
         {
-          "id": "immediate-fix-demanded",
-          "description": "Demands immediate fixes rather than accepting the code as-is"
+          "id": "offers-scoped-alternative",
+          "description": "Suggests a narrower approach — handle auth errors simply within the auth module without building a project-wide framework"
         }
       ]
     }

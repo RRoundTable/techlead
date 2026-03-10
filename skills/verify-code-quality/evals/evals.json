@@ -3,9 +3,9 @@
   "evals": [
     {
       "id": 1,
-      "name": "cross-feature-import",
-      "prompt": "I'm about to commit this billing module that charges users for premium team features. Here's the key file:\n\n```javascript\n// src/features/billing/billingService.js\nimport { getUserById } from '../auth/userRepository.js';\nimport { getTeamMembers } from '../teams/teamRepository.js';\n\nexport async function chargePremiumTeam(teamId) {\n  const members = await getTeamMembers(teamId);\n  for (const member of members) {\n    const user = await getUserById(member.userId);\n    await processCharge(user.stripeCustomerId, 9.99);\n  }\n}\n```\n\nReady to commit?",
-      "expected_output": "Flags the cross-feature imports as a High Cohesion / Low Coupling violation. features/billing imports from features/auth and features/teams — this creates coupling between feature modules. Suggests moving shared logic (getUserById, getTeamMembers) to core/ or exposing a service interface through shared/.",
+      "name": "subtle-yagni-in-reasonable-code",
+      "prompt": "Ready to commit this task service. The code is clean, tested, and works perfectly:\n\n```javascript\n// src/features/tasks/taskService.js\nimport { db } from '../../core/database.js';\n\nexport async function createTask(data, options = {}) {\n  const { notify = true, validate = true, dryRun = false } = options;\n\n  if (validate) {\n    validateTask(data);\n  }\n\n  if (dryRun) {\n    return { ...data, id: 'dry-run', createdAt: new Date() };\n  }\n\n  const task = await db.tasks.insert(data);\n\n  if (notify) {\n    await notifyTaskCreated(task);\n  }\n\n  return task;\n}\n\nfunction validateTask(data) {\n  if (!data.title) throw new Error('Title is required');\n  if (data.title.length > 200) throw new Error('Title too long');\n}\n\nasync function notifyTaskCreated(task) {\n  // placeholder for future notification system\n  console.log(`Task ${task.id} created`);\n}\n```\n\nAll tests pass. Ship it?",
+      "expected_output": "Flags YAGNI violations: the options parameter with notify/validate/dryRun flags is speculative — no callers use dryRun or notify=false yet. The notifyTaskCreated function is a placeholder with no real implementation. These are premature abstractions. Block commit until speculative options are removed and function is simplified.",
       "files": [
         "skills/verify-code-quality/evals/fixtures/GOAL.md",
         "skills/verify-code-quality/evals/fixtures/ROADMAP.md",
@@ -13,28 +13,28 @@
       ],
       "assertions": [
         {
-          "id": "cross-import-flagged",
-          "description": "Flags the imports from features/auth and features/teams as a coupling violation"
+          "id": "options-flagged-as-yagni",
+          "description": "Flags the options parameter (notify, validate, dryRun) as speculative YAGNI — no callers use these options yet"
         },
         {
-          "id": "architecture-rule-cited",
-          "description": "References the import rule that features/A cannot import from features/B"
+          "id": "placeholder-function-flagged",
+          "description": "Flags notifyTaskCreated as a placeholder with no real implementation — speculative code that should not ship"
         },
         {
-          "id": "fix-suggested",
-          "description": "Suggests moving shared dependencies to core/ or shared/ to fix the coupling"
+          "id": "does-not-just-approve",
+          "description": "Does NOT approve the commit despite the code being syntactically clean and well-structured"
         },
         {
-          "id": "blocks-commit",
-          "description": "Does NOT approve the commit — requires the violation to be fixed first"
+          "id": "suggests-simpler-version",
+          "description": "Suggests a simpler version: just createTask(data) with inline validation, no options object"
         }
       ]
     },
     {
       "id": 2,
-      "name": "todo-marker-detection",
-      "prompt": "Here's the task update handler. I think it's ready to commit:\n\n```javascript\n// src/features/tasks/taskController.js\nexport async function updateTask(req, res) {\n  const { id } = req.params;\n  const updates = req.body;\n\n  // FIXME: validation is incomplete — only checks title length\n  if (updates.title && updates.title.length > 200) {\n    return res.status(400).json({ error: 'Title too long' });\n  }\n\n  // HACK: bypassing ORM because of a bug with partial updates\n  const result = await db.raw(\n    'UPDATE tasks SET ? WHERE id = ?',\n    [updates, id]\n  );\n\n  return res.json(result);\n}\n```\n\nCommit this?",
-      "expected_output": "Flags both markers: FIXME (incomplete validation) and HACK (ORM bypass). Both violate Fail Fast — deferred problems must be fixed before committing, not marked for later. Demands the validation be completed and the ORM issue resolved or documented in an ADR.",
+      "name": "multi-violation-stop-at-first",
+      "prompt": "About to commit the auth module. Here are the key files:\n\n```javascript\n// src/features/auth/authController.js\nimport { findUserByEmail } from '../users/userRepository.js';\nimport bcrypt from 'bcrypt';\n\nexport async function login(req, res) {\n  const { email, password } = req.body;\n  const user = await findUserByEmail(email);\n  // FIXME: timing attack vulnerability on comparison\n  if (!user || !bcrypt.compareSync(password, user.hash)) {\n    return res.status(401).json({ error: 'Invalid credentials' });\n  }\n  res.json({ token: generateToken(user) });\n}\n```\n\n```javascript\n// src/features/auth/tokenService.js\nimport jwt from 'jsonwebtoken';\n\nconst SECRET = 'hardcoded-secret-change-later';\n\nexport function generateToken(user) {\n  return jwt.sign({ id: user.id, role: user.role, preferences: user.preferences, theme: user.theme }, SECRET);\n}\n```\n\nReady to merge?",
+      "expected_output": "The skill should identify the FIRST and most critical violation and stop there — not enumerate all issues. The cross-feature import (auth→users), the FIXME marker, and the hardcoded secret are all violations. The skill should flag ONE, demand a fix, and state it will re-check after the fix.",
       "files": [
         "skills/verify-code-quality/evals/fixtures/GOAL.md",
         "skills/verify-code-quality/evals/fixtures/ROADMAP.md",
@@ -42,28 +42,28 @@
       ],
       "assertions": [
         {
-          "id": "fixme-flagged",
-          "description": "Flags the FIXME comment about incomplete validation"
+          "id": "stops-at-first-violation",
+          "description": "Identifies ONE primary violation and focuses on it rather than listing all violations in a laundry list"
         },
         {
-          "id": "hack-flagged",
-          "description": "Flags the HACK comment about bypassing the ORM"
+          "id": "demands-fix-before-continuing",
+          "description": "Explicitly states the commit is blocked and asks for a fix before proceeding to check other issues"
         },
         {
-          "id": "fail-fast-cited",
-          "description": "References Fail Fast philosophy — no TODO/FIXME/HACK in committed code"
+          "id": "uses-structured-format",
+          "description": "Uses the skill's prescribed format: **[Philosophy Name] violation** with file:line, what's wrong, and fix suggestion"
         },
         {
-          "id": "blocks-commit",
-          "description": "Does NOT approve the commit — requires both issues to be fixed first"
+          "id": "does-not-enumerate-all",
+          "description": "Does NOT produce a numbered list of all 3-4 issues at once — stops after the first violation category"
         }
       ]
     },
     {
       "id": 3,
-      "name": "undocumented-dependency",
-      "prompt": "I added lodash to help with deep object merging in the task update flow. Here's the change:\n\n```javascript\n// src/features/tasks/taskService.js\nimport _ from 'lodash';\n\nexport function mergeTaskUpdate(existing, updates) {\n  return _.merge({}, existing, updates);\n}\n```\n\nI ran npm install lodash already. Ready to commit?",
-      "expected_output": "Flags the undocumented dependency. Adding lodash is an architectural decision (new external dependency) that requires an ADR via /propose-architecture. Questions whether the full lodash library is needed for a single merge operation — YAGNI applies. Suggests structuredClone + spread or a targeted package like lodash.merge.",
+      "name": "adr-check-for-pattern-not-dependency",
+      "prompt": "I'm adding a repository pattern to standardize database access. No new dependencies — just a code pattern:\n\n```javascript\n// src/core/BaseRepository.js\nexport class BaseRepository {\n  constructor(tableName) {\n    this.tableName = tableName;\n  }\n\n  async findById(id) {\n    return db.query(`SELECT * FROM ${this.tableName} WHERE id = $1`, [id]);\n  }\n\n  async findAll(filters = {}) {\n    const where = Object.entries(filters)\n      .map(([k, v], i) => `${k} = $${i + 1}`)\n      .join(' AND ');\n    return db.query(`SELECT * FROM ${this.tableName}${where ? ' WHERE ' + where : ''}`, Object.values(filters));\n  }\n\n  async create(data) { /* ... */ }\n  async update(id, data) { /* ... */ }\n  async delete(id) { /* ... */ }\n}\n```\n\n```javascript\n// src/features/tasks/TaskRepository.js\nimport { BaseRepository } from '../../core/BaseRepository.js';\n\nexport class TaskRepository extends BaseRepository {\n  constructor() { super('tasks'); }\n}\n```\n\nNo new npm packages. Ready to commit?",
+      "expected_output": "Flags that introducing the Repository pattern is an architectural decision requiring an ADR, even though no new dependency was added. Also flags YAGNI: BaseRepository with generic CRUD is premature when only TaskRepository exists. The ARCHITECTURE.md Key Patterns section is empty — this is the first pattern and needs recording. Suggests /propose-architecture.",
       "files": [
         "skills/verify-code-quality/evals/fixtures/GOAL.md",
         "skills/verify-code-quality/evals/fixtures/ROADMAP.md",
@@ -71,20 +71,20 @@
       ],
       "assertions": [
         {
-          "id": "undocumented-dep-flagged",
-          "description": "Flags that lodash was added without an ADR or architectural decision record"
+          "id": "pattern-adr-required",
+          "description": "Flags the Repository pattern as a new architectural pattern that requires an ADR, even though no npm dependency was added"
         },
         {
-          "id": "adr-suggested",
-          "description": "Suggests using /propose-architecture to document the dependency decision"
+          "id": "propose-architecture-suggested",
+          "description": "Suggests running /propose-architecture to record the decision before committing"
         },
         {
-          "id": "yagni-questioned",
-          "description": "Questions whether the full lodash library is needed for one merge operation — YAGNI concern"
+          "id": "base-class-yagni-flagged",
+          "description": "Flags BaseRepository as a premature abstraction — only one repository exists (TaskRepository), so the base class is YAGNI"
         },
         {
-          "id": "simpler-alternative",
-          "description": "Suggests a simpler alternative (e.g., structuredClone, spread operator, or lodash.merge)"
+          "id": "blocks-commit",
+          "description": "Does NOT approve the commit — requires the architectural decision to be recorded first"
         }
       ]
     }

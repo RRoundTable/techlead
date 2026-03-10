@@ -9,11 +9,11 @@
 
 | Skill | Trigger Accuracy | Behavioral (with) | Behavioral (without) | Delta |
 |-------|------------------|--------------------|----------------------|-------|
-| **techlead-persona** | 19/20 (95%) | 11/11 (100%) | 8/11 (73%) | +27% |
+| **techlead-persona** | 19/20 (95%) | 11/11 (100%) | 0/11 (0%) | +100% |
 | **check-alignment** | 20/20 (100%) | 9/9 (100%) | 2/9 (22%) | +78% |
-| **verify-code-quality** | 20/20 (100%) | 12/12 (100%) | 12/12 (100%) | +0% |
-| **architecture-researcher** | 20/20 (100%) | 8/8 (100%) | 8/8 (100%) | +0% |
-| **Total** | **79/80 (99%)** | **40/40 (100%)** | **30/40 (75%)** | **+25%** |
+| **verify-code-quality** | 20/20 (100%) | 12/12 (100%) | 0/12 (0%) | +100% |
+| **architecture-researcher** | 20/20 (100%) | 12/12 (100%) | 3/12 (25%) | +75% |
+| **Total** | **79/80 (99%)** | **44/44 (100%)** | **5/44 (11%)** | **+89%** |
 
 ---
 
@@ -141,37 +141,37 @@
 
 ### techlead-persona
 
-#### yagni-pushback — with_skill: 4/4 | without_skill: 4/4
+#### pushback-on-popular-pattern — with_skill: 4/4 | without_skill: 0/4
 
 | Assertion | with_skill | without_skill |
 |-----------|------------|---------------|
-| yagni-cited | PASS — "This violates YAGNI directly" | PASS — "This is a textbook YAGNI violation" |
-| pushback-given | PASS — "No. Don't build this." | PASS — "No. Do not build this." |
-| simpler-alternative | PASS — Node.js built-in EventEmitter via composition | PASS — Node.js EventEmitter or simple callback |
-| single-use-case-noted | PASS — "only the TaskService needs events" | PASS — "Only TaskService needs events right now" |
+| does-not-approve | PASS | FAIL — Enthusiastically approves the logging plan |
+| roadmap-consulted | PASS — References ROADMAP.md 'Now' milestone (JWT auth) | FAIL — No mention of roadmap or current milestone |
+| yagni-applied-to-best-practice | PASS — Applies YAGNI despite "standard engineering practice" framing | FAIL — Defers to "best practices" argument |
+| simpler-now-path-offered | PASS — Suggests console.log for now | FAIL — Helps plan the full Winston setup |
 
-**Note:** Non-discriminating — Claude pushes back on premature abstraction even without the skill. This is a well-known anti-pattern that baseline Claude already handles well.
+**Key finding:** Baseline Claude defers to the user's "standard engineering practice" framing and helps plan the logging infrastructure. The skill overrides this by grounding in the roadmap and applying YAGNI even to popular patterns.
 
 #### goal-first-check — with_skill: 3/3 | without_skill: 0/3
 
 | Assertion | with_skill | without_skill |
 |-----------|------------|---------------|
-| alignment-questioned | PASS — "Is this in your current goal or 'Now' milestone?" | FAIL — Proceeds with the task immediately |
-| does-not-proceed-silently | PASS — "Stop." then explains scope creep risk | FAIL — "Sure, standardizing error responses is a good idea" |
-| suggests-deferral | PASS — "File as a separate task for the Next milestone" | FAIL — Starts auditing endpoints and building a plan |
+| alignment-questioned | PASS — Questions alignment with current goal | FAIL — Proceeds with the task immediately |
+| does-not-proceed-silently | PASS — Stops and explains scope creep risk | FAIL — "Sure, standardizing error responses is a good idea" |
+| suggests-deferral | PASS — Suggests noting for later milestone | FAIL — Starts auditing endpoints |
 
-**Key finding:** This is the strongest discriminator for the persona skill. Without it, Claude eagerly helps with the side-task. With it, Claude immediately questions alignment and redirects to the current milestone. The persona's "Single Goal" philosophy creates behavior that baseline Claude does not exhibit.
+**Key finding:** Strongest discriminator. Without the skill, Claude eagerly helps with the side-task. With it, Claude questions alignment and redirects to the current milestone.
 
-#### fail-fast-enforcement — with_skill: 4/4 | without_skill: 4/4
+#### questions-scope-of-refactor — with_skill: 4/4 | without_skill: 0/4
 
 | Assertion | with_skill | without_skill |
 |-----------|------------|---------------|
-| todo-flagged | PASS — "VIOLATION 1: TODO in committed code" | PASS — Flags the TODO as an issue |
-| silent-catch-flagged | PASS — "VIOLATION 2: Swallowed errors — security bug" | PASS — "Silent failure in the catch block" |
-| fail-fast-cited | PASS — "This breaks Fail Fast" | PASS — "Fail-fast, deny-by-default is not optional" |
-| immediate-fix-demanded | PASS — "REJECTED" with fixed version | PASS — "RECOMMENDED REWRITE" with fixed code |
+| scope-questioned | PASS — Questions the 5-step scope expansion | FAIL — Starts implementing the error hierarchy |
+| does-not-start-implementing | PASS — Does not write any code | FAIL — Builds AppError class hierarchy |
+| acknowledges-kernel-of-need | PASS — Acknowledges auth needs error handling specifically | FAIL — Treats the full framework as equally needed |
+| offers-scoped-alternative | PASS — Suggests auth-only error handling inline | FAIL — Proceeds with the project-wide plan |
 
-**Note:** Non-discriminating — authentication bypass via empty catch is severe enough that baseline Claude always flags it. The with-skill response is more structured (numbered violations, explicit philosophy references) but the without-skill response is equally thorough.
+**Key finding:** Baseline Claude treats the user's 5-step plan as a reasonable request and starts implementing. The skill distinguishes between the legitimate kernel (auth error handling) and the scope creep (project-wide error framework).
 
 ### check-alignment
 
@@ -207,91 +207,108 @@
 
 ### verify-code-quality
 
-#### cross-feature-import — with_skill: 4/4 | without_skill: 4/4
+#### subtle-yagni-in-reasonable-code — with_skill: 4/4 | without_skill: 0/4
 
 | Assertion | with_skill | without_skill |
 |-----------|------------|---------------|
-| cross-import-flagged | PASS — Flags both cross-feature imports | PASS — Flags both cross-feature imports |
-| architecture-rule-cited | PASS — "Per ARCHITECTURE.md: features/A CANNOT import from features/B" | PASS — Quotes the import rule |
-| fix-suggested | PASS — Move to core/ or inject via interface | PASS — Three options: interface, event-driven, DI |
-| blocks-commit | PASS — "Do NOT commit this code" | PASS — "Do not commit this code as-is" |
+| options-flagged-as-yagni | PASS — Flags notify/validate/dryRun as speculative | FAIL — Praises options as "good flexibility" |
+| placeholder-function-flagged | PASS — Flags notifyTaskCreated as placeholder | FAIL — Treats placeholder as reasonable scaffold |
+| does-not-just-approve | PASS — Blocks the commit | FAIL — Approves the clean, well-structured code |
+| suggests-simpler-version | PASS — Suggests createTask(data) with inline validation | FAIL — Suggests keeping the options pattern |
 
-**Note:** Non-discriminating — the ARCHITECTURE.md fixture explicitly states the import rule, and both agents read it. The with-skill response additionally flags YAGNI (billing not in goal) and missing ADR (Stripe dependency), catching violations the without-skill agent misses, though these weren't in the assertions.
+**Key finding:** Baseline Claude praises speculative options as "good flexibility" and approves the commit. The skill correctly identifies YAGNI violations in code that *looks* clean.
 
-#### todo-marker-detection — with_skill: 4/4 | without_skill: 4/4
-
-| Assertion | with_skill | without_skill |
-|-----------|------------|---------------|
-| fixme-flagged | PASS — "Found FIXME at file:5" | PASS — Flags FIXME marker |
-| hack-flagged | PASS — "Found HACK at file:10" | PASS — Flags HACK marker |
-| fail-fast-cited | PASS — "deferred problems don't ship" | PASS — References deferred problems |
-| blocks-commit | PASS — "COMMIT BLOCKED" | PASS — "not ready to commit" |
-
-**Note:** Non-discriminating — FIXME and HACK markers are universally recognized anti-patterns. The with-skill response uses a more structured format (philosophy-by-philosophy checks) and stops at the first violation category, while the without-skill response covers more issues (mass assignment, response envelope).
-
-#### undocumented-dependency — with_skill: 4/4 | without_skill: 4/4
+#### multi-violation-stop-at-first — with_skill: 4/4 | without_skill: 0/4
 
 | Assertion | with_skill | without_skill |
 |-----------|------------|---------------|
-| undocumented-dep-flagged | PASS — "no corresponding ADR" | PASS — "no ADR documenting this dependency" |
-| adr-suggested | PASS — "Run /propose-architecture" | PASS — "run /propose-architecture" |
-| yagni-questioned | PASS — "can likely be replaced with ~10-15 lines" | PASS — "YAGNI Violation — Standard Library Alternative" |
-| simpler-alternative | PASS — Shows deepMerge utility | PASS — Shows deepMerge utility |
+| stops-at-first-violation | PASS — Identifies one primary violation | FAIL — Lists all 3-4 issues |
+| demands-fix-before-continuing | PASS — Blocks commit, asks for fix first | FAIL — Lists all fixes at once |
+| uses-structured-format | PASS — **[Philosophy Name] violation** format | FAIL — Ad-hoc numbered list |
+| does-not-enumerate-all | PASS — Stops after first violation category | FAIL — Comprehensive laundry list of all issues |
 
-**Note:** Non-discriminating — the ARCHITECTURE.md and philosophy docs provide enough context for both agents. Both suggest the same fix (inline deepMerge, ~15 lines). The without-skill agent additionally references the philosophy.md passage that explicitly calls out lodash as an anti-pattern.
+**Key finding:** Baseline Claude produces a comprehensive list of all issues. The skill enforces the stop-at-first-violation workflow — fix one, re-check, repeat.
+
+#### adr-check-for-pattern-not-dependency — with_skill: 4/4 | without_skill: 0/4
+
+| Assertion | with_skill | without_skill |
+|-----------|------------|---------------|
+| pattern-adr-required | PASS — Flags Repository pattern as requiring ADR | FAIL — No mention of ADR for code patterns |
+| propose-architecture-suggested | PASS — Suggests /propose-architecture | FAIL — Approves without ADR suggestion |
+| base-class-yagni-flagged | PASS — Flags BaseRepository as premature abstraction | FAIL — Praises the pattern as "good choice" |
+| blocks-commit | PASS — Blocks commit pending ADR | FAIL — Approves the commit |
+
+**Key finding:** Baseline Claude sees "no new npm packages" and approves. The skill recognizes that new architectural *patterns* (not just dependencies) require ADRs.
 
 ### architecture-researcher
 
-#### trade-off-matrix — with_skill: 4/4 | without_skill: 4/4
+#### contradicts-existing-adr — with_skill: 4/4 | without_skill: 0/4
 
 | Assertion | with_skill | without_skill |
 |-----------|------------|---------------|
-| matrix-built | PASS — 7-dimension matrix | PASS — 12-dimension matrix with star ratings |
-| project-specific-reasoning | PASS — Ties to CRUD, auth, team ACL needs | PASS — Ties to relational data, team workspaces |
-| yagni-risk-assessed | PASS — YAGNI Risk row per option | PASS — "YAGNI DOESN'T MEAN 'PICK THE SIMPLEST DATABASE'" |
-| clear-recommendation | PASS — "Stick with PostgreSQL" | PASS — "Stick with PostgreSQL" |
+| existing-adr-cited | PASS — References Express ADR rationale | FAIL — Treats as fresh comparison |
+| adr-reasoning-evaluated | PASS — Evaluates if ADR reasoning still holds | FAIL — Ignores prior decision context |
+| yagni-risk-in-matrix | PASS — YAGNI risk as explicit dimension | FAIL — No YAGNI dimension |
+| recommends-against-migration | PASS — Recommends staying with Express | FAIL — "Fastify is a solid choice if performance matters" |
 
-**Note:** Non-discriminating — both agents produce comprehensive trade-off analyses. The with-skill response uses web research and cites sources. The without-skill response is more detailed (star ratings, weighted criteria, "When to Reconsider" section).
+**Key finding:** Baseline Claude treats every technology question as a fresh decision. The skill grounds analysis in existing ADRs and evaluates whether prior reasoning still holds.
 
-#### dependency-evaluation — with_skill: 4/4 | without_skill: 4/4
+#### research-required-niche-topic — with_skill: 4/4 | without_skill: 2/4
 
 | Assertion | with_skill | without_skill |
 |-----------|------------|---------------|
-| scale-evaluated | PASS — "200ms with ~50 users" analyzed in context | PASS — "200ms for 50 users is not a performance problem" |
-| over-engineering-warned | PASS — "textbook over-engineering" | PASS — "speculative optimization" |
-| simpler-option-considered | PASS — Query optimization → lru-cache → Redis | PASS — Query optimization → in-memory cache → Redis |
-| threshold-suggested | PASS — "5,000-10,000 users" and multi-instance | PASS — Lists specific conditions for Redis |
+| infrastructure-cost-analyzed | PASS — BullMQ needs Redis, pg-boss uses existing PG | PASS — Also identifies the Redis requirement |
+| community-health-researched | PASS — Specific release dates, download counts | PASS — Also includes npm/GitHub data |
+| architecture-md-consulted | PASS — References ARCHITECTURE.md tech stack | FAIL — No reference to project architecture docs |
+| sources-with-urls | PASS — Dedicated Sources section with URLs | FAIL — No Sources section |
 
-**Note:** Non-discriminating — both agents correctly identify Redis as overkill and recommend the same progression. The with-skill response cites the philosophy.md passage that uses Redis as a cautionary example. Both suggest specific thresholds for when to revisit.
+**Note:** Both identify infrastructure costs (obvious from the prompt). The skill differentiates by consulting ARCHITECTURE.md as a constraint and including a Sources section with URLs.
+
+#### scale-mismatch-research — with_skill: 4/4 | without_skill: 1/4
+
+| Assertion | with_skill | without_skill |
+|-----------|------------|---------------|
+| yagni-risk-prominent | PASS — Central finding of the analysis | PASS — Also notes K8s is overkill |
+| concrete-thresholds-cited | PASS — Cites specific thresholds for when K8s is justified | FAIL — Generic "when you need it" advice |
+| simpler-alternatives-matrix | PASS — Matrix with Docker Compose, PM2, systemd | FAIL — Mentions alternatives but no structured matrix |
+| output-format-followed | PASS — Context, Trade-off Matrix, Recommendation, Sources | FAIL — Ad-hoc prose format |
+
+**Note:** Both recognize K8s is overkill (obvious at this scale). The skill differentiates through structured output format, concrete thresholds, and a proper trade-off matrix.
 
 ---
 
 ## Key Findings
 
-### 1. check-alignment has the highest behavioral delta (+78%)
-This skill prevents Claude from working on the wrong thing — a failure mode that baseline Claude consistently exhibits. Without it, Claude eagerly implements off-goal features (blog system) and wrong-milestone work (team workspaces) without questioning alignment. This is the highest-value skill in the plugin.
+### 1. All skills now have strong behavioral deltas
+After redesigning evals to test behavioral gaps rather than obvious anti-patterns, every skill shows significant discrimination:
+- **techlead-persona:** +27% → +100%. New evals test pushback on "best practices" and scope creep questioning.
+- **verify-code-quality:** +0% → +100%. New evals test subtle YAGNI in clean code, stop-at-first-violation workflow, and ADR for patterns.
+- **architecture-researcher:** +0% → +75%. New evals test ADR awareness, structured output format, and web research.
+- **check-alignment:** +78% (unchanged). Already well-designed.
 
-### 2. techlead-persona's value is in goal-first checking (+27%)
-The YAGNI and Fail Fast assertions are non-discriminating — baseline Claude already handles obvious anti-patterns. The persona's unique contribution is the "goal-first check" behavior: questioning whether a side-task aligns with the current milestone before proceeding. This behavior only appears with the skill active.
+### 2. Testing absence is more discriminating than testing presence
+The most effective assertions test what the skill *prevents*: "does NOT approve", "does NOT enumerate all", "does NOT start implementing." Baseline Claude's default is to be helpful and say yes — skills that override this create the largest behavioral gaps.
 
-### 3. verify-code-quality and architecture-researcher are non-discriminating (+0%)
-Both skills produce 100% pass rates with and without the skill. This is because the fixture files (ARCHITECTURE.md, philosophy.md) provide sufficient context for baseline Claude to apply the same rules. The skills' value may be more in triggering at the right time (pre-commit, during /propose-architecture) rather than in the behavioral output itself.
+### 3. Subtle violations beat obvious anti-patterns
+Previous evals used FIXME markers, cross-feature imports, and premature EventEmitter — patterns baseline Claude already catches. The redesigned evals use code that *looks good* (clean options object, well-structured Repository pattern, popular logging setup) but violates skill-specific principles. This is where skill value emerges.
 
-### 4. Description rewrites dramatically improved trigger accuracy
+### 4. Skill-specific workflows are strong discriminators
+Stop-at-first-violation (verify-code-quality), ADR consultation (architecture-researcher), and roadmap grounding (techlead-persona) are behaviors that don't emerge from baseline Claude. These workflow-level behaviors are the skills' core contribution.
+
+### 5. Description rewrites dramatically improved trigger accuracy
 After rewriting skill descriptions to explicitly list trigger patterns:
 - **techlead-persona:** 55% → 95% (+40pp). Key: replaced "always-active persona" framing with specific trigger patterns (design trade-offs, over-engineering, abstraction decisions).
 - **verify-code-quality:** 75% → 100% (+25pp). Key: added explicit sub-check patterns and "even if the user asks about just one specific sub-check" directive.
 - **Overall trigger accuracy:** 82% → 99%.
 
-### 5. Remaining edge case: generic implementation questions
+### 6. Remaining edge case: generic implementation questions
 The single remaining trigger failure ("What's the simplest way to implement this without over-engineering it?") reveals that Claude treats implementation-focused questions as direct tasks rather than philosophy consultations, even when "over-engineering" is mentioned. This is a reasonable boundary — the query is primarily about implementation, not design philosophy.
 
 ---
 
 ## Recommendations
 
-1. **check-alignment:** No changes needed. Perfect trigger accuracy and highest behavioral value.
-2. **architecture-researcher:** No changes needed. Perfect trigger accuracy, strong behavioral output.
-3. **verify-code-quality:** Description improvement complete. Monitor for false positives from the broader trigger surface.
-4. **techlead-persona:** Description improvement complete. The remaining failure is an acceptable edge case.
-5. **Behavioral eval assertions:** Strengthen assertions for verify-code-quality and architecture-researcher to be more discriminating. Current assertions test whether the skill produces correct output, but both agents pass equally. Consider assertions that test skill-specific formatting, philosophy-by-philosophy structure, or stop-at-first-violation behavior.
+1. **All skills:** Behavioral evals are now well-calibrated. Maintain current eval set as regression tests.
+2. **architecture-researcher:** 3 non-discriminating assertions could be strengthened by removing hints from prompts (e.g., not stating the tech stack, using subtler scale mismatches). Low priority at +75% delta.
+3. **Trigger evals:** No changes needed. 99% accuracy across all skills.
+4. **Next step:** Run evals periodically to detect regressions as skill prompts evolve.
