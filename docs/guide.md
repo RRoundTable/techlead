@@ -24,7 +24,7 @@ You'll be asked five questions in a single prompt:
 4. **Current priorities** — 1-3 items to work on right now
 5. **Tech stack** — Language, framework, database, testing tool
 
-Techlead generates `GOAL.md`, `ROADMAP.md`, `ARCHITECTURE.md`, `docs/adr/000-index.md`, and updates `CLAUDE.md`.
+Techlead generates `GOAL.md`, `ROADMAP.md`, `ARCHITECTURE.md`, and updates `CLAUDE.md`.
 
 ### 3. Start Coding
 
@@ -57,18 +57,22 @@ When you need to choose a technology, pattern, or approach:
 ```
 
 This runs a 4-step workflow:
-1. **Context** — Reads your goal, architecture, and existing ADRs
+1. **Context** — Reads your goal, architecture, and existing ADR tags
 2. **Research** — Searches for options and benchmarks
 3. **Proposal** — Recommends one option with project-specific reasoning
-4. **Record** — Creates an ADR and updates architecture docs
+4. **Record** — Creates a git-based ADR (branch, commit, tag) and updates architecture docs
+
+ADRs are stored as git commit messages on dedicated `adr/` branches, tagged for permanent discovery. No ADR files — no file bloat.
 
 ### Reviewing Past Decisions
 
 ```
-/read-history              # See all decisions
+/read-history              # See all decisions (via git tags)
 /read-history auth         # Find decisions about authentication
 /read-history 2            # Read ADR #2 in detail
 ```
+
+Behind the scenes, `/read-history` uses `git tag -l "adr/*"` to discover ADRs and `git log <tag> --format="%B" -1` to read them.
 
 ### Before Committing
 

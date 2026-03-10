@@ -39,11 +39,10 @@ your-project/
 ├── GOAL.md              # Single project goal + success criteria
 ├── ROADMAP.md           # Now / Next / Later milestones
 ├── ARCHITECTURE.md      # Tech stack, module structure, import rules
-├── CLAUDE.md            # Updated with Techlead rules
-└── docs/
-    └── adr/
-        └── 000-index.md # ADR index table
+└── CLAUDE.md            # Updated with Techlead rules
 ```
+
+ADRs are stored as git commits with `adr/` tags — no file bloat. Discover them via `git tag -l "adr/*"` and read via `git log <tag> --format="%B" -1`.
 
 From that point on, Techlead is active. It checks alignment before code changes and verifies quality before commits.
 
@@ -57,10 +56,10 @@ Bootstrap a project with Techlead's document hierarchy. Asks for your goal, prio
 
 Structured workflow for architectural decisions:
 
-1. Gathers project context (goal, stack, existing ADRs)
+1. Gathers project context (goal, stack, existing ADR tags)
 2. Researches trade-offs via the architecture-researcher skill
 3. Recommends one option with rationale specific to your project
-4. Records the decision as an ADR
+4. Records the decision as a git-based ADR (branch, commit, tag)
 
 ```
 /propose-architecture "State management approach"
@@ -68,7 +67,7 @@ Structured workflow for architectural decisions:
 
 ### `/read-history [number|keyword]`
 
-Search and display Architecture Decision Records.
+Search and display Architecture Decision Records from git tags.
 
 ```
 /read-history              # List all ADRs
@@ -99,7 +98,7 @@ Techlead uses a layered document system, read in priority order:
 GOAL.md          →  What we're building and what's out of scope
 ROADMAP.md       →  What to work on now vs. later
 ARCHITECTURE.md  →  How the system is structured
-docs/adr/        →  Why specific decisions were made
+ADR tags (adr/*) →  Why specific decisions were made (git commit messages)
 ```
 
 The key rule: **only items in ROADMAP.md's "Now" section get worked on.** Everything else waits.
@@ -126,8 +125,7 @@ techlead/
     ├── GOAL.md.template
     ├── ROADMAP.md.template
     ├── ARCHITECTURE.md.template
-    ├── adr-template.md
-    └── adr-index-template.md
+    └── adr-template.md
 ```
 
 ## License

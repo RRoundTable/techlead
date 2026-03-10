@@ -26,17 +26,18 @@ Before researching anything external, ground yourself in the project's current s
 
 1. Read `ARCHITECTURE.md` — understand the current tech stack, module structure, import rules,
    and constraints. New decisions must be compatible with what's already in place.
-2. Read `docs/adr/000-index.md` — scan for related past decisions. If the project already
-   decided on an ORM, a new "which database client?" decision must account for that.
-3. Read relevant ADRs in full if they relate to the current topic. Past decisions carry weight —
-   don't propose options that contradict accepted ADRs without explicitly noting the conflict.
+2. Discover past decisions via `git tag -l "adr/*"`. If the project already decided on an ORM,
+   a new "which database client?" decision must account for that.
+3. Read relevant ADRs via `git log <tag> --format="%B" -1` if they relate to the current topic.
+   Past decisions carry weight — don't propose options that contradict accepted ADRs without
+   explicitly noting the conflict.
 4. Read `GOAL.md` — every option must be evaluated against the project's actual goal.
 
 ### 2. Scope the Decision
 
 With the project context loaded, identify:
 - Decision category (database, framework, pattern, library, infra, etc.)
-- Non-negotiable constraints from ARCHITECTURE.md and existing ADRs
+- Non-negotiable constraints from ARCHITECTURE.md and existing ADR tags/commits
 - How past decisions narrow the viable options — some choices may already be ruled out
 
 ### 3. Analyze the Codebase

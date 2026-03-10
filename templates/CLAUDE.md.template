@@ -10,7 +10,7 @@ Read in this order before any coding task:
 1. **GOAL.md** — Single project goal, success criteria, out-of-scope
 2. **ROADMAP.md** — Now / Next / Later milestones
 3. **ARCHITECTURE.md** — Tech stack, module structure, import rules, constraints
-4. **docs/adr/** — Architecture Decision Records
+4. **ADR history** — `git tag -l "adr/*"` + `git log <tag> --format="%B" -1`
 
 ## Rules
 

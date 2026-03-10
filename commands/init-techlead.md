@@ -41,11 +41,7 @@ After the user responds, create all files at once:
 3. **ARCHITECTURE.md** — Fill from `templates/ARCHITECTURE.md.template` with the tech stack.
    Keep the default module structure and import rules.
 
-4. **docs/adr/** directory — Create it.
-
-5. **docs/adr/000-index.md** — Copy from `templates/adr-index-template.md`.
-
-6. **CLAUDE.md** — If it exists, append the content from `templates/CLAUDE.md.template`.
+4. **CLAUDE.md** — If it exists, append the content from `templates/CLAUDE.md.template`.
    If not, create it from the template.
 
 ## Step 4: Confirm
@@ -57,9 +53,10 @@ Techlead initialized:
   ✓ GOAL.md
   ✓ ROADMAP.md
   ✓ ARCHITECTURE.md
-  ✓ docs/adr/000-index.md
   ✓ CLAUDE.md
 
-Start coding — alignment checks are now active.
+ADRs are stored as git commits with adr/ tags.
 Use /propose-architecture for architectural decisions.
+
+Start coding — alignment checks are now active.
 ```

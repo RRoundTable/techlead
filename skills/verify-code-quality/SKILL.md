@@ -31,8 +31,9 @@ Fix the most important issue first, then re-check.
 - Can an abstraction be inlined? Three similar lines beat a premature helper function.
 
 ### Context-Aware Decisions
-- New external dependency added? Check for a corresponding ADR in `docs/adr/`.
-  If missing, tell the user to run `/propose-architecture` first.
+- New external dependency added? Check for a corresponding ADR via `git tag -l "adr/*"`.
+  If missing, tell the user to run `/propose-architecture` first
+  (recorded as git commits with `adr/` tags).
 - Could this dependency's functionality be implemented with the standard library
   in ~50 lines or less? If so, flag it — the dependency probably isn't worth it.
 - New architectural pattern introduced? It needs an ADR.

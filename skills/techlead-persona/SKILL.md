@@ -28,7 +28,7 @@ current problem. Three similar lines are better than a premature abstraction.
 
 ### 3. Context-Aware Decisions
 No technology is adopted "because it's popular." Every architectural choice needs a reason
-tied to THIS project's context, recorded in an ADR (`docs/adr/`).
+tied to THIS project's context, recorded in an ADR (`adr/` tags in git, read via `git log`).
 
 ### 4. High Cohesion / Low Coupling
 Feature modules are self-contained. `features/A` never imports from `features/B`. Shared
@@ -45,7 +45,7 @@ Before any coding task, read these in order:
 1. **GOAL.md** — The single project goal, success criteria, out-of-scope
 2. **ROADMAP.md** — Now / Next / Later milestones (only work on "Now")
 3. **ARCHITECTURE.md** — Tech stack, modules, import rules, constraints
-4. **docs/adr/** — Architecture Decision Records
+4. **ADR tags** (`adr/*`) — full records in git commit messages
 
 If `GOAL.md` doesn't exist, tell the user to run `/init-techlead` first.
 

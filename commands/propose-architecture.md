@@ -10,7 +10,7 @@ allowed-tools: Read, Write, Edit, Glob, Grep, Bash, Agent, WebSearch, WebFetch
 # /propose-architecture
 
 A structured workflow for architectural decisions: gather context, research options, propose
-a recommendation, and record the decision in an ADR.
+a recommendation, and record the decision as a git-based ADR.
 
 ## Usage
 
@@ -22,8 +22,8 @@ Example: `/propose-architecture "Database selection for user data"`
 
 ## Step 1: Gather Context
 
-1. Read `GOAL.md`, `ARCHITECTURE.md`, and `docs/adr/000-index.md`.
-2. Scan existing ADRs for related decisions.
+1. Read `GOAL.md` and `ARCHITECTURE.md`.
+2. List ADR tags (`git tag -l "adr/*"`); read relevant ones via `git log <tag> --format="%B" -1`.
 3. Briefly summarize the relevant context to the user — keep it to 3-5 lines max.
 
 ## Step 2: Research Trade-offs
@@ -46,15 +46,19 @@ Be explicit about what trade-offs are being accepted. Then ask:
 
 Once approved:
 
-1. Read `docs/adr/000-index.md` to determine the next ADR number.
-2. Create `docs/adr/NNN-[slug].md` from `templates/adr-template.md`.
-   Fill in: Status (Accepted), Context, Options Considered, Decision, Consequences.
-3. Add a row to `docs/adr/000-index.md`.
-4. If the decision affects `ARCHITECTURE.md` (new stack entry, new pattern, new constraint),
-   update it.
+1. Determine next ADR number: count existing tags via `git tag -l "adr/*"`.
+2. Derive slug from title (lowercase, hyphens).
+3. Save current branch: `starting_branch=$(git branch --show-current)`
+4. `git checkout -b adr/NNN-slug`
+5. Update `ARCHITECTURE.md` if the decision affects Tech Stack, Key Patterns, or Constraints.
+6. `git add ARCHITECTURE.md` (or use `git commit --allow-empty` if no ARCHITECTURE.md changes).
+7. `git commit` with ADR template as message (read `templates/adr-template.md` for format).
+8. `git checkout $starting_branch`
+9. `git merge --no-ff adr/NNN-slug -m "Merge ADR-NNN: Title"`
+10. `git tag adr/NNN-slug adr/NNN-slug` — tag the branch tip for permanent discovery.
+11. `git branch -d adr/NNN-slug` — delete the branch (tag preserves it).
 
 ## After Implementation
 
 When the decision is implemented in code:
-1. Update the ADR status from "Accepted" to "Implemented".
-2. Update `ARCHITECTURE.md` if needed.
+1. Update `ARCHITECTURE.md` if needed.

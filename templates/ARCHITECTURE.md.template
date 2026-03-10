@@ -32,7 +32,7 @@ src/
 
 ## Key Patterns
 
-<!-- Recurring patterns used in this project. Each should reference an ADR. -->
+<!-- Recurring patterns used in this project. Each should reference an ADR tag. -->
 
 (None yet — patterns are added via `/propose-architecture`)
 
