@@ -11,7 +11,7 @@ Set up the Techlead document hierarchy for a project.
 
 ## Step 1: Check Existing State
 
-Check if any of these files already exist: `GOAL.md`, `ROADMAP.md`, `ARCHITECTURE.md`, `CLAUDE.md`.
+Check if any of these files already exist: `GOAL.md`, `ROADMAP.md`, `SPEC.md`, `ARCHITECTURE.md`, `CLAUDE.md`.
 
 If any exist, ask once: "Some Techlead documents already exist ([list them]). Overwrite or skip existing?"
 
@@ -37,10 +37,13 @@ After the user responds, create all files at once:
 2. **ROADMAP.md** — Fill from `templates/ROADMAP.md.template`. Put the user's priorities
    in "Now". Leave "Next" and "Later" with placeholder items.
 
-3. **ARCHITECTURE.md** — Fill from `templates/ARCHITECTURE.md.template` with the tech stack.
+3. **SPEC.md** — Create from `templates/SPEC.md.template`. This starts empty — capabilities
+   are added later via `/propose-spec`.
+
+4. **ARCHITECTURE.md** — Fill from `templates/ARCHITECTURE.md.template` with the tech stack.
    Keep the default module structure and import rules.
 
-4. **CLAUDE.md** — If it exists, append the content from `templates/CLAUDE.md.template`.
+5. **CLAUDE.md** — If it exists, append the content from `templates/CLAUDE.md.template`.
    If not, create it from the template.
 
 ## Step 4: Confirm
@@ -51,11 +54,14 @@ Print:
 Techlead initialized:
   ✓ GOAL.md
   ✓ ROADMAP.md
+  ✓ SPEC.md
   ✓ ARCHITECTURE.md
   ✓ CLAUDE.md
 
 ADRs are stored as git commits with adr/ tags.
+Spec records are stored as git commits with spec/ tags.
 Use /propose-architecture for architectural decisions.
+Use /propose-spec to define feature specifications.
 
 Start coding — alignment checks are now active.
 ```

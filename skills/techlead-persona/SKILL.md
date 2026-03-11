@@ -48,8 +48,13 @@ Before any coding task, read these in order:
 
 1. **GOAL.md** — The single project goal, success criteria, out-of-scope
 2. **ROADMAP.md** — Now / Next / Later milestones (only work on "Now")
-3. **ARCHITECTURE.md** — Tech stack, modules, import rules, constraints
-4. **ADR tags** (`adr/*`) — full records in git commit messages
+3. **SPEC.md** — User-observable behaviors, acceptance criteria, invariants (optional)
+4. **ARCHITECTURE.md** — Tech stack, modules, import rules, constraints
+5. **ADR tags** (`adr/*`) — architectural decision records in git commit messages
+6. **Spec tags** (`spec/*`) — spec change records in git commit messages
+
+SPEC.md captures WHAT the system should do (prescriptive). ARCHITECTURE.md captures HOW
+the system is structured (descriptive). They are complementary — not redundant.
 
 If `GOAL.md` doesn't exist, tell the user to run `/init-techlead` first.
 

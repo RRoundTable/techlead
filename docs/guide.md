@@ -24,7 +24,7 @@ You'll be asked five questions in a single prompt:
 4. **Current priorities** — 1-3 items to work on right now
 5. **Tech stack** — Language, framework, database, testing tool
 
-Techlead generates `GOAL.md`, `ROADMAP.md`, `ARCHITECTURE.md`, and updates `CLAUDE.md`.
+Techlead generates `GOAL.md`, `ROADMAP.md`, `SPEC.md`, `ARCHITECTURE.md`, and updates `CLAUDE.md`.
 
 ### 3. Start Coding
 
@@ -48,6 +48,26 @@ When you ask Claude to write or modify code, Techlead automatically:
 4. If aligned — proceeds silently (no announcement)
 5. If misaligned — stops and asks you to clarify or reprioritize
 
+### Defining Feature Specs
+
+Before building a feature, define what it should do from the user's perspective:
+
+```
+/propose-spec "User authentication"
+```
+
+This runs a 3-step workflow:
+1. **Context** — Reads your goal, roadmap, and existing specs
+2. **Define Behaviors** — Writes Given/When/Then outcomes, acceptance criteria, and invariants
+3. **Record** — Creates a git-based spec record (branch, commit, tag) and updates SPEC.md
+
+Specs describe **what a user can observe**, not implementation details:
+
+**Good:** "Given an expired token, when it is used, then the user is prompted to re-authenticate"
+**Bad:** "The /api/auth/refresh endpoint returns 401"
+
+Spec records are stored as git commit messages on `spec/` branches, tagged for permanent discovery. Use `/read-history spec` to browse them.
+
 ### Making Architectural Decisions
 
 When you need to choose a technology, pattern, or approach:
@@ -67,12 +87,15 @@ ADRs are stored as git commit messages on dedicated `adr/` branches, tagged for 
 ### Reviewing Past Decisions
 
 ```
-/read-history              # See all decisions (via git tags)
-/read-history auth         # Find decisions about authentication
+/read-history              # See all records (ADRs + specs)
+/read-history adr          # List all ADRs
+/read-history spec         # List all spec records
+/read-history auth         # Search all records for "authentication"
 /read-history 2            # Read ADR #2 in detail
+/read-history spec 1       # Read spec record #1 in detail
 ```
 
-Behind the scenes, `/read-history` uses `git tag -l "adr/*"` to discover ADRs and `git log <tag> --format="%B" -1` to read them.
+Behind the scenes, `/read-history` uses `git tag -l "adr/*"` and `git tag -l "spec/*"` to discover records and `git log <tag> --format="%B" -1` to read them.
 
 ### Before Committing
 
@@ -103,6 +126,12 @@ Move items between sections as priorities shift:
 - **Later** — Ideas with no commitment
 
 When you finish a Now item, check the box and promote something from Next.
+
+### Updating SPEC.md
+
+This file evolves through `/propose-spec`. Each capability is defined as user-observable behaviors with Given/When/Then format, acceptance criteria, and invariants. SPEC.md captures WHAT the system should do — it's the behavioral contract.
+
+You can edit SPEC.md directly for minor adjustments, but use `/propose-spec` for new capabilities or significant changes so they're recorded as spec records.
 
 ### Updating ARCHITECTURE.md
 

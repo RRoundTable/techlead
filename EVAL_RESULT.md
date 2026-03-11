@@ -1,6 +1,6 @@
 # Evaluation Results
 
-**Date:** 2026-03-10
+**Date:** 2026-03-11
 **Model:** Claude Opus 4.6
 
 ---
@@ -12,8 +12,12 @@
 | **techlead-persona** | 19/20 (95%) | 11/11 (100%) | 0/11 (0%) | +100% |
 | **check-alignment** | 20/20 (100%) | 9/9 (100%) | 2/9 (22%) | +78% |
 | **verify-code-quality** | 20/20 (100%) | 12/12 (100%) | 0/12 (0%) | +100% |
-| **architecture-researcher** | 20/20 (100%) | 12/12 (100%) | 3/12 (25%) | +75% |
+| **propose-architecture** | 20/20 (100%) | 12/12 (100%) | 3/12 (25%) | +75% |
+| **propose-spec** | pending (24 cases) | pending (30 assertions) | pending | pending |
+| **read-history** | pending | — | — | — |
 | **Total** | **79/80 (99%)** | **44/44 (100%)** | **5/44 (11%)** | **+89%** |
+
+*propose-spec and read-history evals pending first run. Totals reflect last completed run.*
 
 ---
 
@@ -108,7 +112,9 @@
 
 **Description change:** Added explicit sub-check trigger patterns: "when the user asks to scan for or check specific code violations — such as TODO/FIXME/HACK markers, cross-feature imports, module coupling, undocumented dependencies missing ADRs, empty catch blocks." Added the closing directive about single sub-checks.
 
-### architecture-researcher — 20/20 (100%)
+### propose-architecture — 20/20 (100%)
+
+*Previously named architecture-researcher.*
 
 | Result | Type | Query |
 |--------|------|-------|
@@ -134,6 +140,28 @@
 | PASS | no-trigger | Help me debug why the JWT token verification fails |
 
 **Analysis:** Perfect 100%. The description effectively distinguishes "compare/evaluate/choose technology" queries from implementation, debugging, and review queries. The phrase "compare A vs B" is a strong discriminator.
+
+### propose-spec — pending (24 cases: 12 trigger + 12 no-trigger)
+
+*Evals not yet run. Trigger eval set includes:*
+
+**Hard boundary true cases (should trigger):**
+- Explicit command: `/propose-spec "User authentication"`
+- Behavioral questions: "What should the login feature do?", "How should team invitations behave?"
+- Acceptance criteria: "Define acceptance criteria for task deletion"
+- Pre-implementation planning: "Before I start coding the invite system, let me define the requirements"
+- Spec update: "The auth spec is missing the forgot-password flow. Let's add that capability."
+
+**Hard boundary false cases (should NOT trigger):**
+- Architecture questions: "Which database should I use?", "Compare Redis vs Memcached" → propose-architecture
+- Implementation details disguised as spec: "What HTTP status code should login return on failure?"
+- Reading existing spec: "Show me the current authentication spec in SPEC.md" → file read
+- Testing, not defining: "Write integration tests for the authentication flow"
+- Architecture disguised as behavior: "How should the database handle concurrent writes?" → propose-architecture
+
+### read-history — pending
+
+*Description updated to support dual namespace (adr/* + spec/*). Trigger evals not yet created.*
 
 ---
 
@@ -240,7 +268,24 @@
 
 **Key finding:** Baseline Claude sees "no new npm packages" and approves. The skill recognizes that new architectural *patterns* (not just dependencies) require ADRs.
 
-### architecture-researcher
+### propose-spec — pending (6 cases, 30 assertions)
+
+*Evals not yet run. Behavioral eval set tests 6 discriminating behaviors:*
+
+| Case | Tests | Key assertion |
+|------|-------|---------------|
+| `outcome-not-output` | User provides API paths, HTTP methods, DB schema — skill must reframe as user-observable outcomes | Spec does NOT include /api/... paths, POST/GET/PUT, status codes, or table names |
+| `existing-spec-update` | Auth spec exists, user wants to add OAuth — skill must treat as update | Reads SPEC.md first; preserves existing behaviors; uses change type 'changed' not 'added' |
+| `out-of-scope-flagged` | User requests analytics spec (out of scope in GOAL.md) with "really valuable" argument | Does NOT write behaviors before addressing scope conflict; not swayed by value argument |
+| `invariant-detection` | Team workspaces with roles — skill must identify cross-cutting invariants | Identifies access control invariant; invariants listed separately from Given/When/Then behaviors |
+| `happy-path-not-enough` | User gives only sunny-day scenario, says "that's basically it" | Does NOT accept happy path as complete; proposes error and edge case scenarios |
+| `spec-architecture-boundary` | User mixes Elasticsearch, class names, table names into spec request | Spec does NOT include technology choices; explicitly redirects architecture concerns to /propose-architecture |
+
+*Expected: high behavioral delta. Without the skill, baseline Claude accepts implementation details as valid spec content, skips GOAL.md scope checks, and doesn't enforce Given/When/Then format.*
+
+### propose-architecture
+
+*Previously named architecture-researcher.*
 
 #### contradicts-existing-adr — with_skill: 4/4 | without_skill: 0/4
 
@@ -287,7 +332,7 @@ After redesigning evals to test behavioral gaps rather than obvious anti-pattern
 - **check-alignment:** +78% (unchanged). Already well-designed.
 
 ### 2. Testing absence is more discriminating than testing presence
-The most effective assertions test what the skill *prevents*: "does NOT approve", "does NOT enumerate all", "does NOT start implementing." Baseline Claude's default is to be helpful and say yes — skills that override this create the largest behavioral gaps.
+The most effective assertions test what the skill *prevents*: "does NOT approve", "does NOT enumerate all", "does NOT start implementing." Baseline Claude's default is to be helpful and say yes — skills that override this create the largest behavioral gaps. The propose-spec eval set follows this pattern: "does NOT include API paths", "does NOT write behaviors before addressing scope conflict", "does NOT accept happy path as complete."
 
 ### 3. Subtle violations beat obvious anti-patterns
 Previous evals used FIXME markers, cross-feature imports, and premature EventEmitter — patterns baseline Claude already catches. The redesigned evals use code that *looks good* (clean options object, well-structured Repository pattern, popular logging setup) but violates skill-specific principles. This is where skill value emerges.
@@ -309,6 +354,9 @@ The single remaining trigger failure ("What's the simplest way to implement this
 ## Recommendations
 
 1. **All skills:** Behavioral evals are now well-calibrated. Maintain current eval set as regression tests.
-2. **architecture-researcher:** 3 non-discriminating assertions could be strengthened by removing hints from prompts (e.g., not stating the tech stack, using subtler scale mismatches). Low priority at +75% delta.
-3. **Trigger evals:** No changes needed. 99% accuracy across all skills.
-4. **Next step:** Run evals periodically to detect regressions as skill prompts evolve.
+2. **propose-architecture:** 3 non-discriminating assertions could be strengthened by removing hints from prompts (e.g., not stating the tech stack, using subtler scale mismatches). Low priority at +75% delta.
+3. **Trigger evals:** No changes needed for existing skills. 99% accuracy across all skills.
+4. **propose-spec:** Run `/eval-trigger propose-spec` and `/eval-behavior propose-spec` to establish baseline. Target: 90%+ trigger accuracy, 100% behavioral pass rate with-skill.
+5. **read-history:** Run `/eval-trigger read-history` after creating trigger evals for the updated dual-namespace description.
+6. **Regression check:** Re-run `/eval-trigger` on check-alignment, verify-code-quality, and read-history to verify no regression from description changes that added SPEC.md references.
+7. **Next step:** Run evals periodically to detect regressions as skill prompts evolve.

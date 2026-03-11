@@ -22,6 +22,7 @@
     "./skills/verify-code-quality",
     "./skills/init-techlead",
     "./skills/propose-architecture",
+    "./skills/propose-spec",
     "./skills/read-history"
   ],
   "hooks": "./hooks/hooks.json"

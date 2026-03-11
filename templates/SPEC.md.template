@@ -1,0 +1,14 @@
+# Spec
+
+## Capabilities
+
+<!-- Each capability describes a user-observable behavior, not an implementation detail. -->
+<!-- Use /propose-spec to add capabilities with Given/When/Then behaviors. -->
+
+(No capabilities defined yet — use `/propose-spec` to define your first feature specification.)
+
+## Invariants
+
+<!-- System-wide rules that must always hold, regardless of which capability is active. -->
+
+(No invariants defined yet.)

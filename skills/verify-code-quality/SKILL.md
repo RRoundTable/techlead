@@ -1,14 +1,15 @@
 ---
 name: verify-code-quality
 description: >
-  Checks code against Techlead's 5 core philosophies before committing or completing a task.
-  Trigger this skill when the user asks to commit, push, merge, or finalize code, when a
-  coding task is finishing up, or when reviewing code for quality. Also activate when the user
-  asks to scan for or check specific code violations — such as TODO/FIXME/HACK markers,
+  Checks code against Techlead's 5 core philosophies and SPEC.md conformance before committing
+  or completing a task. Trigger this skill when the user asks to commit, push, merge, or finalize
+  code, when a coding task is finishing up, or when reviewing code for quality. Also activate when
+  the user asks to scan for or check specific code violations — such as TODO/FIXME/HACK markers,
   cross-feature imports (features/A importing features/B), module coupling, undocumented
-  dependencies missing ADRs, empty catch blocks, or any individual quality rule. Even if the
-  user asks about just one specific sub-check (e.g., "are there any TODOs left?", "check for
-  coupling between modules", "any undocumented deps?"), this skill covers it.
+  dependencies missing ADRs, spec drift, empty catch blocks, or any individual quality rule. Even
+  if the user asks about just one specific sub-check (e.g., "are there any TODOs left?", "check
+  for coupling between modules", "any undocumented deps?", "does this match the spec?"), this
+  skill covers it.
 ---
 
 # Verify Code Quality
@@ -54,6 +55,15 @@ Fix the most important issue first, then re-check.
   > deferred problems don't ship.
 - Empty catch blocks or swallowed errors → flag it.
 - Missing input validation at system boundaries (user input, API responses) → flag it.
+
+### Spec Conformance
+- If `SPEC.md` exists, check: does this code implement behavior not described in SPEC.md?
+  If so, flag as potential spec drift:
+  > **Spec drift**: `[file]:[line]` implements behavior not in SPEC.md.
+  > Either add the behavior to the spec via `/propose-spec` or remove the code.
+- Does this code contradict any specified behaviors or invariants in SPEC.md?
+  If so, flag the contradiction.
+- This check is advisory — SPEC.md is optional and the user may choose to proceed.
 
 ### Complexity Cross-Check
 - Does the diff touch more than 3 files for a simple task? Something might be wrong.

@@ -40,11 +40,12 @@ This creates:
 your-project/
 ├── GOAL.md              # Single project goal + success criteria
 ├── ROADMAP.md           # Now / Next / Later milestones
+├── SPEC.md              # User-observable behaviors + acceptance criteria
 ├── ARCHITECTURE.md      # Tech stack, module structure, import rules
 └── CLAUDE.md            # Updated with Techlead rules
 ```
 
-ADRs are stored as git commits with `adr/` tags — no file bloat. Discover them via `git tag -l "adr/*"` and read via `git log <tag> --format="%B" -1`.
+ADRs are stored as git commits with `adr/` tags — no file bloat. Discover them via `git tag -l "adr/*"` and read via `git log <tag> --format="%B" -1`. Spec records use the same pattern with `spec/` tags.
 
 From that point on, Techlead is active. It checks alignment before code changes and verifies quality before commits.
 
@@ -52,18 +53,18 @@ From that point on, Techlead is active. It checks alignment before code changes 
 
 ```mermaid
 flowchart TD
-    A["/init-techlead"] --> B["GOAL.md + ROADMAP.md + ARCHITECTURE.md"]
+    A["/init-techlead"] --> B["GOAL.md + ROADMAP.md + SPEC.md + ARCHITECTURE.md"]
     B --> C{"User requests code change"}
 
     C --> D["PreToolUse Hook fires"]
-    D --> E{"check-alignment\nMatches GOAL.md?\nIn ROADMAP Now?"}
+    D --> E{"check-alignment\nMatches GOAL.md?\nIn ROADMAP Now?\nConforms to SPEC.md?"}
 
     E -- Yes --> F["Write / Edit code"]
     E -- No --> G["Stop — ask user to\nclarify or reprioritize"]
     G --> C
 
     F --> H{"User commits"}
-    H --> I["verify-code-quality\nChecks all 5 philosophies"]
+    H --> I["verify-code-quality\nChecks all 5 philosophies\n+ spec conformance"]
     I -- Pass --> J["Commit"]
     I -- Violation --> K["Report file:line + fix\nResolve before commit"]
     K --> F
@@ -73,6 +74,11 @@ flowchart TD
     M --> N["Recommend option\nwith project-specific rationale"]
     N --> O["Record ADR\n(git branch + commit + tag)"]
     O --> C
+
+    C --> P{"/propose-spec"}
+    P --> Q["Define Given/When/Then\nbehaviors + acceptance criteria"]
+    Q --> R["Record spec change\n(git branch + commit + tag)"]
+    R --> C
 ```
 
 ## How It Works
@@ -82,15 +88,16 @@ flowchart TD
 | Skill | When | What |
 |-------|------|------|
 | **techlead-persona** | Always active | Sets the pragmatic senior developer tone and philosophy |
-| **check-alignment** | Before writing/editing code | Verifies the task matches GOAL.md and is in ROADMAP.md's "Now" section |
-| **verify-code-quality** | Before commits | Checks code against all 5 philosophies |
-| **init-techlead** | `/init-techlead` | Bootstrap GOAL.md, ROADMAP.md, ARCHITECTURE.md, CLAUDE.md |
+| **check-alignment** | Before writing/editing code | Verifies the task matches GOAL.md, ROADMAP.md, and SPEC.md |
+| **verify-code-quality** | Before commits | Checks code against all 5 philosophies + spec conformance |
+| **init-techlead** | `/init-techlead` | Bootstrap GOAL.md, ROADMAP.md, SPEC.md, ARCHITECTURE.md, CLAUDE.md |
 | **propose-architecture** | `/propose-architecture` or "compare A vs B" | Research, trade-off matrix, recommendation, and ADR recording |
-| **read-history** | `/read-history` | Search and display ADRs from git tags |
+| **propose-spec** | `/propose-spec` or "what should X do?" | Define feature specs as user-observable Given/When/Then behaviors |
+| **read-history** | `/read-history` | Search and display ADRs and spec records from git tags |
 
 ### Hooks
 
-A `PreToolUse` hook fires before every `Write` or `Edit` tool call, prompting Claude to verify alignment with GOAL.md and ROADMAP.md before making changes.
+A `PreToolUse` hook fires before every `Write` or `Edit` tool call, prompting Claude to verify alignment with GOAL.md, ROADMAP.md, and SPEC.md before making changes.
 
 ## Evaluation (Developer)
 
@@ -117,10 +124,12 @@ Techlead includes an eval framework for plugin developers to verify that skills 
 Techlead uses a layered document system, read in priority order:
 
 ```
-GOAL.md          →  What we're building and what's out of scope
-ROADMAP.md       →  What to work on now vs. later
-ARCHITECTURE.md  →  How the system is structured
-ADR tags (adr/*) →  Why specific decisions were made (git commit messages)
+GOAL.md          →  WHY   — What we're building and what's out of scope
+ROADMAP.md       →  WHEN  — What to work on now vs. later
+SPEC.md          →  WHAT  — User-observable behaviors and acceptance criteria
+ARCHITECTURE.md  →  HOW   — How the system is structured
+ADR tags (adr/*) →  Architectural decision records (git commit messages)
+Spec tags (spec/*) → Spec change records (git commit messages)
 ```
 
 The key rule: **only items in ROADMAP.md's "Now" section get worked on.** Everything else waits.
@@ -146,8 +155,11 @@ techlead/
 │   ├── propose-architecture/
 │   │   ├── SKILL.md                 # Architectural decisions + trade-off research
 │   │   └── evals/                   # Evals + fixtures (GOAL.md, ROADMAP.md, ARCHITECTURE.md)
+│   ├── propose-spec/
+│   │   ├── SKILL.md                 # Feature spec definition + behavioral outcomes
+│   │   └── evals/                   # Evals + fixtures (GOAL.md, ROADMAP.md, SPEC.md)
 │   └── read-history/
-│       └── SKILL.md                 # ADR lookup
+│       └── SKILL.md                 # ADR + spec record lookup
 ├── .claude/
 │   └── commands/
 │       ├── eval-trigger.md          # Trigger eval runner (developer)
@@ -161,8 +173,10 @@ techlead/
     ├── CLAUDE.md.template
     ├── GOAL.md.template
     ├── ROADMAP.md.template
+    ├── SPEC.md.template
     ├── ARCHITECTURE.md.template
-    └── adr-template.md
+    ├── adr-template.md
+    └── spec-record-template.md
 ```
 
 ## License

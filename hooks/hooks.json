@@ -6,7 +6,7 @@
       "hooks": [
         {
           "type": "prompt",
-          "prompt": "Before making this code change, verify alignment with GOAL.md and ROADMAP.md 'Now' milestone. If not yet checked in this conversation, read GOAL.md and ROADMAP.md first and confirm the current task is aligned before proceeding."
+          "prompt": "Before making this code change, verify alignment with GOAL.md, ROADMAP.md 'Now' milestone, and SPEC.md (if it exists). If not yet checked in this conversation, read GOAL.md, ROADMAP.md, and SPEC.md first and confirm the current task is aligned before proceeding."
         }
       ]
     }

@@ -25,7 +25,7 @@ Run evals after changing a skill description:
 ```
 skills/           # All skills (SKILL.md + evals/)
 .claude/commands/ # Developer-only commands (eval runners)
-templates/        # Templates for GOAL.md, ROADMAP.md, ARCHITECTURE.md, CLAUDE.md, ADRs
+templates/        # Templates for GOAL.md, ROADMAP.md, SPEC.md, ARCHITECTURE.md, CLAUDE.md, ADRs, spec records
 hooks/            # hooks.json — PreToolUse hook for alignment checks
 docs/             # philosophy.md (5 philosophies reference), guide.md (user guide)
 evals/            # Behavioral eval output (transcripts, grading)
@@ -41,15 +41,18 @@ autology/         # Separate plugin (git submodule) — knowledge management sys
 | Skill | Purpose |
 |-------|---------|
 | `techlead-persona` | Core persona — pragmatic tone, 5 philosophies |
-| `check-alignment` | Gate before code changes — verifies GOAL.md/ROADMAP.md alignment |
-| `verify-code-quality` | Pre-commit check against all 5 philosophies |
-| `init-techlead` | Bootstrap GOAL.md, ROADMAP.md, ARCHITECTURE.md, CLAUDE.md |
+| `check-alignment` | Gate before code changes — verifies GOAL.md/ROADMAP.md/SPEC.md alignment |
+| `verify-code-quality` | Pre-commit check against all 5 philosophies + spec conformance |
+| `init-techlead` | Bootstrap GOAL.md, ROADMAP.md, SPEC.md, ARCHITECTURE.md, CLAUDE.md |
 | `propose-architecture` | Architectural decisions: research, trade-off matrix, recommendation, ADR |
-| `read-history` | Search and display ADRs from git tags |
+| `propose-spec` | Define/update feature specs as user-observable behaviors with Given/When/Then |
+| `read-history` | Search and display ADRs and spec records from git tags |
 
-**Hook** (`hooks/hooks.json`): A `PreToolUse` hook on `Write|Edit` that prompts Claude to verify GOAL.md/ROADMAP.md alignment before code changes.
+**Hook** (`hooks/hooks.json`): A `PreToolUse` hook on `Write|Edit` that prompts Claude to verify GOAL.md/ROADMAP.md/SPEC.md alignment before code changes.
 
 **ADRs** are stored as git commits on `adr/` branches, tagged with `adr/NNN-slug`. No ADR files exist — discovery is via `git tag -l "adr/*"` and reading via `git log <tag> --format="%B" -1`.
+
+**Spec records** are stored as git commits on `spec/` branches, tagged with `spec/NNN-slug`. Same pattern as ADRs but for behavioral spec changes. Discovery via `git tag -l "spec/*"`.
 
 ## Eval System
 
@@ -78,4 +81,4 @@ When modifying a skill description, the primary constraint is trigger accuracy �
 
 ## The docs/ Directory
 
-`docs/GOAL.md`, `docs/ROADMAP.md`, and `docs/ARCHITECTURE.md` are **example/fixture files** for this plugin's own development context (a hypothetical task management API). They are not the plugin's own governance docs. The `templates/` directory contains the actual templates used by `/init-techlead` to generate these files in user projects.
+`docs/GOAL.md`, `docs/ROADMAP.md`, `docs/SPEC.md`, and `docs/ARCHITECTURE.md` are **example/fixture files** for this plugin's own development context (a hypothetical task management API). They are not the plugin's own governance docs. The `templates/` directory contains the actual templates used by `/init-techlead` to generate these files in user projects.
