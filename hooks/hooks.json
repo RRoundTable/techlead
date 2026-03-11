@@ -1,14 +1,28 @@
 {
-  "hooks": [
-    {
-      "matcher": "Write|Edit",
-      "event": "PreToolUse",
-      "hooks": [
-        {
-          "type": "prompt",
-          "prompt": "Before making this code change, verify alignment with GOAL.md, ROADMAP.md 'Now' milestone, and SPEC.md (if it exists). If not yet checked in this conversation, read GOAL.md, ROADMAP.md, and SPEC.md first and confirm the current task is aligned before proceeding."
-        }
-      ]
-    }
-  ]
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "Before making this code change, verify alignment with GOAL.md, ROADMAP.md 'Now' milestone, and SPEC.md (if it exists). If not yet checked in this conversation, read GOAL.md, ROADMAP.md, and SPEC.md first and confirm the current task is aligned before proceeding."
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/scripts/session-start.sh\"",
+            "statusMessage": "Loading Techlead workflow..."
+          }
+        ],
+        "description": "Inject techlead-workflow skill content as trigger guidance"
+      }
+    ]
+  }
 }
