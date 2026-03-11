@@ -20,12 +20,9 @@
     "./skills/techlead-persona",
     "./skills/check-alignment",
     "./skills/verify-code-quality",
-    "./skills/architecture-researcher"
-  ],
-  "commands": [
-    "./commands/init-techlead.md",
-    "./commands/propose-architecture.md",
-    "./commands/read-history.md"
+    "./skills/init-techlead",
+    "./skills/propose-architecture",
+    "./skills/read-history"
   ],
   "hooks": "./hooks/hooks.json"
 }

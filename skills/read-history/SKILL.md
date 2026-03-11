@@ -4,7 +4,6 @@ description: >
   Search and display Architecture Decision Records (ADRs). Use when the user types /read-history,
   wants to look up past decisions, asks "why did we choose X?", or needs to review architectural
   history before making a new decision.
-allowed-tools: Read, Bash, Grep
 ---
 
 # /read-history

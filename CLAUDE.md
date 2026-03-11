@@ -23,8 +23,7 @@ Run evals after changing a skill description:
 ## Repository Structure
 
 ```
-skills/           # Auto-triggered skills (SKILL.md + evals/)
-commands/         # User-invoked slash commands (plugin-level)
+skills/           # All skills (SKILL.md + evals/)
 .claude/commands/ # Developer-only commands (eval runners)
 templates/        # Templates for GOAL.md, ROADMAP.md, ARCHITECTURE.md, CLAUDE.md, ADRs
 hooks/            # hooks.json — PreToolUse hook for alignment checks
@@ -35,7 +34,7 @@ autology/         # Separate plugin (git submodule) — knowledge management sys
 
 ## Architecture
 
-**Plugin manifest:** `.claude-plugin/plugin.json` registers skills, commands, and hooks with the Claude Code plugin system. `.claude-plugin/marketplace.json` is the marketplace listing metadata.
+**Plugin manifest:** `.claude-plugin/plugin.json` registers skills and hooks with the Claude Code plugin system. `.claude-plugin/marketplace.json` is the marketplace listing metadata.
 
 **Skills** (`skills/<name>/SKILL.md`) have YAML frontmatter with `name` and `description`. The description is what Claude sees to decide whether to invoke the skill — it is the single most important text for trigger accuracy. Each skill has `evals/trigger_evals.json` and `evals/evals.json` for testing.
 
@@ -44,15 +43,9 @@ autology/         # Separate plugin (git submodule) — knowledge management sys
 | `techlead-persona` | Core persona — pragmatic tone, 5 philosophies |
 | `check-alignment` | Gate before code changes — verifies GOAL.md/ROADMAP.md alignment |
 | `verify-code-quality` | Pre-commit check against all 5 philosophies |
-| `architecture-researcher` | Web research + trade-off matrices for `/propose-architecture` |
-
-**Commands** (`commands/<name>.md`) have YAML frontmatter with `name`, `description`, and `allowed-tools`. These are user-invocable via `/<name>`.
-
-| Command | Purpose |
-|---------|---------|
-| `/init-techlead` | Bootstrap GOAL.md, ROADMAP.md, ARCHITECTURE.md, CLAUDE.md |
-| `/propose-architecture` | 4-step architectural decision workflow with ADR recording |
-| `/read-history` | Search and display ADRs from git tags |
+| `init-techlead` | Bootstrap GOAL.md, ROADMAP.md, ARCHITECTURE.md, CLAUDE.md |
+| `propose-architecture` | Architectural decisions: research, trade-off matrix, recommendation, ADR |
+| `read-history` | Search and display ADRs from git tags |
 
 **Hook** (`hooks/hooks.json`): A `PreToolUse` hook on `Write|Edit` that prompts Claude to verify GOAL.md/ROADMAP.md alignment before code changes.
 
@@ -74,7 +67,7 @@ Key eval details:
 
 ## Current Eval Results
 
-99% trigger accuracy across all 4 skills (79/80). 100% behavioral pass rate with-skill (44/44) vs 11% without-skill. See `EVAL_RESULT.md` for full breakdown.
+99% trigger accuracy across all skills. 100% behavioral pass rate with-skill vs 11% without-skill. See `EVAL_RESULT.md` for full breakdown.
 
 ## Working on Skills
 

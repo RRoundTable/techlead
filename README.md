@@ -48,35 +48,6 @@ ADRs are stored as git commits with `adr/` tags — no file bloat. Discover them
 
 From that point on, Techlead is active. It checks alignment before code changes and verifies quality before commits.
 
-## Commands
-
-### `/init-techlead`
-
-Bootstrap a project with Techlead's document hierarchy. Asks for your goal, priorities, and tech stack in a single prompt, then generates all project documents.
-
-### `/propose-architecture <topic>`
-
-Structured workflow for architectural decisions:
-
-1. Gathers project context (goal, stack, existing ADR tags)
-2. Researches trade-offs via the architecture-researcher skill
-3. Recommends one option with rationale specific to your project
-4. Records the decision as a git-based ADR (branch, commit, tag)
-
-```
-/propose-architecture "State management approach"
-```
-
-### `/read-history [number|keyword]`
-
-Search and display Architecture Decision Records from git tags.
-
-```
-/read-history              # List all ADRs
-/read-history 3            # Show ADR #3
-/read-history database     # Search ADRs for "database"
-```
-
 ## Workflow
 
 ```mermaid
@@ -98,7 +69,7 @@ flowchart TD
     K --> F
 
     C --> L{"/propose-architecture"}
-    L --> M["architecture-researcher\nResearch + trade-offs"]
+    L --> M["Research + trade-off matrix"]
     M --> N["Recommend option\nwith project-specific rationale"]
     N --> O["Record ADR\n(git branch + commit + tag)"]
     O --> C
@@ -106,14 +77,16 @@ flowchart TD
 
 ## How It Works
 
-### Skills (automatic)
+### Skills
 
 | Skill | When | What |
 |-------|------|------|
 | **techlead-persona** | Always active | Sets the pragmatic senior developer tone and philosophy |
 | **check-alignment** | Before writing/editing code | Verifies the task matches GOAL.md and is in ROADMAP.md's "Now" section |
 | **verify-code-quality** | Before commits | Checks code against all 5 philosophies |
-| **architecture-researcher** | During `/propose-architecture` | Web research + codebase analysis for trade-off matrices |
+| **init-techlead** | `/init-techlead` | Bootstrap GOAL.md, ROADMAP.md, ARCHITECTURE.md, CLAUDE.md |
+| **propose-architecture** | `/propose-architecture` or "compare A vs B" | Research, trade-off matrix, recommendation, and ADR recording |
+| **read-history** | `/read-history` | Search and display ADRs from git tags |
 
 ### Hooks
 
@@ -168,17 +141,17 @@ techlead/
 │   ├── verify-code-quality/
 │   │   ├── SKILL.md                 # Code quality verification
 │   │   └── evals/                   # Evals + fixtures (GOAL.md, ROADMAP.md, ARCHITECTURE.md)
-│   └── architecture-researcher/
-│       ├── SKILL.md                 # Trade-off research
-│       └── evals/                   # Evals + fixtures (GOAL.md, ROADMAP.md, ARCHITECTURE.md)
+│   ├── init-techlead/
+│   │   └── SKILL.md                 # Project bootstrapping
+│   ├── propose-architecture/
+│   │   ├── SKILL.md                 # Architectural decisions + trade-off research
+│   │   └── evals/                   # Evals + fixtures (GOAL.md, ROADMAP.md, ARCHITECTURE.md)
+│   └── read-history/
+│       └── SKILL.md                 # ADR lookup
 ├── .claude/
 │   └── commands/
 │       ├── eval-trigger.md          # Trigger eval runner (developer)
 │       └── eval-behavior.md         # Behavioral eval runner (developer)
-├── commands/
-│   ├── init-techlead.md             # Project bootstrapping
-│   ├── propose-architecture.md      # Architectural decision workflow
-│   └── read-history.md              # ADR lookup
 ├── docs/
 │   ├── guide.md                     # User guide and workflow
 │   └── philosophy.md                # The 5 philosophies deep reference

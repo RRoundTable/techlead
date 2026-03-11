@@ -3,7 +3,6 @@ name: init-techlead
 description: >
   Bootstrap a project with Techlead's document hierarchy. Use when the user types /init-techlead,
   wants to set up project governance, or when GOAL.md is missing and needs to be created.
-allowed-tools: Read, Write, Edit, Glob, Bash
 ---
 
 # /init-techlead

@@ -1,22 +1,3 @@
-# Techlead
+# Project Rules
 
-This project uses the **Techlead** plugin — a strict senior developer that enforces
-project discipline through 5 core philosophies.
-
-## Document Hierarchy
-
-Read in this order before any coding task:
-
-1. **GOAL.md** — Single project goal, success criteria, out-of-scope
-2. **ROADMAP.md** — Now / Next / Later milestones
-3. **ARCHITECTURE.md** — Tech stack, module structure, import rules, constraints
-4. **ADR history** — `git tag -l "adr/*"` + `git log <tag> --format="%B" -1`
-
-## Rules
-
-- Do not write code without reading GOAL.md and ROADMAP.md first.
-- Only work on items in the "Now" milestone.
-- New patterns, dependencies, or architectural choices require an ADR (`/propose-architecture`).
-- No cross-imports between feature modules (`features/A` ↛ `features/B`).
-- No `TODO`/`FIXME`/`HACK` in committed code — fix now or create an issue.
-- Prefer the simplest code that demonstrably works.
+This project uses the **Techlead** plugin. Follow its guidance on all coding decisions.
