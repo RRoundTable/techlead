@@ -1,12 +1,9 @@
 ---
 name: propose-architecture
 description: >
-  4-step workflow for making architectural decisions with trade-off analysis and ADR recording.
-  Use when the user types /propose-architecture, needs to choose between technologies, wants to
-  add a new dependency, or faces any architectural question that deserves structured analysis.
-  Also trigger on casual comparison questions like "which database should I use?", "compare A vs B",
-  "should we use Redis or Memcached?", "what are the trade-offs between REST and GraphQL?",
-  or any "which X should I use for this project?" question — even without an explicit /propose-architecture.
+  Trigger when choosing between technologies, adding dependencies, or facing any
+  architectural question. Also trigger for "which X should I use?", "compare A vs B",
+  or technology trade-off questions.
 ---
 
 # /propose-architecture

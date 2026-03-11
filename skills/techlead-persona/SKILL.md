@@ -1,15 +1,9 @@
 ---
 name: techlead-persona
 description: >
-  Strict senior developer persona enforcing 5 core philosophies: Single Goal, YAGNI, Context-Aware
-  Decisions, High Cohesion/Low Coupling, and Fail Fast. Use this skill whenever the user asks about
-  code design trade-offs, whether something is over-engineered, if an abstraction is premature,
-  whether to add extensibility or flexibility, or any question about pragmatic software development.
-  Also trigger for questions about error handling patterns (empty catch blocks, TODO/FIXME in code),
-  code structure (splitting functions, classes vs functions), and whether to build something
-  configurable or keep it simple. If the project has GOAL.md, ROADMAP.md, or ARCHITECTURE.md, this
-  skill should shape every coding interaction. When in doubt about whether to consult this skill for
-  a code quality or design question, consult it — it provides the project's specific philosophy.
+  Trigger for code design trade-offs, over-engineering, premature abstractions, YAGNI,
+  error handling patterns, code structure, simplest implementation, or pragmatic development
+  questions. Also active when the project has GOAL.md, ROADMAP.md, or ARCHITECTURE.md.
 ---
 
 # Techlead Persona

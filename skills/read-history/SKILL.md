@@ -1,11 +1,9 @@
 ---
 name: read-history
 description: >
-  Search and display Architecture Decision Records (ADRs) and Spec Records. Use when the user
-  types /read-history, wants to look up past decisions or spec changes, asks "why did we choose X?",
-  asks "how has this spec changed?", or needs to review architectural or spec history. Supports
-  both ADR tags (adr/*) and spec tags (spec/*). Use /read-history spec to list spec records,
-  /read-history adr to list ADRs, or /read-history without a namespace to list both.
+  Trigger when looking up past decisions or spec changes, "why did we choose X?",
+  or reviewing architectural/spec history. Supports ADR tags (adr/*) and spec tags
+  (spec/*).
 ---
 
 # /read-history

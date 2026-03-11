@@ -1,13 +1,9 @@
 ---
 name: propose-spec
 description: >
-  Workflow for defining or updating feature specifications as user-observable behaviors.
-  Use when the user types /propose-spec, wants to define what a feature should do, needs to
-  write acceptance criteria, or is planning a new capability before implementation. Also trigger
-  when the user asks "what should this feature do?", "how should X behave?", "define
-  acceptance criteria for Y", or "what are the expected behaviors for Z?". Do NOT trigger for
-  architecture/technology questions (use propose-architecture) or implementation tasks (use
-  check-alignment).
+  Trigger when defining feature behavior, writing acceptance criteria, or planning
+  capabilities before implementation. Also trigger for "what should this feature do?"
+  or "how should X behave?". NOT for architecture or implementation tasks.
 ---
 
 # /propose-spec
