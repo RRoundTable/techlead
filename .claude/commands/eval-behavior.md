@@ -12,7 +12,7 @@ Read these files before proceeding:
 - `skills/$ARGUMENTS/SKILL.md` — the skill instructions
 - `skills/$ARGUMENTS/evals/evals.json` — eval cases with prompts and assertions
 
-Workspace: `$ARGUMENTS-workspace/` (create if needed, overwrite previous runs)
+Workspace: `evals/$ARGUMENTS/` (create if needed, overwrite previous runs)
 
 ## Step 1: Run each eval case
 
@@ -37,12 +37,12 @@ SKILL INSTRUCTIONS:
 TASK: <eval prompt>
 
 The project knowledge base is at docs/. Save:
-- Your complete response → $ARGUMENTS-workspace/<eval-name>/with_skill/response.txt
-- A step-by-step log of every tool you used → $ARGUMENTS-workspace/<eval-name>/with_skill/transcript.md
+- Your complete response → evals/$ARGUMENTS/<eval-name>/with_skill/response.txt
+- A step-by-step log of every tool you used → evals/$ARGUMENTS/<eval-name>/with_skill/transcript.md
 
 Create directories as needed.
 
-IMPORTANT: Use only relative paths for all file operations (docs/, $ARGUMENTS-workspace/, etc.).
+IMPORTANT: Use only relative paths for all file operations (docs/, evals/$ARGUMENTS/, etc.).
 Do NOT write to any absolute path — absolute paths bypass your isolated worktree and contaminate the shared repo.
 ```
 
@@ -53,12 +53,12 @@ Execute this task using only your own judgment — no special instructions.
 TASK: <eval prompt>
 
 The project knowledge base is at docs/ if needed. Save:
-- Your complete response → $ARGUMENTS-workspace/<eval-name>/without_skill/response.txt
-- A step-by-step log of every tool you used → $ARGUMENTS-workspace/<eval-name>/without_skill/transcript.md
+- Your complete response → evals/$ARGUMENTS/<eval-name>/without_skill/response.txt
+- A step-by-step log of every tool you used → evals/$ARGUMENTS/<eval-name>/without_skill/transcript.md
 
 Create directories as needed.
 
-IMPORTANT: Use only relative paths for all file operations (docs/, $ARGUMENTS-workspace/, etc.).
+IMPORTANT: Use only relative paths for all file operations (docs/, evals/$ARGUMENTS/, etc.).
 Do NOT write to any absolute path — absolute paths bypass your isolated worktree and contaminate the shared repo.
 ```
 
@@ -79,7 +79,7 @@ Once all agents complete, grade each eval case. You can grade inline (no need fo
 
 For each assertion, read the response.txt and transcript.md for both runs and judge pass/fail.
 
-Save to `$ARGUMENTS-workspace/<eval-name>/with_skill/grading.json` and `.../without_skill/grading.json`:
+Save to `evals/$ARGUMENTS/<eval-name>/with_skill/grading.json` and `.../without_skill/grading.json`:
 ```json
 {
   "expectations": [
