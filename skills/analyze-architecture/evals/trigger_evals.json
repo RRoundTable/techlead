@@ -1,0 +1,98 @@
+[
+  {
+    "query": "Document this project's architecture",
+    "should_trigger": true
+  },
+  {
+    "query": "What is the architecture of this codebase?",
+    "should_trigger": true
+  },
+  {
+    "query": "Scan this codebase and generate architecture docs",
+    "should_trigger": true
+  },
+  {
+    "query": "Reverse-engineer the project structure into documentation",
+    "should_trigger": true
+  },
+  {
+    "query": "Create architecture documentation from the existing source code",
+    "should_trigger": true
+  },
+  {
+    "query": "Generate a system overview diagram for this project",
+    "should_trigger": true
+  },
+  {
+    "query": "I need to understand how this codebase is structured — can you map it out?",
+    "should_trigger": true
+  },
+  {
+    "query": "Analyze the directory structure and document the layers of this app",
+    "should_trigger": true
+  },
+  {
+    "query": "Create an ARCHITECTURE.md from what's already in the code",
+    "should_trigger": true
+  },
+  {
+    "query": "Help me document the tech stack and module relationships in this repo",
+    "should_trigger": true
+  },
+  {
+    "query": "What services and components does this project have? Map them out.",
+    "should_trigger": true
+  },
+  {
+    "query": "I inherited this codebase and need architecture docs — can you generate them?",
+    "should_trigger": true
+  },
+  {
+    "query": "Which database should I use for this project?",
+    "should_trigger": false
+  },
+  {
+    "query": "Compare Next.js vs Remix for our frontend",
+    "should_trigger": false
+  },
+  {
+    "query": "Should we switch from REST to GraphQL?",
+    "should_trigger": false
+  },
+  {
+    "query": "Commit my changes to the auth module",
+    "should_trigger": false
+  },
+  {
+    "query": "Check if this code follows our quality standards before I push",
+    "should_trigger": false
+  },
+  {
+    "query": "Set up Techlead governance for this project",
+    "should_trigger": false
+  },
+  {
+    "query": "Define the spec for the user registration feature",
+    "should_trigger": false
+  },
+  {
+    "query": "Read the existing ADRs for this project",
+    "should_trigger": false
+  },
+  {
+    "query": "Implement the login endpoint with JWT tokens",
+    "should_trigger": false
+  },
+  {
+    "query": "Is this feature aligned with our roadmap?",
+    "should_trigger": false
+  },
+  {
+    "query": "Fix the bug in the payment processing module",
+    "should_trigger": false
+  },
+  {
+    "query": "Should we add Kubernetes for deployment?",
+    "should_trigger": false
+  }
+]

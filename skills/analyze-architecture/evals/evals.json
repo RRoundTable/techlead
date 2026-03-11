@@ -1,0 +1,113 @@
+{
+  "skill_name": "analyze-architecture",
+  "evals": [
+    {
+      "id": 1,
+      "name": "adapts-to-project-type",
+      "prompt": "Document the architecture of this project. Scan the codebase and generate architecture docs.",
+      "expected_output": "Identifies the project as a web API (Express + TypeScript). Produces a tech stack table sourced from package.json. Includes a mermaid system overview diagram. Documents the actual directory structure (src/routes/, src/models/). Does NOT invent layers that don't exist.",
+      "files": [
+        "skills/analyze-architecture/evals/fixtures/package.json",
+        "skills/analyze-architecture/evals/fixtures/tsconfig.json",
+        "skills/analyze-architecture/evals/fixtures/src/index.ts",
+        "skills/analyze-architecture/evals/fixtures/src/routes/tasks.ts",
+        "skills/analyze-architecture/evals/fixtures/src/models/task.ts"
+      ],
+      "assertions": [
+        {
+          "id": "identifies-web-api",
+          "description": "Identifies the project as a web API (Express-based or similar classification)"
+        },
+        {
+          "id": "tech-stack-from-package-json",
+          "description": "Produces a tech stack table with entries sourced from the actual package.json (Express, TypeScript, Prisma, Jest)"
+        },
+        {
+          "id": "mermaid-diagram-included",
+          "description": "Includes at least one mermaid diagram (system overview flowchart showing component relationships)"
+        },
+        {
+          "id": "actual-directory-structure",
+          "description": "Documents the actual directory structure including src/routes/ and src/models/ — not a generic template"
+        },
+        {
+          "id": "does-not-invent-layers",
+          "description": "Does NOT document layers that don't exist in the codebase (e.g., frontend, messaging, infrastructure) — only what's actually present"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "single-file-for-simple-project",
+      "prompt": "Analyze this project's architecture and create documentation for it.",
+      "expected_output": "Identifies the project as a CLI tool. Produces a single ARCHITECTURE.md (not a multi-file architecture/ directory) because the project is simple with ≤3 layers. Does NOT invent complex layer structures for a simple CLI tool.",
+      "files": [
+        "skills/analyze-architecture/evals/fixtures/simple/package.json",
+        "skills/analyze-architecture/evals/fixtures/simple/src/index.ts",
+        "skills/analyze-architecture/evals/fixtures/simple/src/cli.ts"
+      ],
+      "assertions": [
+        {
+          "id": "identifies-cli-tool",
+          "description": "Identifies the project as a CLI tool (not a web API, SPA, or other type)"
+        },
+        {
+          "id": "single-file-not-directory",
+          "description": "Produces a single ARCHITECTURE.md file rather than a multi-file architecture/ directory — the project is too simple for multiple files"
+        },
+        {
+          "id": "does-not-invent-complex-layers",
+          "description": "Does NOT document complex layer structures (API, data, frontend, infra) — lists only what actually exists in this simple project"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "notes-code-smells-objectively",
+      "prompt": "Document the architecture of this codebase. I want to understand how it's structured.",
+      "expected_output": "Scans the code and notes that billing imports directly from auth internals (cross-feature coupling). Notes this objectively as an observation, not as a judgment. Uses neutral language like 'imports directly from' rather than 'terrible design'.",
+      "files": [
+        "skills/analyze-architecture/evals/fixtures/coupled/package.json",
+        "skills/analyze-architecture/evals/fixtures/coupled/src/features/auth/index.ts",
+        "skills/analyze-architecture/evals/fixtures/coupled/src/features/billing/index.ts"
+      ],
+      "assertions": [
+        {
+          "id": "detects-cross-feature-import",
+          "description": "Detects that billing imports from auth (cross-feature coupling between features/billing and features/auth)"
+        },
+        {
+          "id": "objective-language",
+          "description": "Notes the coupling objectively using neutral/descriptive language — does NOT use judgmental words like 'terrible', 'bad', 'wrong', or 'awful'"
+        },
+        {
+          "id": "does-not-prescribe-fix",
+          "description": "Does NOT prescribe specific refactoring steps or recommend architectural changes — that is propose-architecture's job. May note the observation but does not turn it into an action plan."
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "name": "asks-for-corrections",
+      "prompt": "Generate architecture documentation for this project from the source code.",
+      "expected_output": "After generating the documentation, presents a summary of findings and asks the user for corrections or feedback before finalizing. Does NOT just silently write files without asking.",
+      "files": [
+        "skills/analyze-architecture/evals/fixtures/package.json",
+        "skills/analyze-architecture/evals/fixtures/tsconfig.json",
+        "skills/analyze-architecture/evals/fixtures/src/index.ts",
+        "skills/analyze-architecture/evals/fixtures/src/routes/tasks.ts",
+        "skills/analyze-architecture/evals/fixtures/src/models/task.ts"
+      ],
+      "assertions": [
+        {
+          "id": "presents-summary",
+          "description": "Presents a summary of findings (project type, layers found, or document structure chosen) before or alongside the generated docs"
+        },
+        {
+          "id": "asks-for-feedback",
+          "description": "Explicitly asks the user for corrections, feedback, or confirmation — does not just silently finalize without user input"
+        }
+      ]
+    }
+  ]
+}
