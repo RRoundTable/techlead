@@ -18,6 +18,8 @@ Review code against the 5 Techlead philosophies before it ships.
 
 ## Checks
 
+Before running checks, locate architecture docs: use `architecture/README.md` if it exists, else `ARCHITECTURE.md`. All references below apply equally.
+
 Run through each category. Stop at the first violation — don't pile up a laundry list.
 Fix the most important issue first, then re-check.
 

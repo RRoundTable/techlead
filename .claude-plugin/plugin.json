@@ -23,7 +23,8 @@
     "./skills/init-techlead",
     "./skills/propose-architecture",
     "./skills/propose-spec",
-    "./skills/read-history"
+    "./skills/read-history",
+    "./skills/analyze-architecture"
   ],
   "hooks": "./hooks/hooks.json"
 }

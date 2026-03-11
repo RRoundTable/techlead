@@ -1,5 +1,15 @@
 # Architecture
 
+## System Overview
+
+<!-- High-level system diagram. Replace with an actual mermaid diagram for your project. -->
+
+```mermaid
+flowchart TD
+    Client --> API
+    API --> DB[(Database)]
+```
+
 ## Tech Stack
 
 | Layer | Choice | ADR |
@@ -8,6 +18,14 @@
 | Framework | {{FRAMEWORK}} | — |
 | Database | {{DATABASE}} | — |
 | Testing | {{TESTING}} | — |
+
+## Directory Structure
+
+<!-- Actual project directory layout. Replace with your project's real structure. -->
+
+```
+{{PROJECT_STRUCTURE}}
+```
 
 ## Module Structure
 

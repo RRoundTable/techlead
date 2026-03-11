@@ -29,11 +29,11 @@ Before researching anything external, ground yourself in the project's current s
 1. Read `GOAL.md` — every option must be evaluated against the project's actual goal.
    If the topic involves something listed in GOAL.md's "Out of Scope", **flag the conflict
    to the user before proceeding**. The user may need to update the goal first.
-2. Read `ARCHITECTURE.md` — understand the current tech stack, module structure, import rules,
-   and constraints. New decisions must be compatible with what's already in place.
-   If ARCHITECTURE.md or an existing ADR **already covers this exact decision**, note the
-   existing choice. Do not treat it as a fresh decision — evaluate whether there is sufficient
-   justification to revisit it.
+2. Read `architecture/README.md` if it exists, else `ARCHITECTURE.md` — understand the current
+   tech stack, module structure, import rules, and constraints. New decisions must be compatible
+   with what's already in place. If the architecture docs or an existing ADR **already covers
+   this exact decision**, note the existing choice. Do not treat it as a fresh decision —
+   evaluate whether there is sufficient justification to revisit it.
 3. List ADR tags (`git tag -l "adr/*"`); read relevant ones via `git log <tag> --format="%B" -1`.
    Past decisions carry weight — don't propose options that contradict accepted ADRs without
    explicitly noting the conflict.
@@ -122,8 +122,9 @@ queries, or questions where the user doesn't mention formal decisions, ADRs, or 
 2. Derive slug from title (lowercase, hyphens).
 3. Save current branch: `starting_branch=$(git branch --show-current)`
 4. `git checkout -b adr/NNN-slug`
-5. Update `ARCHITECTURE.md` if the decision affects Tech Stack, Key Patterns, or Constraints.
-6. `git add ARCHITECTURE.md` (or use `git commit --allow-empty` if no ARCHITECTURE.md changes).
+5. Update architecture docs if the decision affects Tech Stack, Key Patterns, or Constraints
+   (use `architecture/README.md` if it exists, else `ARCHITECTURE.md`).
+6. `git add` the updated architecture file (or use `git commit --allow-empty` if no changes).
 7. `git commit` with ADR template as message (read `templates/adr-template.md` for format).
 8. `git checkout $starting_branch`
 9. `git merge --no-ff adr/NNN-slug -m "Merge ADR-NNN: Title"`

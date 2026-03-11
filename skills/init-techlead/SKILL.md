@@ -15,6 +15,10 @@ Check if any of these files already exist: `GOAL.md`, `ROADMAP.md`, `SPEC.md`, `
 
 If any exist, ask once: "Some Techlead documents already exist ([list them]). Overwrite or skip existing?"
 
+## Step 1b: Detect Existing Source Code
+
+Check if the project already has source code (e.g., `src/`, `lib/`, `app/`, `package.json`, `pyproject.toml`, `go.mod`, or similar). Note whether code exists — this affects Step 3 and Step 4.
+
 ## Step 2: Interview the User (Single Prompt)
 
 Ask all of these in one message to minimize back-and-forth:
@@ -41,6 +45,8 @@ After the user responds, create all files at once:
    are added later via `/propose-spec`.
 
 4. **ARCHITECTURE.md** — Fill from `templates/ARCHITECTURE.md.template` with the tech stack.
+   Fill the System Overview with a simple placeholder diagram. Fill the Directory Structure
+   from the actual project tree if code exists, or leave the template placeholder if greenfield.
    Keep the default module structure and import rules.
 
 5. **CLAUDE.md** — If it exists, append the content from `templates/CLAUDE.md.template`.
@@ -64,4 +70,10 @@ Use /propose-architecture for architectural decisions.
 Use /propose-spec to define feature specifications.
 
 Start coding — alignment checks are now active.
+```
+
+If source code was detected in Step 1b, also print:
+
+```
+Tip: Run /analyze-architecture to generate detailed architecture docs from your existing code.
 ```
