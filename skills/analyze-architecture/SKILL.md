@@ -2,7 +2,7 @@
 name: analyze-architecture
 description: >
   Trigger when scanning an existing codebase to produce architecture documentation — reverse-engineering
-  project structure, generating ARCHITECTURE.md from source code, creating system diagrams, or mapping out
+  project structure, generating docs/ARCHITECTURE.md from source code, creating system diagrams, or mapping out
   services and components. Also trigger for "document this project's architecture", "what is the architecture
   of this codebase?", or "map out the services in this project". NEVER trigger for: code quality reviews,
   commit checks, defining feature specs, setting up project governance, choosing between technologies,
@@ -24,7 +24,7 @@ Read broadly to understand what exists:
 - **Entry points** — `src/index.*`, `src/main.*`, `app.*`, `cmd/main.*`
 - **Route / model files** — anything defining API routes, database models, or schemas
 - **Infra configs** — Terraform, CloudFormation, Pulumi, Kubernetes manifests, serverless configs
-- **Existing docs** — `README.md`, `ARCHITECTURE.md`, `docs/`, `ADR/`
+- **Existing docs** — `README.md`, `docs/ARCHITECTURE.md`, `docs/`, `ADR/`
 
 Do NOT read every file. Sample representative files from each directory to understand patterns.
 
@@ -49,12 +49,12 @@ Do NOT invent layers that don't exist. If the project is a simple CLI with one e
 
 Choose based on complexity:
 
-- **Single `ARCHITECTURE.md`** — when ≤3 layers or total content would be <200 lines
+- **Single `docs/ARCHITECTURE.md`** — when ≤3 layers or total content would be <200 lines
 - **Multi-file `architecture/` directory** — when 4+ layers or any single layer needs >50 lines of documentation
 
 Multi-file structure:
 ```
-architecture/
+docs/architecture/
 ├── README.md           # System overview, tech stack, directory structure, layer index, import rules, constraints
 ├── api.md              # Routes, controllers, middleware
 ├── data.md             # DB schema, models, migrations
@@ -82,7 +82,7 @@ Don't force diagrams that add no value. A CLI tool needs a flowchart, not an ER 
 
 Fill all sections from **actual codebase findings**:
 
-### For README.md (or single ARCHITECTURE.md):
+### For README.md (or single docs/ARCHITECTURE.md):
 
 1. **System Overview** — mermaid flowchart showing components and their relationships
 2. **Tech Stack** — table with Layer / Choice / Version columns, sourced from package files
@@ -123,7 +123,7 @@ After generating the documentation:
 
 ## Constraints
 
-- Does NOT create ADRs or modify other governance docs (GOAL.md, ROADMAP.md, SPEC.md)
+- Does NOT create ADRs or modify other governance docs (docs/GOAL.md, docs/ROADMAP.md, docs/SPEC.md)
 - Only produces architecture documentation
 - Does not recommend changes — that's `/propose-architecture`'s job
-- If `ARCHITECTURE.md` already exists, ask before overwriting
+- If `docs/ARCHITECTURE.md` already exists, ask before overwriting

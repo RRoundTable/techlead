@@ -2,7 +2,7 @@
 name: init-techlead
 description: >
   Bootstrap a project with Techlead's document hierarchy. Use when the user types /init-techlead,
-  wants to set up project governance, or when GOAL.md is missing and needs to be created.
+  wants to set up project governance, or when docs/GOAL.md is missing and needs to be created.
 ---
 
 # /init-techlead
@@ -11,7 +11,7 @@ Set up the Techlead document hierarchy for a project.
 
 ## Step 1: Check Existing State
 
-Check if any of these files already exist: `GOAL.md`, `ROADMAP.md`, `SPEC.md`, `ARCHITECTURE.md`, `CLAUDE.md`.
+Check if any of these files already exist: `docs/GOAL.md`, `docs/ROADMAP.md`, `docs/SPEC.md`, `docs/ARCHITECTURE.md`, `CLAUDE.md`.
 
 If any exist, ask once: "Some Techlead documents already exist ([list them]). Overwrite or skip existing?"
 
@@ -35,16 +35,16 @@ Ask all of these in one message to minimize back-and-forth:
 
 After the user responds, create all files at once:
 
-1. **GOAL.md** — Fill the template from `templates/GOAL.md.template` with the user's goal,
+1. **docs/GOAL.md** — Fill the template from `templates/GOAL.md.template` with the user's goal,
    success criteria, and out-of-scope items.
 
-2. **ROADMAP.md** — Fill from `templates/ROADMAP.md.template`. Put the user's priorities
+2. **docs/ROADMAP.md** — Fill from `templates/ROADMAP.md.template`. Put the user's priorities
    in "Now". Leave "Next" and "Later" with placeholder items.
 
-3. **SPEC.md** — Create from `templates/SPEC.md.template`. This starts empty — capabilities
+3. **docs/SPEC.md** — Create from `templates/SPEC.md.template`. This starts empty — capabilities
    are added later via `/propose-spec`.
 
-4. **ARCHITECTURE.md** — Fill from `templates/ARCHITECTURE.md.template` with the tech stack.
+4. **docs/ARCHITECTURE.md** — Fill from `templates/ARCHITECTURE.md.template` with the tech stack.
    Fill the System Overview with a simple placeholder diagram. Fill the Directory Structure
    from the actual project tree if code exists, or leave the template placeholder if greenfield.
    Keep the default module structure and import rules.
@@ -58,10 +58,10 @@ Print:
 
 ```
 Techlead initialized:
-  ✓ GOAL.md
-  ✓ ROADMAP.md
-  ✓ SPEC.md
-  ✓ ARCHITECTURE.md
+  ✓ docs/GOAL.md
+  ✓ docs/ROADMAP.md
+  ✓ docs/SPEC.md
+  ✓ docs/ARCHITECTURE.md
   ✓ CLAUDE.md
 
 ADRs are stored as git commits with adr/ tags.

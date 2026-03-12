@@ -24,7 +24,7 @@ You'll be asked five questions in a single prompt:
 4. **Current priorities** — 1-3 items to work on right now
 5. **Tech stack** — Language, framework, database, testing tool
 
-Techlead generates `GOAL.md`, `ROADMAP.md`, `SPEC.md`, `ARCHITECTURE.md`, and updates `CLAUDE.md`.
+Techlead generates `docs/GOAL.md`, `docs/ROADMAP.md`, `docs/SPEC.md`, `docs/ARCHITECTURE.md`, and updates `CLAUDE.md`.
 
 ### 3. Start Coding
 
@@ -42,7 +42,7 @@ That's it. Techlead is now active. It will:
 
 When you ask Claude to write or modify code, Techlead automatically:
 
-1. Reads `GOAL.md` and `ROADMAP.md`
+1. Reads `docs/GOAL.md` and `docs/ROADMAP.md`
 2. Checks if the request aligns with the goal
 3. Checks if the request is in the "Now" milestone
 4. If aligned — proceeds silently (no announcement)
@@ -59,7 +59,7 @@ Before building a feature, define what it should do from the user's perspective:
 This runs a 3-step workflow:
 1. **Context** — Reads your goal, roadmap, and existing specs
 2. **Define Behaviors** — Writes Given/When/Then outcomes, acceptance criteria, and invariants
-3. **Record** — Creates a git-based spec record (branch, commit, tag) and updates SPEC.md
+3. **Record** — Creates a git-based spec record (branch, commit, tag) and updates docs/SPEC.md
 
 Specs describe **what a user can observe**, not implementation details:
 
@@ -113,11 +113,11 @@ If violations are found, you'll get a specific report with file, line, and a sug
 
 ## Managing Your Documents
 
-### Updating GOAL.md
+### Updating docs/GOAL.md
 
 The goal should rarely change. If it does, update it directly — but consider whether you're pivoting the project or just refining scope.
 
-### Updating ROADMAP.md
+### Updating docs/ROADMAP.md
 
 Move items between sections as priorities shift:
 
@@ -127,13 +127,13 @@ Move items between sections as priorities shift:
 
 When you finish a Now item, check the box and promote something from Next.
 
-### Updating SPEC.md
+### Updating docs/SPEC.md
 
-This file evolves through `/propose-spec`. Each capability is defined as user-observable behaviors with Given/When/Then format, acceptance criteria, and invariants. SPEC.md captures WHAT the system should do — it's the behavioral contract.
+This file evolves through `/propose-spec`. Each capability is defined as user-observable behaviors with Given/When/Then format, acceptance criteria, and invariants. docs/SPEC.md captures WHAT the system should do — it's the behavioral contract.
 
-You can edit SPEC.md directly for minor adjustments, but use `/propose-spec` for new capabilities or significant changes so they're recorded as spec records.
+You can edit docs/SPEC.md directly for minor adjustments, but use `/propose-spec` for new capabilities or significant changes so they're recorded as spec records.
 
-### Updating ARCHITECTURE.md
+### Updating docs/ARCHITECTURE.md
 
 This file evolves through ADRs. When `/propose-architecture` records a decision, it automatically updates the relevant sections. You can also edit it directly for minor adjustments.
 
@@ -145,7 +145,7 @@ This file evolves through ADRs. When `/propose-architecture` records a decision,
 
 ### Single Goal
 
-**What it means:** Every coding task must connect to `GOAL.md`. If you can't draw a line from the task to the goal, either the task is wrong or the goal needs updating.
+**What it means:** Every coding task must connect to `docs/GOAL.md`. If you can't draw a line from the task to the goal, either the task is wrong or the goal needs updating.
 
 **In practice:** Techlead will ask "how does this connect to [your goal]?" if the link isn't obvious. This prevents scope creep and keeps the project focused.
 
@@ -187,7 +187,7 @@ shared/    → cannot import from features/, core/, or infra/
 
 ### Adapting the Module Structure
 
-The default module structure (`core/`, `features/`, `infra/`, `shared/`) is a starting point. Edit `ARCHITECTURE.md` to match your project's actual structure. The import rules are the important part — the directory names are flexible.
+The default module structure (`core/`, `features/`, `infra/`, `shared/`) is a starting point. Edit `docs/ARCHITECTURE.md` to match your project's actual structure. The import rules are the important part — the directory names are flexible.
 
 ### Relaxing Rules
 
@@ -199,4 +199,4 @@ If a philosophy doesn't fit your project, you can:
 
 ### Adding Constraints
 
-Add project-specific constraints to the "Constraints" section of `ARCHITECTURE.md`. These are enforced alongside the 5 philosophies.
+Add project-specific constraints to the "Constraints" section of `docs/ARCHITECTURE.md`. These are enforced alongside the 5 philosophies.

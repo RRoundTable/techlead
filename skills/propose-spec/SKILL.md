@@ -40,18 +40,18 @@ Do NOT include in specs:
 - Database schemas, column names, or query patterns
 - Internal data flow or service-to-service calls
 
-These belong in ARCHITECTURE.md, not SPEC.md.
+These belong in docs/ARCHITECTURE.md, not docs/SPEC.md.
 
 ## Step 1: Gather Context
 
 Before defining behaviors, ground yourself in the project's current state:
 
-1. Read `GOAL.md` — the capability must serve the project goal.
-   If the capability is listed in GOAL.md's "Out of Scope", **flag the conflict
+1. Read `docs/GOAL.md` — the capability must serve the project goal.
+   If the capability is listed in docs/GOAL.md's "Out of Scope", **flag the conflict
    to the user before proceeding**. The user may need to update the goal first.
-2. Read `ROADMAP.md` — note which milestone this capability falls under.
+2. Read `docs/ROADMAP.md` — note which milestone this capability falls under.
    This is informational (specs can be written ahead of implementation), but mention it.
-3. Read `SPEC.md` if it exists — is this a new capability or an update to an existing one?
+3. Read `docs/SPEC.md` if it exists — is this a new capability or an update to an existing one?
    If updating, load the existing behaviors and acceptance criteria.
 4. List spec tags (`git tag -l "spec/*"`); read relevant ones via `git log <tag> --format="%B" -1`.
    Past spec changes carry context — understand the evolution before making changes.
@@ -120,11 +120,11 @@ Once approved:
 2. Derive slug from capability name (lowercase, hyphens).
 3. Save current branch: `starting_branch=$(git branch --show-current)`
 4. `git checkout -b spec/NNN-slug`
-5. Update `SPEC.md`:
+5. Update `docs/SPEC.md`:
    - If new capability: add the capability section under `## Capabilities`
    - If updating: modify the existing capability section
    - If new invariants: add under `## Invariants`
-6. `git add SPEC.md`
+6. `git add docs/SPEC.md`
 7. `git commit` with spec record template as message (read `templates/spec-record-template.md` for format).
    Set `Change type` to `added`, `changed`, or `removed` as appropriate.
 8. `git checkout $starting_branch`
@@ -135,6 +135,6 @@ Once approved:
 ## After Spec is Defined
 
 When the capability is ready to implement:
-1. Ensure the capability is in ROADMAP.md's "Now" section.
+1. Ensure the capability is in docs/ROADMAP.md's "Now" section.
 2. Use the acceptance criteria as a checklist during implementation.
 3. Run `/propose-architecture` if the capability requires new technology decisions.

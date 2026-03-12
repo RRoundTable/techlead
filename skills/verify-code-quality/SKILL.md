@@ -18,13 +18,13 @@ Review code against the 5 Techlead philosophies before it ships.
 
 ## Checks
 
-Before running checks, locate architecture docs: use `architecture/README.md` if it exists, else `ARCHITECTURE.md`. All references below apply equally.
+Before running checks, locate architecture docs: use `docs/architecture/README.md` if it exists, else `docs/ARCHITECTURE.md`. All references below apply equally.
 
 Run through each category. Stop at the first violation — don't pile up a laundry list.
 Fix the most important issue first, then re-check.
 
 ### Single Goal + YAGNI
-- Does every changed file serve the current GOAL.md objective?
+- Does every changed file serve the current docs/GOAL.md objective?
 - Any speculative code? Unused parameters, premature abstractions, feature flags for
   unplanned features → flag it.
 - Any new file or module that isn't strictly needed for this task → flag it.
@@ -53,13 +53,13 @@ Fix the most important issue first, then re-check.
 - Missing input validation at system boundaries (user input, API responses) → flag it.
 
 ### Spec Conformance
-- If `SPEC.md` exists, check: does this code implement behavior not described in SPEC.md?
+- If `docs/SPEC.md` exists, check: does this code implement behavior not described in docs/SPEC.md?
   If so, flag as potential spec drift:
-  > **Spec drift**: `[file]:[line]` implements behavior not in SPEC.md.
+  > **Spec drift**: `[file]:[line]` implements behavior not in docs/SPEC.md.
   > Either add the behavior to the spec via `/propose-spec` or remove the code.
-- Does this code contradict any specified behaviors or invariants in SPEC.md?
+- Does this code contradict any specified behaviors or invariants in docs/SPEC.md?
   If so, flag the contradiction.
-- This check is advisory — SPEC.md is optional and the user may choose to proceed.
+- This check is advisory — docs/SPEC.md is optional and the user may choose to proceed.
 
 ### Complexity Cross-Check
 - Does the diff touch more than 3 files for a simple task? Something might be wrong.

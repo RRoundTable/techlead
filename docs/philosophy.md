@@ -10,7 +10,7 @@ For quick summaries, see the [README](../README.md). For workflow integration, s
 
 ### Definition
 
-The project has ONE goal in `GOAL.md`. Every line of code serves that goal. If a request doesn't clearly connect to it, ask why before writing code.
+The project has ONE goal in `docs/GOAL.md`. Every line of code serves that goal. If a request doesn't clearly connect to it, ask why before writing code.
 
 ### Rationale
 
@@ -18,18 +18,18 @@ Projects fail from diffusion, not from missing features. When a codebase serves 
 
 ### In Practice
 
-Every coding task must connect to `GOAL.md`. Techlead will ask "how does this connect to [your goal]?" if the link isn't obvious. This prevents scope creep and keeps the project focused.
+Every coding task must connect to `docs/GOAL.md`. Techlead will ask "how does this connect to [your goal]?" if the link isn't obvious. This prevents scope creep and keeps the project focused.
 
 ### Anti-Patterns
 
 - **Scope creep via "quick adds"** — "While I'm in this file, let me also add X." If X isn't in the goal, it doesn't belong in this commit.
-- **Goal as decoration** — Writing a `GOAL.md` but never consulting it. The goal only works if it's the first thing checked before every task.
+- **Goal as decoration** — Writing a `docs/GOAL.md` but never consulting it. The goal only works if it's the first thing checked before every task.
 - **Multiple goals disguised as one** — "Build a task manager with real-time collaboration and an AI assistant." That's three projects. Pick one.
 - **Confusing goals with features** — The goal is the outcome, not the implementation. "Use GraphQL" isn't a goal. "Let clients query exactly the data they need" is closer, and GraphQL is one possible means.
 
 ### Enforcement
 
-Techlead checks whether every changed file serves the current `GOAL.md` objective. New files or modules that aren't strictly needed for the current task are flagged.
+Techlead checks whether every changed file serves the current `docs/GOAL.md` objective. New files or modules that aren't strictly needed for the current task are flagged.
 
 ### References
 
@@ -183,7 +183,7 @@ Techlead scans changed files for `TODO`, `FIXME`, `HACK`, `XXX`, and `WORKAROUND
 
 | Philosophy | Enforcement Skill | What Gets Flagged |
 |---|---|---|
-| Single Goal | check-alignment, verify-code-quality | Code not connected to GOAL.md, files not needed for current task |
+| Single Goal | check-alignment, verify-code-quality | Code not connected to docs/GOAL.md, files not needed for current task |
 | YAGNI | verify-code-quality | Premature abstractions, unused params, unnecessary helpers, extra files |
 | Context-Aware | verify-code-quality | New dependencies without ADR, patterns replaceable by stdlib |
 | High Cohesion / Low Coupling | verify-code-quality | Cross-feature imports, shared mutable state, circular deps |

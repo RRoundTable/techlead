@@ -26,10 +26,10 @@ Also activates automatically for casual questions like "Which database should I 
 
 Before researching anything external, ground yourself in the project's current state:
 
-1. Read `GOAL.md` — every option must be evaluated against the project's actual goal.
-   If the topic involves something listed in GOAL.md's "Out of Scope", **flag the conflict
+1. Read `docs/GOAL.md` — every option must be evaluated against the project's actual goal.
+   If the topic involves something listed in docs/GOAL.md's "Out of Scope", **flag the conflict
    to the user before proceeding**. The user may need to update the goal first.
-2. Read `architecture/README.md` if it exists, else `ARCHITECTURE.md` — understand the current
+2. Read `docs/architecture/README.md` if it exists, else `docs/ARCHITECTURE.md` — understand the current
    tech stack, module structure, import rules, and constraints. New decisions must be compatible
    with what's already in place. If the architecture docs or an existing ADR **already covers
    this exact decision**, note the existing choice. Do not treat it as a fresh decision —
@@ -45,7 +45,7 @@ Before researching anything external, ground yourself in the project's current s
 
 With the project context loaded, identify:
 - Decision category (database, framework, pattern, library, infra, etc.)
-- Non-negotiable constraints from ARCHITECTURE.md and existing ADR tags/commits
+- Non-negotiable constraints from docs/ARCHITECTURE.md and existing ADR tags/commits
 - How past decisions narrow the viable options — some choices may already be ruled out
 
 ### Analyze the Codebase
@@ -123,7 +123,7 @@ queries, or questions where the user doesn't mention formal decisions, ADRs, or 
 3. Save current branch: `starting_branch=$(git branch --show-current)`
 4. `git checkout -b adr/NNN-slug`
 5. Update architecture docs if the decision affects Tech Stack, Key Patterns, or Constraints
-   (use `architecture/README.md` if it exists, else `ARCHITECTURE.md`).
+   (use `docs/architecture/README.md` if it exists, else `docs/ARCHITECTURE.md`).
 6. `git add` the updated architecture file (or use `git commit --allow-empty` if no changes).
 7. `git commit` with ADR template as message (read `templates/adr-template.md` for format).
 8. `git checkout $starting_branch`
@@ -134,4 +134,4 @@ queries, or questions where the user doesn't mention formal decisions, ADRs, or 
 ## After Implementation
 
 When the decision is implemented in code:
-1. Update `ARCHITECTURE.md` if needed.
+1. Update `docs/ARCHITECTURE.md` if needed.
