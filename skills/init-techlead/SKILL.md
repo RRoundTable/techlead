@@ -15,6 +15,14 @@ Check if any of these files already exist: `docs/GOAL.md`, `docs/ROADMAP.md`, `d
 
 If any exist, ask once: "Some Techlead documents already exist ([list them]). Overwrite or skip existing?"
 
+## Step 1c: Detect Non-Standard docs/
+
+If `docs/` exists but contains files that don't match the Techlead canonical structure (`GOAL.md`, `ROADMAP.md`, `SPEC.md`, `ARCHITECTURE.md`), suggest migration:
+
+> Found existing docs that don't match Techlead's structure. Run `/restructure-docs` to migrate them to the canonical format before continuing setup.
+
+If the user chooses to continue without restructuring, proceed normally (overwrite/skip as chosen in Step 1).
+
 ## Step 1b: Detect Existing Source Code
 
 Check if the project already has source code (e.g., `src/`, `lib/`, `app/`, `package.json`, `pyproject.toml`, `go.mod`, or similar). Note whether code exists — this affects Step 3 and Step 4.

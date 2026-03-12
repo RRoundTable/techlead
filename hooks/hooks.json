@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "prompt",
-            "prompt": "Before making this code change, verify alignment with docs/GOAL.md, docs/ROADMAP.md 'Now' milestone, and docs/SPEC.md (if it exists). If not yet checked in this conversation, read docs/GOAL.md, docs/ROADMAP.md, and docs/SPEC.md first and confirm the current task is aligned before proceeding."
+            "prompt": "Before making this code change, verify alignment with docs/GOAL.md, docs/ROADMAP.md 'Now' milestone, and spec docs (if they exist). For specs, use docs/specs/README.md if it exists, else docs/SPEC.md. If not yet checked in this conversation, read docs/GOAL.md, docs/ROADMAP.md, and the spec docs first and confirm the current task is aligned before proceeding."
           }
         ]
       }

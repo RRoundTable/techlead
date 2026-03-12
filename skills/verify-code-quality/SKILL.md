@@ -53,13 +53,14 @@ Fix the most important issue first, then re-check.
 - Missing input validation at system boundaries (user input, API responses) → flag it.
 
 ### Spec Conformance
-- If `docs/SPEC.md` exists, check: does this code implement behavior not described in docs/SPEC.md?
+- Locate spec docs: use `docs/specs/README.md` if it exists, else `docs/SPEC.md`. When using multi-file specs (`docs/specs/`), also read per-capability files referenced in the README index.
+- If spec docs exist, check: does this code implement behavior not described in the spec?
   If so, flag as potential spec drift:
-  > **Spec drift**: `[file]:[line]` implements behavior not in docs/SPEC.md.
+  > **Spec drift**: `[file]:[line]` implements behavior not in spec.
   > Either add the behavior to the spec via `/propose-spec` or remove the code.
-- Does this code contradict any specified behaviors or invariants in docs/SPEC.md?
+- Does this code contradict any specified behaviors or invariants in the spec?
   If so, flag the contradiction.
-- This check is advisory — docs/SPEC.md is optional and the user may choose to proceed.
+- This check is advisory — spec docs are optional and the user may choose to proceed.
 
 ### Complexity Cross-Check
 - Does the diff touch more than 3 files for a simple task? Something might be wrong.

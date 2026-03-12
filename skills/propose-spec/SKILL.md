@@ -51,8 +51,10 @@ Before defining behaviors, ground yourself in the project's current state:
    to the user before proceeding**. The user may need to update the goal first.
 2. Read `docs/ROADMAP.md` — note which milestone this capability falls under.
    This is informational (specs can be written ahead of implementation), but mention it.
-3. Read `docs/SPEC.md` if it exists — is this a new capability or an update to an existing one?
-   If updating, load the existing behaviors and acceptance criteria.
+3. Locate spec docs: check `docs/specs/README.md` first — if it exists, the project uses **multi-file specs** (`docs/specs/`). Otherwise, use `docs/SPEC.md`.
+   - **Single-file** (`docs/SPEC.md`): read it directly.
+   - **Multi-file** (`docs/specs/`): read `README.md` for the capability index and invariants, then read the per-capability file if updating an existing capability.
+   - Is this a new capability or an update to an existing one? If updating, load the existing behaviors and acceptance criteria.
 4. List spec tags (`git tag -l "spec/*"`); read relevant ones via `git log <tag> --format="%B" -1`.
    Past spec changes carry context — understand the evolution before making changes.
 5. Briefly summarize the relevant context to the user — keep it to 3-5 lines max.
@@ -120,11 +122,21 @@ Once approved:
 2. Derive slug from capability name (lowercase, hyphens).
 3. Save current branch: `starting_branch=$(git branch --show-current)`
 4. `git checkout -b spec/NNN-slug`
-5. Update `docs/SPEC.md`:
+5. Update spec docs based on current format:
+
+   **Single-file** (`docs/SPEC.md`):
    - If new capability: add the capability section under `## Capabilities`
    - If updating: modify the existing capability section
    - If new invariants: add under `## Invariants`
-6. `git add docs/SPEC.md`
+
+   **Multi-file** (`docs/specs/`):
+   - If new capability: create `docs/specs/<capability-slug>.md` with the capability section, and add an entry to the index in `docs/specs/README.md`
+   - If updating: modify the existing per-capability file `docs/specs/<capability-slug>.md`
+   - If new invariants: add under `## Invariants` in `docs/specs/README.md`
+
+   **Threshold for switching to multi-file**: If the project uses single-file and now has 4+ capabilities or any single capability needs >30 lines of behaviors, suggest converting to `docs/specs/` format. Do not convert automatically — ask the user first.
+
+6. `git add docs/SPEC.md` or `git add docs/specs/`
 7. `git commit` with spec record template as message (read `templates/spec-record-template.md` for format).
    Set `Change type` to `added`, `changed`, or `removed` as appropriate.
 8. `git checkout $starting_branch`

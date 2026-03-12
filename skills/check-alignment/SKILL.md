@@ -21,13 +21,13 @@ alignment is confirmed.
 
 ### 1. Read Project Documents
 
-Read `docs/GOAL.md` and `docs/ROADMAP.md`. Also read `docs/SPEC.md` if it exists.
+Read `docs/GOAL.md` and `docs/ROADMAP.md`. For specs, use `docs/specs/README.md` if it exists, else `docs/SPEC.md`.
 
 - If `docs/GOAL.md` is missing: stop and say "No docs/GOAL.md found. Run `/init-techlead` to set up
   your project documents first."
 - If `docs/ROADMAP.md` is missing: stop and say "No docs/ROADMAP.md found. Run `/init-techlead` to
   set up your project documents first."
-- If `docs/SPEC.md` is missing: that's fine — it's optional. Proceed without it.
+- If neither `docs/specs/README.md` nor `docs/SPEC.md` exists: that's fine — it's optional. Proceed without it.
 
 ### 2. Check Alignment
 
