@@ -51,33 +51,46 @@ From that point on, Techlead is active. It checks alignment before code changes 
 
 ## Workflow
 
+### Setup
+
 ```mermaid
 flowchart TD
-    A["/init-techlead"] --> B["GOAL.md + ROADMAP.md + SPEC.md + ARCHITECTURE.md"]
-    B --> C{"User requests code change"}
+    A(["/init-techlead"]) --> B{"Existing docs\nfound?"}
+    B -- Yes --> C["Ask: overwrite or skip?"]
+    B -- No --> D
+    C --> D["Detect existing source code"]
+    D --> E["Interview user\n— goal, success criteria, out of scope,\ncurrent priorities, tech stack"]
+    E --> F["Generate all files:\nGOAL.md + ROADMAP.md + SPEC.md\nARCHITECTURE.md + CLAUDE.md"]
+    F --> G(["Alignment checks are now active"])
+```
 
-    C --> D["PreToolUse Hook fires"]
+### After Setup
+
+```mermaid
+flowchart TD
+    C(["Day-to-day development"])
+
+    C --> D["PreToolUse hook fires\non Write / Edit"]
     D --> E{"check-alignment\nMatches GOAL.md?\nIn ROADMAP Now?\nConforms to SPEC.md?"}
-
-    E -- Yes --> F["Write / Edit code"]
-    E -- No --> G["Stop — ask user to\nclarify or reprioritize"]
+    E -- Aligned --> F["Write / Edit code"]
+    E -- Misaligned --> G["Stop — ask user to\nclarify or reprioritize"]
     G --> C
 
     F --> H{"User commits"}
-    H --> I["verify-code-quality\nChecks all 5 philosophies\n+ spec conformance"]
-    I -- Pass --> J["Commit"]
-    I -- Violation --> K["Report file:line + fix\nResolve before commit"]
+    H --> I["verify-code-quality\n5 philosophies + spec conformance"]
+    I -- Pass --> J(["Commit"])
+    I -- Violation --> K["Report file:line + fix"]
     K --> F
 
-    C --> L{"/propose-architecture"}
+    C --> L["/propose-architecture"]
     L --> M["Research + trade-off matrix"]
-    M --> N["Recommend option\nwith project-specific rationale"]
-    N --> O["Record ADR\n(git branch + commit + tag)"]
+    M --> N["Recommend with\nproject-specific rationale"]
+    N --> O["Record ADR\n(git tag adr/NNN)"]
     O --> C
 
-    C --> P{"/propose-spec"}
+    C --> P["/propose-spec"]
     P --> Q["Define Given/When/Then\nbehaviors + acceptance criteria"]
-    Q --> R["Record spec change\n(git branch + commit + tag)"]
+    Q --> R["Record spec change\n(git tag spec/NNN)"]
     R --> C
 ```
 
