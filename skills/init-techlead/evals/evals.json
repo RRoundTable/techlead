@@ -1,0 +1,121 @@
+{
+  "skill_name": "init-techlead",
+  "evals": [
+    {
+      "id": 1,
+      "name": "code-exists-generates-specs",
+      "prompt": "Set up Techlead for this project. Here are my answers:\n1. Goal: Build a task management API\n2. Success: Users can create, list, and complete tasks\n3. Out of scope: Frontend, mobile apps\n4. Priorities: Task CRUD operations\n5. Tech stack: TypeScript, Express, Prisma, Jest",
+      "expected_output": "Detects existing source code. Scans the codebase and generates a non-empty SPEC.md (or specs/ directory) with capabilities derived from the actual source code. Specs include Given/When/Then behavioral descriptions. Does NOT create an empty SPEC.md from the template.",
+      "files": [
+        "skills/analyze-architecture/evals/fixtures/package.json",
+        "skills/analyze-architecture/evals/fixtures/tsconfig.json",
+        "skills/analyze-architecture/evals/fixtures/src/index.ts",
+        "skills/analyze-architecture/evals/fixtures/src/routes/tasks.ts",
+        "skills/analyze-architecture/evals/fixtures/src/models/task.ts"
+      ],
+      "assertions": [
+        {
+          "id": "detects-source-code",
+          "description": "Detects existing source code in the project (mentions finding code, scanning, or similar)"
+        },
+        {
+          "id": "generates-non-empty-spec",
+          "description": "Generates a non-empty SPEC.md or specs/ directory — does NOT use the empty template verbatim"
+        },
+        {
+          "id": "capabilities-from-source",
+          "description": "Spec capabilities are derived from actual source code (e.g., task management, CRUD operations) — not invented or generic"
+        },
+        {
+          "id": "includes-given-when-then",
+          "description": "Specs include Given/When/Then behavioral descriptions for at least one capability"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "specs-use-outcome-language",
+      "prompt": "Initialize Techlead for this project. Here are my answers:\n1. Goal: Build a task management API\n2. Success: Users can create, list, and complete tasks\n3. Out of scope: Frontend, mobile apps\n4. Priorities: Task CRUD operations\n5. Tech stack: TypeScript, Express, Prisma, Jest",
+      "expected_output": "Generated specs use outcome language describing what the user sees or gets. Specs do NOT contain API paths (/api/tasks), HTTP methods (GET, POST), status codes (200, 404), function names (TaskModel.findAll), or database schemas (prisma.task).",
+      "files": [
+        "skills/analyze-architecture/evals/fixtures/package.json",
+        "skills/analyze-architecture/evals/fixtures/tsconfig.json",
+        "skills/analyze-architecture/evals/fixtures/src/index.ts",
+        "skills/analyze-architecture/evals/fixtures/src/routes/tasks.ts",
+        "skills/analyze-architecture/evals/fixtures/src/models/task.ts"
+      ],
+      "assertions": [
+        {
+          "id": "no-api-paths",
+          "description": "Spec content does NOT contain API paths like /api/tasks, /tasks/:id, or similar URL patterns"
+        },
+        {
+          "id": "no-http-methods",
+          "description": "Spec content does NOT reference HTTP methods (GET, POST, PATCH, DELETE, PUT) as part of behavioral descriptions"
+        },
+        {
+          "id": "no-status-codes",
+          "description": "Spec content does NOT reference HTTP status codes (200, 201, 400, 404, 500) in behavioral descriptions"
+        },
+        {
+          "id": "uses-outcome-language",
+          "description": "Specs describe user-observable outcomes using language like 'user sees', 'system returns', 'user receives', 'list appears' — not implementation mechanics"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "greenfield-uses-empty-template",
+      "prompt": "Set up Techlead for this project. Here are my answers:\n1. Goal: Build a personal finance tracker\n2. Success: Users can log expenses and see monthly summaries\n3. Out of scope: Tax filing, investment tracking\n4. Priorities: Expense logging\n5. Tech stack: Python, FastAPI, SQLite, pytest",
+      "expected_output": "No source code exists. Creates an empty SPEC.md from the template. Does NOT invent capabilities or generate fake specs.",
+      "files": [],
+      "assertions": [
+        {
+          "id": "creates-empty-spec",
+          "description": "Creates a SPEC.md that is empty or uses the template placeholder — does NOT contain Generated Given/When/Then specs"
+        },
+        {
+          "id": "does-not-invent-capabilities",
+          "description": "Does NOT invent or fabricate capabilities based on the interview answers alone — specs are only generated when source code exists"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "name": "multi-file-threshold",
+      "prompt": "Initialize Techlead for this project. Here are my answers:\n1. Goal: Build a full-featured e-commerce platform\n2. Success: Users can browse products, place orders, and manage accounts\n3. Out of scope: Warehouse management, shipping logistics\n4. Priorities: Product catalog and checkout\n5. Tech stack: TypeScript, Express, Prisma, Jest",
+      "expected_output": "Detects 6+ capabilities from the ecommerce codebase. Uses multi-file docs/specs/ directory with a README.md index and per-capability files because there are 4+ capabilities.",
+      "files": [
+        "skills/init-techlead/evals/fixtures/ecommerce/package.json",
+        "skills/init-techlead/evals/fixtures/ecommerce/src/index.ts",
+        "skills/init-techlead/evals/fixtures/ecommerce/src/routes/products.ts",
+        "skills/init-techlead/evals/fixtures/ecommerce/src/routes/cart.ts",
+        "skills/init-techlead/evals/fixtures/ecommerce/src/routes/orders.ts",
+        "skills/init-techlead/evals/fixtures/ecommerce/src/routes/users.ts",
+        "skills/init-techlead/evals/fixtures/ecommerce/src/routes/reviews.ts",
+        "skills/init-techlead/evals/fixtures/ecommerce/src/routes/notifications.ts",
+        "skills/init-techlead/evals/fixtures/ecommerce/src/models/product.ts",
+        "skills/init-techlead/evals/fixtures/ecommerce/src/models/user.ts",
+        "skills/init-techlead/evals/fixtures/ecommerce/src/models/order.ts"
+      ],
+      "assertions": [
+        {
+          "id": "detects-multiple-capabilities",
+          "description": "Detects 4 or more distinct capabilities from the ecommerce codebase (products, cart, orders, users, reviews, notifications)"
+        },
+        {
+          "id": "uses-multi-file-format",
+          "description": "Creates a docs/specs/ directory (multi-file format) rather than a single docs/SPEC.md — because there are 4+ capabilities"
+        },
+        {
+          "id": "has-readme-index",
+          "description": "The docs/specs/ directory includes a README.md that serves as an index listing all capability spec files"
+        },
+        {
+          "id": "per-capability-files",
+          "description": "Creates separate spec files for individual capabilities (e.g., products.md, cart.md, orders.md) inside docs/specs/"
+        }
+      ]
+    }
+  ]
+}

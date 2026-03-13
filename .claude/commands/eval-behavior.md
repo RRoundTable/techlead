@@ -25,11 +25,15 @@ For each case in evals.json, run it **twice in the same turn** using the Agent t
 
 **⚠️ Absolute paths bypass isolation.** Worktree isolation only works when agents use **relative paths**. If an agent writes to an absolute path (e.g. the real repo's `docs/` directory), it lands outside the worktree and contaminates the shared repo. Every agent prompt must include the instruction below to prevent this.
 
+**⚠️ Remove CLAUDE.md to prevent context leakage.** CLAUDE.md describes the plugin's workflows (ADR branches, spec tags, etc.), which gives the without-skill agent knowledge it shouldn't have. Both agents must delete CLAUDE.md at the start so the comparison is fair — the with-skill agent gets only its explicit skill instructions, and the without-skill agent gets nothing.
+
 **Fixture files**: If the eval requires fixture files (listed in the `files` array), the agent prompt should instruct the agent to copy them to `docs/` at the start. For example: `"Copy skills/$ARGUMENTS/evals/fixtures/GOAL.md to docs/GOAL.md before starting."`
 
 **With-skill agent prompt:**
 ```
 Execute this task following the skill instructions below.
+
+FIRST: Run `rm -f CLAUDE.md` to remove project instructions that would leak context into the eval.
 
 SKILL INSTRUCTIONS:
 <paste full contents of skills/$ARGUMENTS/SKILL.md here>
@@ -44,11 +48,14 @@ Create directories as needed.
 
 IMPORTANT: Use only relative paths for all file operations (docs/, evals/$ARGUMENTS/, etc.).
 Do NOT write to any absolute path — absolute paths bypass your isolated worktree and contaminate the shared repo.
+Do NOT read CLAUDE.md, skills/, or templates/ directories — use only the skill instructions provided above and the docs/ directory.
 ```
 
 **Without-skill agent prompt:**
 ```
 Execute this task using only your own judgment — no special instructions.
+
+FIRST: Run `rm -f CLAUDE.md` to remove project instructions that would leak context into the eval.
 
 TASK: <eval prompt>
 
@@ -60,6 +67,7 @@ Create directories as needed.
 
 IMPORTANT: Use only relative paths for all file operations (docs/, evals/$ARGUMENTS/, etc.).
 Do NOT write to any absolute path — absolute paths bypass your isolated worktree and contaminate the shared repo.
+Do NOT read CLAUDE.md, skills/, or templates/ directories — use only your own judgment and the docs/ directory.
 ```
 
 Use the eval case `name` field as the directory name.

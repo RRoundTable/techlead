@@ -49,8 +49,28 @@ After the user responds, create all files at once:
 2. **docs/ROADMAP.md** — Fill from `templates/ROADMAP.md.template`. Put the user's priorities
    in "Now". Leave "Next" and "Later" with placeholder items.
 
-3. **docs/SPEC.md** — Create from `templates/SPEC.md.template`. This starts empty — capabilities
-   are added later via `/propose-spec`.
+3. **docs/SPEC.md** — If source code was detected in Step 1b, scan the codebase to generate
+   initial specs. Otherwise, create from `templates/SPEC.md.template` (empty).
+
+   **Step 3b: Generate Specs from Source Code** (only when code exists)
+
+   a. **Scan for capabilities** — Read route handlers, CLI commands, UI components, model files,
+      exported functions. Identify user-facing capabilities (not internal helpers).
+
+   b. **Derive Given/When/Then behaviors** — For each capability, write behavioral specs describing
+      user-observable outcomes. Use outcome language: what the user sees/gets, NOT implementation
+      details. Anti-patterns to avoid: API paths, HTTP methods, status codes, function names, DB schemas.
+
+   c. **Choose format** — If 4+ capabilities or any single capability needs >30 lines of behaviors,
+      use multi-file `docs/specs/` directory with `README.md` index + per-capability files.
+      Otherwise use single `docs/SPEC.md`.
+
+   d. **Present for confirmation** — Show the derived capabilities list and ask:
+      > I found these capabilities in the codebase: [list]. I'll generate behavioral specs for each.
+      > Any to add, remove, or rename before I proceed?
+
+   e. **Generate** — Write spec files using the project's own terminology. Combine with any context
+      from Step 2 interview answers (e.g., if user mentioned features, incorporate those).
 
 4. **docs/ARCHITECTURE.md** — Fill from `templates/ARCHITECTURE.md.template` with the tech stack.
    Fill the System Overview with a simple placeholder diagram. Fill the Directory Structure
@@ -80,8 +100,12 @@ Use /propose-spec to define feature specifications.
 Start coding — alignment checks are now active.
 ```
 
+When specs were generated from source code in Step 3b, replace the `docs/SPEC.md` line with:
+- `✓ docs/SPEC.md (generated from codebase — N capabilities)` for single-file format, or
+- `✓ docs/specs/ (generated from codebase — N capabilities)` for multi-file format
+
 If source code was detected in Step 1b, also print:
 
 ```
-Tip: Run /analyze-architecture to generate detailed architecture docs from your existing code.
+Tip: Run /analyze-architecture for detailed architecture docs. Use /propose-spec to add or refine feature specifications.
 ```
