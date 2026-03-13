@@ -1,6 +1,6 @@
 # Evaluation Results
 
-**Date:** 2026-03-11
+**Date:** 2026-03-13
 **Model:** Claude Opus 4.6
 
 ---
@@ -12,12 +12,15 @@
 | **techlead-workflow** | 19/20 (95%) | 11/11 (100%) | 0/11 (0%) | +100% |
 | **check-alignment** | 20/20 (100%) | 9/9 (100%) | 2/9 (22%) | +78% |
 | **verify-code-quality** | 20/20 (100%) | 12/12 (100%) | 0/12 (0%) | +100% |
-| **propose-architecture** | 20/20 (100%) | 12/12 (100%) | 3/12 (25%) | +75% |
-| **propose-spec** | pending (24 cases) | pending (30 assertions) | pending | pending |
+| **propose-architecture** | 20/20 (100%) | 18/18 (100%) | 4/18 (22%) | +78% |
+| **propose-spec** | pending (23 cases) | 6/6 (100%) | 3/6 (50%) | +50% |
+| **analyze-architecture** | pending (24 cases) | 13/13 (100%) | 11/13 (85%) | +15% |
+| **init-techlead** | pending (no trigger evals) | 14/14 (100%) | 5/14 (36%) | +64% |
+| **restructure-docs** | pending (22 cases) | 15/16 (94%) | 7/16 (44%) | +50% |
 | **read-history** | pending | — | — | — |
-| **Total** | **79/80 (99%)** | **44/44 (100%)** | **5/44 (11%)** | **+89%** |
+| **Total** | **79/80 (99%)** | **98/99 (99%)** | **32/99 (32%)** | **+67%** |
 
-*propose-spec and read-history evals pending first run. Totals reflect last completed run.*
+*Trigger evals pending for analyze-architecture, init-techlead, restructure-docs, propose-spec, read-history. Totals reflect last completed trigger runs.*
 
 ---
 
@@ -52,8 +55,6 @@
 
 **Analysis:** Improved from 55% to 95% after rewriting the description to explicitly list trigger patterns (design trade-offs, over-engineering questions, abstraction decisions, error handling patterns, code structure). The single remaining failure ("What's the simplest way to implement this without over-engineering it?") is a borderline case — Claude treats it as a generic implementation question rather than a design philosophy consultation.
 
-**Description change:** Replaced the generic "always-active persona" framing with specific trigger patterns: "whenever the user asks about code design trade-offs, whether something is over-engineered, if an abstraction is premature, whether to add extensibility or flexibility." Added explicit mention of error handling patterns, code structure questions, and a "when in doubt, consult it" directive.
-
 ### check-alignment — 20/20 (100%)
 
 | Result | Type | Query |
@@ -79,7 +80,7 @@
 | PASS | no-trigger | What's the best practice for REST API versioning? |
 | PASS | no-trigger | Summarize the five techlead philosophies |
 
-**Analysis:** Perfect 100%. The description clearly distinguishes "code change requests" from "information queries." Claude consistently invokes the skill when the user asks to implement, build, or work on something, and correctly skips it for read-only or informational queries.
+**Analysis:** Perfect 100%. The description clearly distinguishes "code change requests" from "information queries."
 
 ### verify-code-quality — 20/20 (100%)
 
@@ -108,13 +109,9 @@
 | PASS | no-trigger | What's the best way to handle file uploads in Node.js? |
 | PASS | no-trigger | Help me debug this failing test |
 
-**Analysis:** Improved from 75% to 100% after rewriting the description. All 5 previously failing sub-check queries now trigger correctly. The key fix was explicitly framing specific violation scans as trigger patterns and adding the directive "even if the user asks about just one specific sub-check, this skill covers it."
-
-**Description change:** Added explicit sub-check trigger patterns: "when the user asks to scan for or check specific code violations — such as TODO/FIXME/HACK markers, cross-feature imports, module coupling, undocumented dependencies missing ADRs, empty catch blocks." Added the closing directive about single sub-checks.
+**Analysis:** Improved from 75% to 100% after rewriting the description. Key fix: explicitly framing specific violation scans as trigger patterns and adding "even if the user asks about just one specific sub-check" directive.
 
 ### propose-architecture — 20/20 (100%)
-
-*Previously named architecture-researcher.*
 
 | Result | Type | Query |
 |--------|------|-------|
@@ -139,29 +136,27 @@
 | PASS | no-trigger | Read the existing ADRs for this project |
 | PASS | no-trigger | Help me debug why the JWT token verification fails |
 
-**Analysis:** Perfect 100%. The description effectively distinguishes "compare/evaluate/choose technology" queries from implementation, debugging, and review queries. The phrase "compare A vs B" is a strong discriminator.
+**Analysis:** Perfect 100%. "compare A vs B" is a strong discriminator.
 
-### propose-spec — pending (24 cases: 12 trigger + 12 no-trigger)
+### propose-spec — pending (23 cases)
 
-*Evals not yet run. Trigger eval set includes:*
+*Trigger evals defined but not yet run.*
 
-**Hard boundary true cases (should trigger):**
-- Explicit command: `/propose-spec "User authentication"`
-- Behavioral questions: "What should the login feature do?", "How should team invitations behave?"
-- Acceptance criteria: "Define acceptance criteria for task deletion"
-- Pre-implementation planning: "Before I start coding the invite system, let me define the requirements"
-- Spec update: "The auth spec is missing the forgot-password flow. Let's add that capability."
+### analyze-architecture — pending (24 cases)
 
-**Hard boundary false cases (should NOT trigger):**
-- Architecture questions: "Which database should I use?", "Compare Redis vs Memcached" → propose-architecture
-- Implementation details disguised as spec: "What HTTP status code should login return on failure?"
-- Reading existing spec: "Show me the current authentication spec in SPEC.md" → file read
-- Testing, not defining: "Write integration tests for the authentication flow"
-- Architecture disguised as behavior: "How should the database handle concurrent writes?" → propose-architecture
+*Trigger evals defined but not yet run.*
+
+### init-techlead — pending
+
+*No trigger evals defined yet.*
+
+### restructure-docs — pending (22 cases)
+
+*Trigger evals defined but not yet run.*
 
 ### read-history — pending
 
-*Description updated to support dual namespace (adr/* + spec/*). Trigger evals not yet created.*
+*No trigger evals defined yet.*
 
 ---
 
@@ -211,8 +206,6 @@
 | implements-jwt | PASS — Full JWT middleware | PASS — Full JWT middleware with tests |
 | no-blocking-message | PASS — No blocking | PASS — No blocking |
 
-**Key finding:** The skill correctly teaches "don't announce alignment — just proceed." Without the skill, the agent explicitly announces alignment before implementing, which wastes the user's time on a passing check.
-
 #### wrong-milestone — with_skill: 3/3 | without_skill: 0/3
 
 | Assertion | with_skill | without_skill |
@@ -221,8 +214,6 @@
 | current-priority-cited | PASS — "Current Now priority is User authentication (JWT)" | FAIL — No mention of current priority |
 | asks-to-reprioritize | PASS — "Want to reprioritize?" | FAIL — Proceeds with full implementation |
 
-**Key finding:** The strongest behavioral delta in the eval suite. Without the skill, Claude builds the entire team workspaces feature (teams table, membership, RBAC, routes) without questioning whether it should. With the skill, it stops in one sentence and asks to reprioritize.
-
 #### off-goal — with_skill: 3/3 | without_skill: 0/3
 
 | Assertion | with_skill | without_skill |
@@ -230,8 +221,6 @@
 | blocks-request | PASS — "I will not write code for this request" | FAIL — Designs full blog system |
 | cites-goal | PASS — References goal text verbatim | FAIL — No reference to project goal |
 | clear-rejection | PASS — Clear rejection with remediation path | FAIL — "Want me to start implementing this?" |
-
-**Key finding:** Without the skill, Claude enthusiastically designs a complete blog API (data models, endpoints, rich text, pagination, publishing workflow). With the skill, it refuses in 5 lines and cites the goal. This demonstrates the skill's core value: preventing scope creep.
 
 ### verify-code-quality
 
@@ -244,8 +233,6 @@
 | does-not-just-approve | PASS — Blocks the commit | FAIL — Approves the clean, well-structured code |
 | suggests-simpler-version | PASS — Suggests createTask(data) with inline validation | FAIL — Suggests keeping the options pattern |
 
-**Key finding:** Baseline Claude praises speculative options as "good flexibility" and approves the commit. The skill correctly identifies YAGNI violations in code that *looks* clean.
-
 #### multi-violation-stop-at-first — with_skill: 4/4 | without_skill: 0/4
 
 | Assertion | with_skill | without_skill |
@@ -254,8 +241,6 @@
 | demands-fix-before-continuing | PASS — Blocks commit, asks for fix first | FAIL — Lists all fixes at once |
 | uses-structured-format | PASS — **[Philosophy Name] violation** format | FAIL — Ad-hoc numbered list |
 | does-not-enumerate-all | PASS — Stops after first violation category | FAIL — Comprehensive laundry list of all issues |
-
-**Key finding:** Baseline Claude produces a comprehensive list of all issues. The skill enforces the stop-at-first-violation workflow — fix one, re-check, repeat.
 
 #### adr-check-for-pattern-not-dependency — with_skill: 4/4 | without_skill: 0/4
 
@@ -266,26 +251,7 @@
 | base-class-yagni-flagged | PASS — Flags BaseRepository as premature abstraction | FAIL — Praises the pattern as "good choice" |
 | blocks-commit | PASS — Blocks commit pending ADR | FAIL — Approves the commit |
 
-**Key finding:** Baseline Claude sees "no new npm packages" and approves. The skill recognizes that new architectural *patterns* (not just dependencies) require ADRs.
-
-### propose-spec — pending (6 cases, 30 assertions)
-
-*Evals not yet run. Behavioral eval set tests 6 discriminating behaviors:*
-
-| Case | Tests | Key assertion |
-|------|-------|---------------|
-| `outcome-not-output` | User provides API paths, HTTP methods, DB schema — skill must reframe as user-observable outcomes | Spec does NOT include /api/... paths, POST/GET/PUT, status codes, or table names |
-| `existing-spec-update` | Auth spec exists, user wants to add OAuth — skill must treat as update | Reads SPEC.md first; preserves existing behaviors; uses change type 'changed' not 'added' |
-| `out-of-scope-flagged` | User requests analytics spec (out of scope in GOAL.md) with "really valuable" argument | Does NOT write behaviors before addressing scope conflict; not swayed by value argument |
-| `invariant-detection` | Team workspaces with roles — skill must identify cross-cutting invariants | Identifies access control invariant; invariants listed separately from Given/When/Then behaviors |
-| `happy-path-not-enough` | User gives only sunny-day scenario, says "that's basically it" | Does NOT accept happy path as complete; proposes error and edge case scenarios |
-| `spec-architecture-boundary` | User mixes Elasticsearch, class names, table names into spec request | Spec does NOT include technology choices; explicitly redirects architecture concerns to /propose-architecture |
-
-*Expected: high behavioral delta. Without the skill, baseline Claude accepts implementation details as valid spec content, skips GOAL.md scope checks, and doesn't enforce Given/When/Then format.*
-
 ### propose-architecture
-
-*Previously named architecture-researcher.*
 
 #### contradicts-existing-adr — with_skill: 4/4 | without_skill: 0/4
 
@@ -296,8 +262,6 @@
 | yagni-risk-in-matrix | PASS — YAGNI risk as explicit dimension | FAIL — No YAGNI dimension |
 | recommends-against-migration | PASS — Recommends staying with Express | FAIL — "Fastify is a solid choice if performance matters" |
 
-**Key finding:** Baseline Claude treats every technology question as a fresh decision. The skill grounds analysis in existing ADRs and evaluates whether prior reasoning still holds.
-
 #### research-required-niche-topic — with_skill: 4/4 | without_skill: 2/4
 
 | Assertion | with_skill | without_skill |
@@ -306,8 +270,6 @@
 | community-health-researched | PASS — Specific release dates, download counts | PASS — Also includes npm/GitHub data |
 | architecture-md-consulted | PASS — References ARCHITECTURE.md tech stack | FAIL — No reference to project architecture docs |
 | sources-with-urls | PASS — Dedicated Sources section with URLs | FAIL — No Sources section |
-
-**Note:** Both identify infrastructure costs (obvious from the prompt). The skill differentiates by consulting ARCHITECTURE.md as a constraint and including a Sources section with URLs.
 
 #### scale-mismatch-research — with_skill: 4/4 | without_skill: 1/4
 
@@ -318,45 +280,209 @@
 | simpler-alternatives-matrix | PASS — Matrix with Docker Compose, PM2, systemd | FAIL — Mentions alternatives but no structured matrix |
 | output-format-followed | PASS — Context, Trade-off Matrix, Recommendation, Sources | FAIL — Ad-hoc prose format |
 
-**Note:** Both recognize K8s is overkill (obvious at this scale). The skill differentiates through structured output format, concrete thresholds, and a proper trade-off matrix.
+#### adr-branch-recorded — with_skill: 6/6 | without_skill: 1/6
+
+| Assertion | with_skill | without_skill |
+|-----------|------------|---------------|
+| creates-adr-branch | PASS — Creates git branch with adr/ prefix | FAIL — No branch creation |
+| commits-adr-template | PASS — Commits with ADR template format | FAIL — No commit |
+| updates-architecture-md | PASS — Updates docs/ARCHITECTURE.md | PASS — Manually edited on working branch |
+| merges-with-no-ff | PASS — Merges ADR branch with --no-ff flag | FAIL — No merge workflow |
+| creates-adr-tag | PASS — Creates git tag with adr/ prefix | FAIL — No tag creation |
+| deletes-adr-branch | PASS — Deletes ADR branch after tagging | FAIL — No branch workflow |
+
+**Key finding:** Without the skill, Claude updates ARCHITECTURE.md directly on the working branch. The skill enforces the full ADR workflow: branch → commit → merge --no-ff → tag → delete branch. This is critical for `read-history` to work — without tags, past decisions are invisible.
+
+### propose-spec
+
+#### spec-branch-recorded — with_skill: 6/6 | without_skill: 3/6
+
+| Assertion | with_skill | without_skill |
+|-----------|------------|---------------|
+| creates-spec-branch | PASS — Creates git branch with spec/ prefix | FAIL — Used git plumbing instead of checkout -b |
+| updates-spec-md | PASS — Updates docs/SPEC.md with Given/When/Then | PASS — Updates docs/SPEC.md |
+| commits-spec-template | PASS — Commits with spec record template format | PASS — Commits with template |
+| merges-with-no-ff | PASS — Merges spec branch with --no-ff flag | FAIL — Bypassed merge workflow |
+| creates-spec-tag | PASS — Creates git tag with spec/ prefix | PASS — Creates tag |
+| deletes-spec-branch | PASS — Deletes spec branch after tagging | FAIL — Never deleted branch |
+
+**Key finding:** Without the skill, Claude gets the content right (spec updates, tags) but skips the branch workflow (no proper branch, no merge, no cleanup). The skill enforces the full spec record workflow matching the ADR pattern.
+
+### analyze-architecture
+
+#### adapts-to-project-type — with_skill: 5/5 | without_skill: 4/5
+
+| Assertion | with_skill | without_skill |
+|-----------|------------|---------------|
+| identifies-web-api | PASS — Identifies project as web API | PASS |
+| tech-stack-table | PASS — Produces tech stack table with versions from package.json | PASS |
+| includes-mermaid-diagram | PASS — Includes at least one mermaid diagram | FAIL — ASCII art instead of mermaid |
+| documents-actual-structure | PASS — Documents actual directory structure (src/routes/, src/models/) | PASS |
+| no-nonexistent-layers | PASS — Does NOT document non-existent layers | PASS |
+
+#### asks-for-corrections — with_skill: 2/2 | without_skill: 1/2
+
+| Assertion | with_skill | without_skill |
+|-----------|------------|---------------|
+| presents-summary | PASS — Presents a summary of findings | PASS |
+| asks-for-feedback | PASS — Explicitly asks user for corrections/feedback | FAIL — Silently finalizes |
+
+**Key finding:** The skill teaches collaborative architecture documentation — present findings and ask for corrections rather than treating the scan as authoritative.
+
+#### notes-code-smells-objectively — with_skill: 3/3 | without_skill: 3/3
+
+| Assertion | with_skill | without_skill |
+|-----------|------------|---------------|
+| detects-cross-feature-coupling | PASS — Detects billing imports from auth | PASS |
+| notes-objectively | PASS — Uses neutral/descriptive language | PASS |
+| no-refactoring-prescriptions | PASS — Does NOT prescribe refactoring steps | PASS |
+
+**Note:** Non-discriminating case — baseline Claude also describes coupling objectively without prescribing fixes. Both respect the boundary between observation (analyze-architecture) and recommendation (propose-architecture).
+
+#### single-file-for-simple-project — with_skill: 3/3 | without_skill: 3/3
+
+| Assertion | with_skill | without_skill |
+|-----------|------------|---------------|
+| identifies-cli-tool | PASS — Identifies project as CLI tool | PASS |
+| single-file-output | PASS — Produces single ARCHITECTURE.md (not multi-file) | PASS |
+| no-complex-layers | PASS — Does NOT document complex layer structures | PASS |
+
+**Note:** Non-discriminating case — baseline Claude also correctly scales documentation to project complexity.
+
+**analyze-architecture summary:** +15% delta is the lowest of all skills. Two cases are non-discriminating (6/6 assertions pass without skill). The skill's value concentrates in mermaid diagrams (vs ASCII art) and asking for corrections (vs silently finalizing). Consider strengthening evals with harder cases.
+
+### init-techlead
+
+#### code-exists-generates-specs — with_skill: 4/4 | without_skill: 4/4
+
+| Assertion | with_skill | without_skill |
+|-----------|------------|---------------|
+| detects-existing-code | PASS — Detects existing source code | PASS |
+| generates-spec | PASS — Generates non-empty SPEC.md or specs/ | PASS |
+| capabilities-from-source | PASS — Capabilities derived from actual source code | PASS |
+| given-when-then | PASS — Specs include Given/When/Then behaviors | PASS |
+
+**Note:** Non-discriminating case — baseline Claude also generates specs from source code correctly.
+
+#### greenfield-uses-empty-template — with_skill: 2/2 | without_skill: 0/2
+
+| Assertion | with_skill | without_skill |
+|-----------|------------|---------------|
+| empty-template | PASS — Creates SPEC.md with empty/template placeholder | FAIL — Contains 3 fabricated specs |
+| no-invented-capabilities | PASS — Does NOT invent capabilities from interview answers alone | FAIL — Fabricated 3 capabilities from interview |
+
+**Key finding:** Strongest discriminator. Baseline Claude fabricates specs from the project interview, inventing capabilities that don't exist in code. The skill enforces "no code = empty template" — specs must be derived from source, not imagined.
+
+#### multi-file-threshold — with_skill: 4/4 | without_skill: 1/4
+
+| Assertion | with_skill | without_skill |
+|-----------|------------|---------------|
+| detects-4-plus-capabilities | PASS — Detects 4+ distinct capabilities | PASS |
+| creates-specs-directory | PASS — Creates docs/specs/ directory (multi-file) | FAIL — Single SPEC.md |
+| includes-readme-index | PASS — Includes README.md index | FAIL — No index |
+| separate-capability-files | PASS — Creates separate files per capability | FAIL — All in one file |
+
+**Key finding:** Baseline Claude detects the capabilities but dumps them all in one file. The skill enforces the 4+ threshold rule: switch to multi-file format with README.md index.
+
+#### specs-use-outcome-language — with_skill: 4/4 | without_skill: 0/4
+
+| Assertion | with_skill | without_skill |
+|-----------|------------|---------------|
+| no-api-paths | PASS — Spec does NOT contain API paths | FAIL — Contains /api/tasks, etc. |
+| no-http-methods | PASS — Does NOT reference HTTP methods | FAIL — Uses POST, GET, PATCH, DELETE |
+| no-status-codes | PASS — Does NOT reference HTTP status codes | FAIL — Uses 200, 201, 400, 404, 500 |
+| user-observable-outcomes | PASS — Describes user-observable outcomes | FAIL — Uses implementation language |
+
+**Key finding:** Strongest behavioral delta. Baseline Claude generates specs full of implementation details (paths, methods, status codes). The skill enforces outcome-oriented language — what the *user* observes, not what the *system* does.
+
+### restructure-docs
+
+#### brownfield-migration — with_skill: 4/4 | without_skill: 2/4
+
+| Assertion | with_skill | without_skill |
+|-----------|------------|---------------|
+| scans-before-proposing | PASS — Scans docs/ and reads content before proposing | PASS |
+| classifies-all-files | PASS — Correctly classifies all 4 files | PASS |
+| presents-migration-plan | PASS — Presents migration plan before making changes | FAIL — Shows summary after |
+| asks-for-confirmation | PASS — Asks user to confirm before executing | FAIL — No confirmation |
+
+**Key finding:** Baseline Claude moves files first, explains later. The skill enforces plan-first: present migration plan → get confirmation → execute.
+
+#### multi-file-threshold — with_skill: 4/4 | without_skill: 0/4
+
+| Assertion | with_skill | without_skill |
+|-----------|------------|---------------|
+| detects-threshold | PASS — Detects 6 capabilities exceed 4+ threshold | FAIL — Uses single SPEC.md |
+| proposes-specs-directory | PASS — Proposes docs/specs/ with README.md and per-capability files | FAIL — No directory structure |
+| shows-directory-structure | PASS — Shows directory structure in migration plan | FAIL — No plan |
+| per-capability-files | PASS — Each capability gets own file | FAIL — All in one file |
+
+**Key finding:** Same multi-file threshold rule as init-techlead — baseline Claude ignores it during restructuring too.
+
+#### supplementary-handling — with_skill: 3/4 | without_skill: 2/4
+
+| Assertion | with_skill | without_skill |
+|-----------|------------|---------------|
+| migrates-architecture | PASS — Migrates architecture-notes.md into docs/ARCHITECTURE.md | PASS |
+| moves-to-reference | PASS — Moves supplementary files to docs/reference/ | FAIL — Kept them in place |
+| no-file-deletion | PASS — Does NOT delete or discard any files | PASS |
+| notes-missing-canonical | FAIL — Creates GOAL.md, ROADMAP.md, SPEC.md from inferred content | FAIL — Creates from inferred content |
+
+**Note:** The single with_skill failure: both variants create missing canonical files from inferred content rather than noting their absence and suggesting the user create them. The skill should note "GOAL.md is missing — run /init-techlead" rather than fabricating it.
+
+#### user-story-conversion — with_skill: 4/4 | without_skill: 3/4
+
+| Assertion | with_skill | without_skill |
+|-----------|------------|---------------|
+| converts-to-given-when-then | PASS — Converts "As a user, I want..." into Given/When/Then | PASS |
+| converts-to-now-next-later | PASS — Converts Phase 1/2/3 into Now/Next/Later milestones | FAIL — Uses Milestone 1/2/3 instead |
+| preserves-domain-terminology | PASS — Preserves domain terminology while restructuring | PASS |
+| extracts-goal | PASS — Extracts project goal and success criteria | PASS |
+
+**Key finding:** Baseline Claude restructures content but uses generic "Milestone" labels. The skill enforces Techlead's canonical Now/Next/Later format.
 
 ---
 
 ## Key Findings
 
-### 1. All skills now have strong behavioral deltas
-After redesigning evals to test behavioral gaps rather than obvious anti-patterns, every skill shows significant discrimination:
-- **techlead-workflow:** +27% → +100%. New evals test pushback on "best practices" and scope creep questioning.
-- **verify-code-quality:** +0% → +100%. New evals test subtle YAGNI in clean code, stop-at-first-violation workflow, and ADR for patterns.
-- **architecture-researcher:** +0% → +75%. New evals test ADR awareness, structured output format, and web research.
-- **check-alignment:** +78% (unchanged). Already well-designed.
+### 1. All skills show positive behavioral deltas
 
-### 2. Testing absence is more discriminating than testing presence
-The most effective assertions test what the skill *prevents*: "does NOT approve", "does NOT enumerate all", "does NOT start implementing." Baseline Claude's default is to be helpful and say yes — skills that override this create the largest behavioral gaps. The propose-spec eval set follows this pattern: "does NOT include API paths", "does NOT write behaviors before addressing scope conflict", "does NOT accept happy path as complete."
+Every skill with behavioral evals improves over baseline, though deltas vary significantly:
 
-### 3. Subtle violations beat obvious anti-patterns
-Previous evals used FIXME markers, cross-feature imports, and premature EventEmitter — patterns baseline Claude already catches. The redesigned evals use code that *looks good* (clean options object, well-structured Repository pattern, popular logging setup) but violates skill-specific principles. This is where skill value emerges.
+| Delta | Skills | Pattern |
+|-------|--------|---------|
+| +100% | techlead-workflow, verify-code-quality | Philosophy enforcement — baseline Claude never pushes back |
+| +78% | check-alignment, propose-architecture | Workflow enforcement — branch/tag/ADR patterns, milestone gating |
+| +50-64% | propose-spec, init-techlead, restructure-docs | Format enforcement — outcome language, multi-file threshold, plan-first |
+| +15% | analyze-architecture | Weak delta — 2 of 4 cases are non-discriminating |
 
-### 4. Skill-specific workflows are strong discriminators
-Stop-at-first-violation (verify-code-quality), ADR consultation (architecture-researcher), and roadmap grounding (techlead-workflow) are behaviors that don't emerge from baseline Claude. These workflow-level behaviors are the skills' core contribution.
+### 2. Git workflow enforcement is a strong discriminator
 
-### 5. Description rewrites dramatically improved trigger accuracy
-After rewriting skill descriptions to explicitly list trigger patterns:
-- **techlead-workflow:** 55% → 95% (+40pp). Key: replaced "always-active persona" framing with specific trigger patterns (design trade-offs, over-engineering, abstraction decisions).
-- **verify-code-quality:** 75% → 100% (+25pp). Key: added explicit sub-check patterns and "even if the user asks about just one specific sub-check" directive.
-- **Overall trigger accuracy:** 82% → 99%.
+The new `adr-branch-recorded` and `spec-branch-recorded` cases confirm that baseline Claude skips the branch → commit → merge --no-ff → tag → cleanup workflow. This is critical: without tags, `read-history` can't discover past decisions. The skill enforces the workflow that makes the system self-documenting.
 
-### 6. Remaining edge case: generic implementation questions
-The single remaining trigger failure ("What's the simplest way to implement this without over-engineering it?") reveals that Claude treats implementation-focused questions as direct tasks rather than philosophy consultations, even when "over-engineering" is mentioned. This is a reasonable boundary — the query is primarily about implementation, not design philosophy.
+### 3. Outcome-oriented language is the hardest behavior to teach
+
+Without the skill, Claude consistently generates specs with `/api/tasks`, `POST`, `200 OK` — implementation details masquerading as spec. The `specs-use-outcome-language` case (0/4 without skill, 4/4 with) shows this is the single behavior that baseline Claude simply cannot do on its own.
+
+### 4. analyze-architecture needs harder eval cases
+
+At +15% delta with 2 non-discriminating cases, analyze-architecture's evals don't yet prove strong skill value. The discriminating behaviors (mermaid diagrams, asking for corrections) are real but narrow. Consider adding cases that test: scanning unfamiliar codebases without README, detecting when project structure contradicts ARCHITECTURE.md, or producing architecture for polyglot repos.
+
+### 5. "Don't fabricate" is a recurring pattern
+
+Both init-techlead (`greenfield-uses-empty-template`) and restructure-docs (`supplementary-handling`) test whether Claude invents content from thin air. Baseline Claude fabricates specs from interviews and creates canonical files from inferred content. The skills mostly override this, with one remaining failure in restructure-docs.
+
+### 6. Testing absence remains the strongest eval strategy
+
+The highest-delta assertions continue to be "does NOT" checks: does NOT contain API paths, does NOT invent capabilities, does NOT start implementing, does NOT approve. This pattern should guide future eval design.
 
 ---
 
 ## Recommendations
 
-1. **All skills:** Behavioral evals are now well-calibrated. Maintain current eval set as regression tests.
-2. **propose-architecture:** 3 non-discriminating assertions could be strengthened by removing hints from prompts (e.g., not stating the tech stack, using subtler scale mismatches). Low priority at +75% delta.
-3. **Trigger evals:** No changes needed for existing skills. 99% accuracy across all skills.
-4. **propose-spec:** Run `/eval-trigger propose-spec` and `/eval-behavior propose-spec` to establish baseline. Target: 90%+ trigger accuracy, 100% behavioral pass rate with-skill.
-5. **read-history:** Run `/eval-trigger read-history` after creating trigger evals for the updated dual-namespace description.
-6. **Regression check:** Re-run `/eval-trigger` on check-alignment, verify-code-quality, and read-history to verify no regression from description changes that added SPEC.md references.
-7. **Next step:** Run evals periodically to detect regressions as skill prompts evolve.
+1. **analyze-architecture:** Add harder eval cases to increase delta above +15%. Test codebase scanning without README, detecting ARCHITECTURE.md drift, polyglot repos.
+2. **restructure-docs:** Fix the `supplementary-handling` with_skill failure — skill should note missing canonical files rather than fabricating them.
+3. **Trigger evals:** Run pending triggers for analyze-architecture (24 cases), restructure-docs (22 cases), propose-spec (23 cases). Create trigger evals for init-techlead and read-history.
+4. **propose-spec:** The existing 6-case behavioral eval set (outcome-not-output, existing-spec-update, etc.) has not been run yet. Run `/eval-behavior propose-spec` to get full coverage.
+5. **read-history:** No behavioral or trigger evals exist. Create and run both.
+6. **Regression check:** Re-run all trigger evals periodically to catch regressions from skill description changes.
