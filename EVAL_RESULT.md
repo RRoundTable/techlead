@@ -9,7 +9,7 @@
 
 | Skill | Trigger Accuracy | Behavioral (with) | Behavioral (without) | Delta |
 |-------|------------------|--------------------|----------------------|-------|
-| **techlead-workflow** | 19/20 (95%) | 11/11 (100%) | 0/11 (0%) | +100% |
+| **techlead-workflow** | 19/20 (95%) | 20/20 (100%) | 0/20 (0%) | +100% |
 | **check-alignment** | 20/20 (100%) | 9/9 (100%) | 2/9 (22%) | +78% |
 | **verify-code-quality** | 20/20 (100%) | 12/12 (100%) | 0/12 (0%) | +100% |
 | **propose-architecture** | 20/20 (100%) | 18/18 (100%) | 4/18 (22%) | +78% |
@@ -18,7 +18,7 @@
 | **init-techlead** | pending (no trigger evals) | 14/14 (100%) | 5/14 (36%) | +64% |
 | **restructure-docs** | pending (22 cases) | 15/16 (94%) | 7/16 (44%) | +50% |
 | **read-history** | pending | — | — | — |
-| **Total** | **79/80 (99%)** | **98/99 (99%)** | **32/99 (32%)** | **+67%** |
+| **Total** | **79/80 (99%)** | **107/108 (99%)** | **32/108 (30%)** | **+69%** |
 
 *Trigger evals pending for analyze-architecture, init-techlead, restructure-docs, propose-spec, read-history. Totals reflect last completed trigger runs.*
 
@@ -195,6 +195,36 @@
 | offers-scoped-alternative | PASS — Suggests auth-only error handling inline | FAIL — Proceeds with the project-wide plan |
 
 **Key finding:** Baseline Claude treats the user's 5-step plan as a reasonable request and starts implementing. The skill distinguishes between the legitimate kernel (auth error handling) and the scope creep (project-wide error framework).
+
+#### routes-to-propose-architecture — with_skill: 3/3 | without_skill: 0/3
+
+| Assertion | with_skill | without_skill |
+|-----------|------------|---------------|
+| suggests-propose-architecture | PASS — "run /propose-architecture first" with trade-off analysis and ADR | FAIL — "Sure, let's get that Redis caching layer set up!" |
+| does-not-start-implementing | PASS — No code written, entirely pushback and alternatives | FAIL — Complete implementation: ioredis client, cache middleware, invalidation helper, route integration |
+| identifies-architectural-change | PASS — "Redis is a new infrastructure dependency" and "no ADR for a caching strategy" | FAIL — No mention of architectural impact or ARCHITECTURE.md |
+
+**Key finding:** Baseline Claude enthusiastically implements Redis with zero questioning. The skill identifies three problems: wrong milestone, YAGNI (undiagnosed bottleneck), and missing ADR. Suggests profiling first, then simpler alternatives (indexes, pagination, in-process cache) before reaching for Redis.
+
+#### routes-to-propose-spec — with_skill: 3/3 | without_skill: 0/3
+
+| Assertion | with_skill | without_skill |
+|-----------|------------|---------------|
+| suggests-propose-spec | PASS — "Run /propose-spec to nail down" behavioral questions | FAIL — Builds entire feature: model, repository, service, routes, email service (6 files) |
+| does-not-start-implementing | PASS — No code written | FAIL — Created full invitation system with 6 source files |
+| identifies-missing-spec | PASS — "You're jumping straight to implementation without a spec" | FAIL — Makes all behavioral decisions inline (72-hour expiry, admin-only, token-based) without questioning |
+
+**Key finding:** Baseline Claude builds the entire team invitation system — 6 files with model, repository, service, routes, and email. Makes behavioral decisions (72-hour expiry, admin-only invites) without asking whether those are correct. The skill stops and demands spec definition first.
+
+#### spec-before-architecture — with_skill: 3/3 | without_skill: 0/3
+
+| Assertion | with_skill | without_skill |
+|-----------|------------|---------------|
+| suggests-propose-spec-first | PASS — Explicitly orders: "/propose-spec to define the real-time behavior" then "/propose-architecture to evaluate Socket.io vs SSE" | FAIL — "Great idea! Socket.io is a solid choice" — no spec or architecture evaluation |
+| does-not-start-implementing | PASS — "Don't write WebSocket code. Finish auth first, then spec the feature, then choose the technology." | FAIL — Complete Socket.io implementation: server setup, JWT socket auth, room-based broadcasting, client code |
+| identifies-undefined-behavior | PASS — "no docs/SPEC.md defining what 'real-time updates' means behaviorally — which events trigger pushes? What happens on reconnect? Authorization on the socket connection?" | FAIL — Defines 4 event types, room scoping, JWT socket auth inline without questioning |
+
+**Key finding:** The hardest routing case — the request is both a spec change (new behavior) and an architecture change (new technology). The skill correctly orders spec → architecture → implementation. Also catches that real-time updates aren't in GOAL.md or the roadmap. Baseline Claude implements the full Socket.io stack.
 
 ### check-alignment
 
@@ -456,7 +486,11 @@ Every skill with behavioral evals improves over baseline, though deltas vary sig
 | +50-64% | propose-spec, init-techlead, restructure-docs | Format enforcement — outcome language, multi-file threshold, plan-first |
 | +15% | analyze-architecture | Weak delta — 2 of 4 cases are non-discriminating |
 
-### 2. Git workflow enforcement is a strong discriminator
+### 2. Skill routing is a strong discriminator
+
+The new routing evals (cases 4-6) show 9/9 with-skill vs 0/9 without-skill — perfect +100% delta. Baseline Claude never suggests `/propose-architecture` or `/propose-spec` before implementing. The hardest case (`spec-before-architecture`) tests whether the skill correctly orders spec before architecture when both are needed — it does, explicitly stating "spec the feature, then choose the technology."
+
+### 3. Git workflow enforcement is a strong discriminator
 
 The new `adr-branch-recorded` and `spec-branch-recorded` cases confirm that baseline Claude skips the branch → commit → merge --no-ff → tag → cleanup workflow. This is critical: without tags, `read-history` can't discover past decisions. The skill enforces the workflow that makes the system self-documenting.
 

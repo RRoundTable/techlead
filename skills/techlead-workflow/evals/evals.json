@@ -77,6 +77,84 @@
           "description": "Suggests a narrower approach — handle auth errors simply within the auth module without building a project-wide framework"
         }
       ]
+    },
+    {
+      "id": 4,
+      "name": "routes-to-propose-architecture",
+      "prompt": "I've been profiling the task list endpoint and it's getting slow with 1000+ tasks. I want to add a Redis caching layer — we'll cache the task list query results with a 30-second TTL and invalidate on writes. Let me install ioredis and set up a cache middleware.",
+      "expected_output": "Recognizes that adding Redis is an architectural decision — a new infrastructure dependency not in ARCHITECTURE.md. Suggests /propose-architecture to evaluate Redis vs alternatives and record an ADR before writing code. Does NOT start implementing the caching layer.",
+      "files": [
+        "skills/techlead-workflow/evals/fixtures/GOAL.md",
+        "skills/techlead-workflow/evals/fixtures/ROADMAP.md",
+        "skills/techlead-workflow/evals/fixtures/ARCHITECTURE.md",
+        "skills/techlead-workflow/evals/fixtures/SPEC.md"
+      ],
+      "assertions": [
+        {
+          "id": "suggests-propose-architecture",
+          "description": "Suggests /propose-architecture (or running an architectural evaluation) before proceeding with Redis"
+        },
+        {
+          "id": "does-not-start-implementing",
+          "description": "Does NOT start installing ioredis, writing cache code, or creating middleware"
+        },
+        {
+          "id": "identifies-architectural-change",
+          "description": "Identifies that adding Redis is an architectural decision — new infrastructure dependency not reflected in current ARCHITECTURE.md"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "name": "routes-to-propose-spec",
+      "prompt": "Let me implement the team invitation flow. When a team admin invites someone, we'll send an email with a link. I'll create the invite endpoint, the acceptance endpoint, and handle the case where the invited user doesn't have an account yet.",
+      "expected_output": "Recognizes that team invitation behaviors are not defined in SPEC.md — only auth and task CRUD are specified. Suggests /propose-spec to define invitation behaviors (invite, accept, edge cases) before writing code. Does NOT start implementing the invitation endpoints.",
+      "files": [
+        "skills/techlead-workflow/evals/fixtures/GOAL.md",
+        "skills/techlead-workflow/evals/fixtures/ROADMAP.md",
+        "skills/techlead-workflow/evals/fixtures/ARCHITECTURE.md",
+        "skills/techlead-workflow/evals/fixtures/SPEC.md"
+      ],
+      "assertions": [
+        {
+          "id": "suggests-propose-spec",
+          "description": "Suggests /propose-spec (or defining the spec/behaviors) before implementing the invitation flow"
+        },
+        {
+          "id": "does-not-start-implementing",
+          "description": "Does NOT start writing invitation endpoints, email logic, or acceptance handlers"
+        },
+        {
+          "id": "identifies-missing-spec",
+          "description": "Identifies that team invitation behaviors are not defined in SPEC.md — current spec only covers auth and task CRUD"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "name": "spec-before-architecture",
+      "prompt": "I want to add real-time task updates using WebSockets. When someone on the team creates or completes a task, all connected team members should see the change instantly without refreshing. I'm thinking Socket.io since it handles reconnection and fallbacks automatically. Let me set up the WebSocket server alongside our Express app.",
+      "expected_output": "Recognizes this is BOTH a spec change (real-time updates are new user-observable behavior not in SPEC.md) AND an architecture change (WebSocket infrastructure). Routes to /propose-spec FIRST — define what 'real-time' means for users (which events, which users, what latency, what happens on disconnect) before choosing technology. /propose-architecture comes after the behavior is specified.",
+      "files": [
+        "skills/techlead-workflow/evals/fixtures/GOAL.md",
+        "skills/techlead-workflow/evals/fixtures/ROADMAP.md",
+        "skills/techlead-workflow/evals/fixtures/ARCHITECTURE.md",
+        "skills/techlead-workflow/evals/fixtures/SPEC.md"
+      ],
+      "assertions": [
+        {
+          "id": "suggests-propose-spec-first",
+          "description": "Suggests /propose-spec (or defining behaviors) BEFORE /propose-architecture — behavior definition must precede technology choice"
+        },
+        {
+          "id": "does-not-start-implementing",
+          "description": "Does NOT start setting up Socket.io, writing WebSocket handlers, or configuring the server"
+        },
+        {
+          "id": "identifies-undefined-behavior",
+          "description": "Identifies that real-time task update behavior is not defined in SPEC.md — questions like which events trigger updates, who receives them, and edge cases are unspecified"
+        }
+      ]
     }
   ]
 }
