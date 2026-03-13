@@ -110,7 +110,7 @@ flowchart TD
 
 ### Hooks
 
-A `PreToolUse` hook fires before every `Write` or `Edit` tool call, prompting Claude to verify alignment with GOAL.md, ROADMAP.md, and SPEC.md before making changes.
+A `SessionStart` hook injects the Techlead workflow with mandatory skill enforcement at the start of every session. This ensures `check-alignment` fires before code changes and `verify-code-quality` fires before commits — no separate per-tool hooks needed.
 
 ## Evaluation (Developer)
 

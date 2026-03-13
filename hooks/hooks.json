@@ -1,18 +1,5 @@
 {
   "hooks": {
-    "PreToolUse": [
-      {
-        "matcher": "EnterPlanMode",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/scripts/pre-plan.sh\"",
-            "statusMessage": "Loading Techlead workflow..."
-          }
-        ],
-        "description": "Inject techlead-workflow skill before planning"
-      }
-    ],
     "SessionStart": [
       {
         "matcher": "*",
@@ -23,7 +10,7 @@
             "statusMessage": "Loading Techlead workflow..."
           }
         ],
-        "description": "Inject techlead-workflow (persona + routing) as session context"
+        "description": "Inject techlead-workflow with mandatory skill enforcement"
       }
     ]
   }
