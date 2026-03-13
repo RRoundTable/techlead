@@ -2,13 +2,15 @@
   "hooks": {
     "PreToolUse": [
       {
-        "matcher": "Write|Edit",
+        "matcher": "EnterPlanMode",
         "hooks": [
           {
-            "type": "prompt",
-            "prompt": "Before making this code change, verify alignment with docs/GOAL.md, docs/ROADMAP.md 'Now' milestone, and spec docs (if they exist). For specs, use docs/specs/README.md if it exists, else docs/SPEC.md. If not yet checked in this conversation, read docs/GOAL.md, docs/ROADMAP.md, and the spec docs first and confirm the current task is aligned before proceeding."
+            "type": "command",
+            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/scripts/pre-plan.sh\"",
+            "statusMessage": "Loading Techlead workflow..."
           }
-        ]
+        ],
+        "description": "Inject techlead-workflow skill before planning"
       }
     ],
     "SessionStart": [
@@ -21,7 +23,7 @@
             "statusMessage": "Loading Techlead workflow..."
           }
         ],
-        "description": "Inject techlead-workflow skill content as trigger guidance"
+        "description": "Inject techlead-workflow (persona + routing) as session context"
       }
     ]
   }

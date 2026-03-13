@@ -9,7 +9,7 @@
 
 | Skill | Trigger Accuracy | Behavioral (with) | Behavioral (without) | Delta |
 |-------|------------------|--------------------|----------------------|-------|
-| **techlead-persona** | 19/20 (95%) | 11/11 (100%) | 0/11 (0%) | +100% |
+| **techlead-workflow** | 19/20 (95%) | 11/11 (100%) | 0/11 (0%) | +100% |
 | **check-alignment** | 20/20 (100%) | 9/9 (100%) | 2/9 (22%) | +78% |
 | **verify-code-quality** | 20/20 (100%) | 12/12 (100%) | 0/12 (0%) | +100% |
 | **propose-architecture** | 20/20 (100%) | 12/12 (100%) | 3/12 (25%) | +75% |
@@ -23,7 +23,7 @@
 
 ## Trigger Evals
 
-### techlead-persona — 19/20 (95%)
+### techlead-workflow — 19/20 (95%)
 
 *Improved from 11/20 (55%) after description rewrite.*
 
@@ -167,7 +167,7 @@
 
 ## Behavioral Evals
 
-### techlead-persona
+### techlead-workflow
 
 #### pushback-on-popular-pattern — with_skill: 4/4 | without_skill: 0/4
 
@@ -326,7 +326,7 @@
 
 ### 1. All skills now have strong behavioral deltas
 After redesigning evals to test behavioral gaps rather than obvious anti-patterns, every skill shows significant discrimination:
-- **techlead-persona:** +27% → +100%. New evals test pushback on "best practices" and scope creep questioning.
+- **techlead-workflow:** +27% → +100%. New evals test pushback on "best practices" and scope creep questioning.
 - **verify-code-quality:** +0% → +100%. New evals test subtle YAGNI in clean code, stop-at-first-violation workflow, and ADR for patterns.
 - **architecture-researcher:** +0% → +75%. New evals test ADR awareness, structured output format, and web research.
 - **check-alignment:** +78% (unchanged). Already well-designed.
@@ -338,11 +338,11 @@ The most effective assertions test what the skill *prevents*: "does NOT approve"
 Previous evals used FIXME markers, cross-feature imports, and premature EventEmitter — patterns baseline Claude already catches. The redesigned evals use code that *looks good* (clean options object, well-structured Repository pattern, popular logging setup) but violates skill-specific principles. This is where skill value emerges.
 
 ### 4. Skill-specific workflows are strong discriminators
-Stop-at-first-violation (verify-code-quality), ADR consultation (architecture-researcher), and roadmap grounding (techlead-persona) are behaviors that don't emerge from baseline Claude. These workflow-level behaviors are the skills' core contribution.
+Stop-at-first-violation (verify-code-quality), ADR consultation (architecture-researcher), and roadmap grounding (techlead-workflow) are behaviors that don't emerge from baseline Claude. These workflow-level behaviors are the skills' core contribution.
 
 ### 5. Description rewrites dramatically improved trigger accuracy
 After rewriting skill descriptions to explicitly list trigger patterns:
-- **techlead-persona:** 55% → 95% (+40pp). Key: replaced "always-active persona" framing with specific trigger patterns (design trade-offs, over-engineering, abstraction decisions).
+- **techlead-workflow:** 55% → 95% (+40pp). Key: replaced "always-active persona" framing with specific trigger patterns (design trade-offs, over-engineering, abstraction decisions).
 - **verify-code-quality:** 75% → 100% (+25pp). Key: added explicit sub-check patterns and "even if the user asks about just one specific sub-check" directive.
 - **Overall trigger accuracy:** 82% → 99%.
 

@@ -100,7 +100,7 @@ flowchart TD
 
 | Skill | When | What |
 |-------|------|------|
-| **techlead-persona** | Always active | Sets the pragmatic senior developer tone and philosophy |
+| **techlead-workflow** | Always active | Sets the pragmatic senior developer tone, philosophy, and skill routing |
 | **check-alignment** | Before writing/editing code | Verifies the task matches GOAL.md, ROADMAP.md, and SPEC.md |
 | **verify-code-quality** | Before commits | Checks code against all 5 philosophies + spec conformance |
 | **init-techlead** | `/init-techlead` | Bootstrap GOAL.md, ROADMAP.md, SPEC.md, ARCHITECTURE.md, CLAUDE.md |
@@ -154,8 +154,8 @@ techlead/
 ├── .claude-plugin/
 │   └── plugin.json                  # Plugin metadata
 ├── skills/
-│   ├── techlead-persona/
-│   │   ├── SKILL.md                 # Core persona + philosophies
+│   ├── techlead-workflow/
+│   │   ├── SKILL.md                 # Core persona + philosophies + skill routing
 │   │   └── evals/                   # Trigger + behavioral evals
 │   ├── check-alignment/
 │   │   ├── SKILL.md                 # Goal/roadmap alignment gate

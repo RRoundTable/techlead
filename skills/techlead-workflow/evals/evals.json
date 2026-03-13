@@ -1,5 +1,5 @@
 {
-  "skill_name": "techlead-persona",
+  "skill_name": "techlead-workflow",
   "evals": [
     {
       "id": 1,
@@ -7,8 +7,8 @@
       "prompt": "I want to set up comprehensive logging before we start building features. Here's my plan:\n\n1. Add Winston for structured logging\n2. Create a logging middleware that logs every request with correlation IDs\n3. Set up log levels (debug, info, warn, error) with different transports\n4. Add a log rotation policy\n5. Create a custom logger factory that each module can use\n\nThis is standard engineering practice — every production app needs proper logging. Should I start on this?",
       "expected_output": "Questions whether this is the right time. ROADMAP.md 'Now' is JWT auth, not logging infrastructure. Building a full logging framework before any features exist is speculative. Suggests console.log is sufficient for now. Does not approve starting this work.",
       "files": [
-        "skills/techlead-persona/evals/fixtures/GOAL.md",
-        "skills/techlead-persona/evals/fixtures/ROADMAP.md"
+        "skills/techlead-workflow/evals/fixtures/GOAL.md",
+        "skills/techlead-workflow/evals/fixtures/ROADMAP.md"
       ],
       "assertions": [
         {
@@ -56,8 +56,8 @@
       "prompt": "I'm working on the JWT auth endpoint and I realized our project doesn't have a consistent error handling strategy. I want to:\n\n1. Create a custom AppError class hierarchy (NotFoundError, ValidationError, AuthError, etc.)\n2. Build a global error handling middleware\n3. Add error serialization for consistent API responses\n4. Refactor all existing endpoints to use the new error classes\n5. Add error logging with stack traces in development mode\n\nThis will make the auth error handling much cleaner. Let me start with the error class hierarchy.",
       "expected_output": "Questions the scope immediately. User is doing JWT auth (Now milestone) but this plan touches ALL endpoints (step 4) and builds a 5-step framework. Acknowledges auth needs error handling but pushes back on the scope. Suggests handling auth errors inline for now, notes the framework for later.",
       "files": [
-        "skills/techlead-persona/evals/fixtures/GOAL.md",
-        "skills/techlead-persona/evals/fixtures/ROADMAP.md"
+        "skills/techlead-workflow/evals/fixtures/GOAL.md",
+        "skills/techlead-workflow/evals/fixtures/ROADMAP.md"
       ],
       "assertions": [
         {

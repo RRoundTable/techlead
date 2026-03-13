@@ -41,7 +41,7 @@ autology/         # Separate plugin (git submodule) — knowledge management sys
 
 | Skill | Purpose |
 |-------|---------|
-| `techlead-persona` | Core persona — pragmatic tone, 5 philosophies |
+| `techlead-workflow` | Core persona + workflow routing — pragmatic tone, 5 philosophies, skill routing |
 | `check-alignment` | Gate before code changes — verifies docs/GOAL.md, docs/ROADMAP.md, docs/SPEC.md alignment |
 | `verify-code-quality` | Pre-commit check against all 5 philosophies + spec conformance |
 | `init-techlead` | Bootstrap docs/GOAL.md, docs/ROADMAP.md, docs/SPEC.md, docs/ARCHITECTURE.md, CLAUDE.md |
@@ -49,7 +49,7 @@ autology/         # Separate plugin (git submodule) — knowledge management sys
 | `propose-spec` | Define/update feature specs as user-observable behaviors with Given/When/Then |
 | `read-history` | Search and display ADRs and spec records from git tags |
 
-**Hooks** (`hooks/hooks.json`): A `PreToolUse` hook on `Write|Edit` that prompts Claude to verify docs/GOAL.md, docs/ROADMAP.md, docs/SPEC.md alignment before code changes. A `SessionStart` hook runs `scripts/session-start.sh` to inject the `techlead-workflow` routing table as context at the start of every session.
+**Hooks** (`hooks/hooks.json`): A `PreToolUse` hook on `EnterPlanMode` that walks the full document hierarchy (GOAL → ROADMAP → SPEC → ARCHITECTURE → ADR/spec history) and applies the 5 philosophies before planning. A `SessionStart` hook runs `scripts/session-start.sh` to inject the merged `techlead-workflow` skill (persona + routing) as context at the start of every session.
 
 **ADRs** are stored as git commits on `adr/` branches, tagged with `adr/NNN-slug`. No ADR files exist — discovery is via `git tag -l "adr/*"` and reading via `git log <tag> --format="%B" -1`.
 
