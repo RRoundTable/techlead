@@ -3,7 +3,10 @@ name: propose-architecture
 description: >
   Trigger when choosing between technologies, adding dependencies, or facing any
   architectural question. Also trigger for "which X should I use?", "compare A vs B",
-  or technology trade-off questions.
+  or technology trade-off questions. Also trigger before implementing any
+  architecture-changing decision: adding a new service, layer, or module; introducing
+  a new pattern (event-driven, CQRS, microservices, etc.); adding a significant new
+  dependency (Redis, RabbitMQ, Elasticsearch, etc.); or restructuring existing architecture.
 ---
 
 # /propose-architecture

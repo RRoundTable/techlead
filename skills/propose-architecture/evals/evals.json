@@ -1,0 +1,81 @@
+{
+  "skill_name": "propose-architecture",
+  "evals": [
+    {
+      "id": 1,
+      "name": "pre-implementation-intercept",
+      "prompt": "I'm going to add Redis as a caching layer to the API. Let me start by installing the redis package and setting up a connection.",
+      "expected_output": "Intercepts before implementation begins. Reads GOAL.md and ARCHITECTURE.md to ground the decision. Notes that ARCHITECTURE.md states 'no external message queue yet — all operations are synchronous' and the team's preference for explicit, auditable code. Presents a trade-off analysis (Redis vs in-process cache vs no cache) rather than immediately installing packages. Asks for confirmation before proceeding.",
+      "files": [
+        "skills/propose-architecture/evals/fixtures/GOAL.md",
+        "skills/propose-architecture/evals/fixtures/ARCHITECTURE.md"
+      ],
+      "assertions": [
+        {
+          "id": "does-not-implement-immediately",
+          "description": "Does NOT install packages or write code — intercepts before implementation starts"
+        },
+        {
+          "id": "reads-project-context",
+          "description": "Reads GOAL.md and/or ARCHITECTURE.md before responding"
+        },
+        {
+          "id": "presents-tradeoffs",
+          "description": "Presents at least two options with trade-offs (e.g., Redis vs in-process cache, or Redis vs no cache)"
+        },
+        {
+          "id": "asks-for-confirmation",
+          "description": "Asks the user to confirm or select an option before proceeding"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "technology-comparison",
+      "prompt": "Compare PostgreSQL vs MongoDB for storing our task and user data.",
+      "expected_output": "Reads GOAL.md and ARCHITECTURE.md first. Notes that ARCHITECTURE.md already specifies PostgreSQL with a 'no ORM' constraint — this decision is already made. Does not treat it as a fresh comparison. Either confirms the existing choice or explains what would justify revisiting it.",
+      "files": [
+        "skills/propose-architecture/evals/fixtures/GOAL.md",
+        "skills/propose-architecture/evals/fixtures/ARCHITECTURE.md"
+      ],
+      "assertions": [
+        {
+          "id": "reads-existing-architecture",
+          "description": "Reads ARCHITECTURE.md and discovers PostgreSQL is already the chosen database"
+        },
+        {
+          "id": "does-not-treat-as-fresh-decision",
+          "description": "Does NOT present a neutral comparison as if the choice hasn't been made — acknowledges the existing decision"
+        },
+        {
+          "id": "gives-single-recommendation",
+          "description": "Confirms PostgreSQL (or clearly explains what would justify switching) — does not end with 'it depends'"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "skip-adr-for-casual",
+      "prompt": "Quick question — which would you pick, Redis or Memcached for simple response caching?",
+      "expected_output": "Reads project context and gives a concrete recommendation (one option). Does NOT create an ADR branch or record a formal decision — the user asked a casual question, not a formal architectural decision.",
+      "files": [
+        "skills/propose-architecture/evals/fixtures/GOAL.md",
+        "skills/propose-architecture/evals/fixtures/ARCHITECTURE.md"
+      ],
+      "assertions": [
+        {
+          "id": "gives-concrete-recommendation",
+          "description": "Recommends exactly one option with reasoning — does not hedge with 'it depends'"
+        },
+        {
+          "id": "no-adr-created",
+          "description": "Does NOT create an ADR branch or run any git commands to record a formal decision"
+        },
+        {
+          "id": "contextual-reasoning",
+          "description": "Reasoning references the project's actual context (single-process, no distributed state, simplicity preference) rather than generic advice"
+        }
+      ]
+    }
+  ]
+}

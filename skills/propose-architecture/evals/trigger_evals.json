@@ -1,0 +1,94 @@
+[
+  {
+    "query": "Which database should I use for storing user data?",
+    "should_trigger": true
+  },
+  {
+    "query": "Compare Next.js vs Remix for our frontend",
+    "should_trigger": true
+  },
+  {
+    "query": "Should I use REST or GraphQL for this API?",
+    "should_trigger": true
+  },
+  {
+    "query": "I'm going to add Redis as a caching layer to the API",
+    "should_trigger": true
+  },
+  {
+    "query": "Let me restructure this project to a microservices architecture",
+    "should_trigger": true
+  },
+  {
+    "query": "I want to add a message queue for async job processing",
+    "should_trigger": true
+  },
+  {
+    "query": "I'm adding an API gateway service in front of our backend",
+    "should_trigger": true
+  },
+  {
+    "query": "Let me introduce an event-driven pattern for handling user actions",
+    "should_trigger": true
+  },
+  {
+    "query": "I'm going to add Elasticsearch for full-text search",
+    "should_trigger": true
+  },
+  {
+    "query": "Let me create a separate notifications service",
+    "should_trigger": true
+  },
+  {
+    "query": "I want to introduce a CQRS pattern for the task module",
+    "should_trigger": true
+  },
+  {
+    "query": "I'm going to add a new abstraction layer between controllers and services",
+    "should_trigger": true
+  },
+  {
+    "query": "Should I add a CDN in front of the API?",
+    "should_trigger": true
+  },
+  {
+    "query": "Fix the bug in the login endpoint where tokens expire early",
+    "should_trigger": false
+  },
+  {
+    "query": "Add a unit test for the JWT middleware",
+    "should_trigger": false
+  },
+  {
+    "query": "Implement the task list endpoint with pagination",
+    "should_trigger": false
+  },
+  {
+    "query": "Should I work on team workspaces next?",
+    "should_trigger": false
+  },
+  {
+    "query": "What does ARCHITECTURE.md say about import rules?",
+    "should_trigger": false
+  },
+  {
+    "query": "Show me the current tech stack",
+    "should_trigger": false
+  },
+  {
+    "query": "Refactor the tasks controller to use async/await consistently",
+    "should_trigger": false
+  },
+  {
+    "query": "Explain how JWT refresh tokens work",
+    "should_trigger": false
+  },
+  {
+    "query": "Scan this codebase and generate an ARCHITECTURE.md",
+    "should_trigger": false
+  },
+  {
+    "query": "Why did we choose PostgreSQL over MongoDB?",
+    "should_trigger": false
+  }
+]

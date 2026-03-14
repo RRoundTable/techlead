@@ -1,6 +1,6 @@
 # Evaluation Results
 
-**Date:** 2026-03-13
+**Date:** 2026-03-14
 **Model:** Claude Opus 4.6
 
 ---
@@ -12,13 +12,13 @@
 | **techlead-workflow** | 19/20 (95%) | 20/20 (100%) | 0/20 (0%) | +100% |
 | **check-alignment** | 20/20 (100%) | 9/9 (100%) | 2/9 (22%) | +78% |
 | **verify-code-quality** | 20/20 (100%) | 12/12 (100%) | 0/12 (0%) | +100% |
-| **propose-architecture** | 20/20 (100%) | 18/18 (100%) | 4/18 (22%) | +78% |
+| **propose-architecture** | 23/23 (100%) | 18/18 (100%) | 4/18 (22%) | +78% |
 | **propose-spec** | pending (23 cases) | 6/6 (100%) | 3/6 (50%) | +50% |
 | **analyze-architecture** | pending (24 cases) | 13/13 (100%) | 11/13 (85%) | +15% |
 | **init-techlead** | pending (no trigger evals) | 14/14 (100%) | 5/14 (36%) | +64% |
 | **restructure-docs** | pending (22 cases) | 15/16 (94%) | 7/16 (44%) | +50% |
 | **read-history** | pending | — | — | — |
-| **Total** | **79/80 (99%)** | **107/108 (99%)** | **32/108 (30%)** | **+69%** |
+| **Total** | **82/83 (99%)** | **107/108 (99%)** | **32/108 (30%)** | **+69%** |
 
 *Trigger evals pending for analyze-architecture, init-techlead, restructure-docs, propose-spec, read-history. Totals reflect last completed trigger runs.*
 
@@ -111,32 +111,37 @@
 
 **Analysis:** Improved from 75% to 100% after rewriting the description. Key fix: explicitly framing specific violation scans as trigger patterns and adding "even if the user asks about just one specific sub-check" directive.
 
-### propose-architecture — 20/20 (100%)
+### propose-architecture — 23/23 (100%)
+
+*Extended from 20 to 23 cases to cover pre-implementation architecture changes.*
 
 | Result | Type | Query |
 |--------|------|-------|
-| PASS | trigger | Which database should I use for this project? |
+| PASS | trigger | Which database should I use for storing user data? |
 | PASS | trigger | Compare Next.js vs Remix for our frontend |
-| PASS | trigger | Should we use Redis or Memcached for caching? |
-| PASS | trigger | Evaluate Prisma vs TypeORM vs Knex for database access |
-| PASS | trigger | What are the trade-offs between REST and GraphQL for our API? |
-| PASS | trigger | Help me decide between Socket.io and native WebSockets |
-| PASS | trigger | Should I use a message queue? Compare RabbitMQ vs BullMQ |
-| PASS | trigger | Research authentication approaches — JWT vs sessions vs OAuth |
-| PASS | trigger | Is MongoDB a better fit than PostgreSQL for our task data? |
-| PASS | trigger | Compare deployment options: Vercel vs Railway vs self-hosted |
-| PASS | no-trigger | Fix the database connection bug in the task service |
-| PASS | no-trigger | Commit my changes to the auth module |
-| PASS | no-trigger | Implement the login endpoint with bcrypt password hashing |
-| PASS | no-trigger | Refactor the task controller to use async/await |
-| PASS | no-trigger | Write tests for the user registration flow |
-| PASS | no-trigger | Check if my code follows the project's import rules |
-| PASS | no-trigger | Is this task aligned with our current roadmap? |
-| PASS | no-trigger | Add input validation to the task creation endpoint |
-| PASS | no-trigger | Read the existing ADRs for this project |
-| PASS | no-trigger | Help me debug why the JWT token verification fails |
+| PASS | trigger | Should I use REST or GraphQL for this API? |
+| PASS | trigger | I'm going to add Redis as a caching layer to the API |
+| PASS | trigger | Let me restructure this project to a microservices architecture |
+| PASS | trigger | I want to add a message queue for async job processing |
+| PASS | trigger | I'm adding an API gateway service in front of our backend |
+| PASS | trigger | Let me introduce an event-driven pattern for handling user actions |
+| PASS | trigger | I'm going to add Elasticsearch for full-text search |
+| PASS | trigger | Let me create a separate notifications service |
+| PASS | trigger | I want to introduce a CQRS pattern for the task module |
+| PASS | trigger | I'm going to add a new abstraction layer between controllers and services |
+| PASS | trigger | Should I add a CDN in front of the API? |
+| PASS | no-trigger | Fix the bug in the login endpoint where tokens expire early |
+| PASS | no-trigger | Add a unit test for the JWT middleware |
+| PASS | no-trigger | Implement the task list endpoint with pagination |
+| PASS | no-trigger | Should I work on team workspaces next? |
+| PASS | no-trigger | What does ARCHITECTURE.md say about import rules? |
+| PASS | no-trigger | Show me the current tech stack |
+| PASS | no-trigger | Refactor the tasks controller to use async/await consistently |
+| PASS | no-trigger | Explain how JWT refresh tokens work |
+| PASS | no-trigger | Scan this codebase and generate an ARCHITECTURE.md |
+| PASS | no-trigger | Why did we choose PostgreSQL over MongoDB? |
 
-**Analysis:** Perfect 100%. "compare A vs B" is a strong discriminator.
+**Analysis:** Perfect 100%. Extended to cover pre-implementation interception: "I'm going to add X" patterns all trigger correctly. The description addition ("Also trigger before implementing any architecture-changing decision: adding a new service, layer, or module...") cleanly discriminates architecture-changing intentions from implementation work (bug fixes, refactors, feature coding). No false positives on read/history queries.
 
 ### propose-spec — pending (23 cases)
 
