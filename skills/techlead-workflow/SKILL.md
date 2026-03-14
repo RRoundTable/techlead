@@ -99,6 +99,97 @@ docs/
 | `/read-history`, look up past decisions, "why did we choose X?" | `read-history` |
 | Scan existing codebase to produce docs/ARCHITECTURE.md, reverse-engineer project structure | `analyze-architecture` |
 | `/restructure-docs`, migrate existing docs to canonical format, brownfield project docs | `restructure-docs` |
+| `/audit-history`, audit commits since last ADR/spec tag for undocumented decisions | inline procedure below |
+
+## Retroactive Audit (`/audit-history`)
+
+Scan commits since the last ADR or spec tag and retroactively document any undocumented decisions.
+This is the enforcement backstop for team members who bypassed the workflow.
+
+### Step 1: Find the Audit Range
+
+```bash
+# Find the most recent adr/* tag and its commit date
+git tag -l "adr/*" --sort=-creatordate | head -1
+
+# Find the most recent spec/* tag and its commit date
+git tag -l "spec/*" --sort=-creatordate | head -1
+```
+
+Take whichever tag is more recent. Run the audit on commits from that tag to `HEAD`:
+```bash
+git log <most-recent-tag>..HEAD --oneline
+```
+
+If no tags exist at all, audit the full history (capped at 50 commits):
+```bash
+git log --oneline -50
+```
+
+### Step 2: Classify Each Commit
+
+For each commit in range, diff it and classify:
+
+```bash
+git show <hash> --stat
+git show <hash> -- package.json requirements.txt go.mod Cargo.toml  # dependency files
+```
+
+| Signal | Classification |
+|--------|---------------|
+| New entry in dependency file (package.json, requirements.txt, go.mod, etc.) | **ADR candidate** |
+| New top-level directory or new module under `features/`, `core/`, `infra/` | **ADR candidate** |
+| New architectural pattern (base class, middleware layer, event system, etc.) | **ADR candidate** |
+| Changes to files covered by an existing spec capability | **Spec record candidate** |
+| Routine code changes (bug fixes, refactors within existing modules) | **Skip** |
+
+### Step 3: Present Findings
+
+Show the user a summary table:
+
+```
+Commits since last tag (adr/002-postgres, 2024-11-10):
+
+  [ADR]  abc1234  Add Redis for session caching
+  [ADR]  def5678  Introduce repository pattern in core/
+  [SPEC] ghi9012  Add password reset to auth flow
+  [skip] jkl3456  Fix null pointer in task service
+  [skip] mno7890  Update README
+
+Which of these need documentation? (Enter commit hashes, or "all", or "none")
+```
+
+### Step 4: Document Each Selected Commit
+
+For each selected commit, follow the standard workflow — but in **retroactive mode**:
+
+**For ADR candidates** — run the `/propose-architecture` workflow with this framing:
+> "Document a decision already made in commit `<hash>`: [what changed]. Reason for the decision: [ask user if not obvious from diff]."
+
+The ADR commit message must include:
+```
+Retroactively documents decision made in commit <hash> (<date>).
+```
+
+**For spec record candidates** — run the `/propose-spec` workflow:
+> "Document a behavior change already shipped in commit `<hash>`: [what changed]."
+
+The spec commit message must include:
+```
+Retroactively documents behavior introduced in commit <hash> (<date>).
+```
+
+Both use `git commit --allow-empty` — no code changes, documentation only.
+
+### Step 5: Record
+
+Follow the standard branch → commit → merge --no-ff → tag → delete branch workflow
+(same as `/propose-architecture` and `/propose-spec`).
+
+After all selected commits are documented, report:
+```
+Audit complete. Documented N decisions. Next audit will start from <new-latest-tag>.
+```
 
 ## Communication Style
 

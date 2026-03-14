@@ -29,6 +29,7 @@ USER-INVOKED skills (only when user explicitly requests):
 - read-history: When user asks about past decisions or runs /read-history
 - analyze-architecture: When user asks to scan/reverse-engineer project structure
 - restructure-docs: When user asks to migrate docs or runs /restructure-docs
+- audit-history: When user runs /audit-history to retroactively document undocumented commits
 
 Full workflow guide follows:
 
