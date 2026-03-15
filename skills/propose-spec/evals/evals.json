@@ -5,7 +5,7 @@
       "id": 1,
       "name": "full-cycle-plan",
       "prompt": "Define the spec for user authentication — login with email/password, get a JWT back, refresh tokens before they expire. That covers it. Go ahead and record the spec.",
-      "expected_output": "Gathers context from GOAL.md and ROADMAP.md. Defines behaviors as Given/When/Then for login, token refresh, and error cases. Presents a full cycle plan that includes: the spec summary, the branch name (spec/NNN-slug), any architecture decisions needed, concrete implementation steps, and acceptance criteria from the spec. Suggests /plan to execute with clean context.",
+      "expected_output": "Gathers context from GOAL.md and ROADMAP.md. Defines behaviors as Given/When/Then for login, token refresh, and error cases. Presents a full cycle plan that includes: the spec summary, the branch name (spec/NNN-slug), any architecture decisions needed, and acceptance criteria from the spec. The plan should NOT include implementation steps like creating modules, writing code, or adding tests. Suggests /plan to execute with clean context.",
       "files": [
         "skills/propose-spec/evals/fixtures/GOAL.md",
         "skills/propose-spec/evals/fixtures/ROADMAP.md"
@@ -20,16 +20,133 @@
           "description": "Defines at least two Given/When/Then behaviors for the authentication capability"
         },
         {
-          "id": "outputs-full-cycle-plan",
-          "description": "Outputs a structured plan that includes spec summary, branch name, implementation steps, and acceptance criteria — not just a doc-only spec recording"
+          "id": "enters-plan-mode",
+          "description": "Invokes the EnterPlanMode tool to build the plan inside plan mode — does NOT just print the plan as text output"
         },
         {
-          "id": "plan-includes-implementation-steps",
-          "description": "The plan includes concrete implementation steps beyond just updating SPEC.md (e.g., create auth module, implement login, add tests)"
+          "id": "plan-includes-context",
+          "description": "The plan includes a context section summarizing the project goal, roadmap milestone, or current spec state — enough for /plan to execute without prior conversation"
         },
         {
-          "id": "suggests-plan-command",
-          "description": "Suggests running /plan to execute the full cycle plan with a clean context"
+          "id": "plan-includes-branch-workflow",
+          "description": "The plan includes the complete git workflow: branch creation (git checkout -b spec/NNN-slug), spec commit, merge --no-ff, tag, and branch deletion"
+        },
+        {
+          "id": "plan-excludes-implementation-steps",
+          "description": "The plan does NOT include implementation steps like creating feature modules, writing code, implementing endpoints, or adding tests — it only includes spec documentation steps (update SPEC.md, commit, merge, tag)"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "outcome-not-output",
+      "prompt": "I need to spec out the task creation feature. Here's what I'm thinking: POST /api/tasks with a JSON body { title, description }, returns 201 with the task object. On validation error, return 422 with field errors. On auth failure, return 401.",
+      "expected_output": "The skill reframes the user's implementation-level description (HTTP methods, status codes, JSON bodies) into user-observable outcomes using Given/When/Then format. The behaviors describe what the user experiences, not what the API returns.",
+      "files": [
+        "skills/propose-spec/evals/fixtures/GOAL.md",
+        "skills/propose-spec/evals/fixtures/ROADMAP.md"
+      ],
+      "assertions": [
+        {
+          "id": "reframes-http-methods",
+          "description": "Does NOT use HTTP methods (POST, GET, PUT, DELETE) or API paths (/api/tasks) in the spec behaviors"
+        },
+        {
+          "id": "reframes-status-codes",
+          "description": "Does NOT use HTTP status codes (201, 401, 422) in the spec behaviors"
+        },
+        {
+          "id": "uses-observable-outcomes",
+          "description": "Describes behaviors in terms of what the user sees or experiences (e.g., 'task appears in their list', 'user is informed of validation errors') rather than technical responses"
+        },
+        {
+          "id": "uses-given-when-then",
+          "description": "Presents behaviors in Given/When/Then format"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "existing-spec-update",
+      "prompt": "Update the task CRUD spec to add a behavior for task archiving — users should be able to archive tasks instead of deleting them, and archived tasks should be hidden from the default task list but recoverable.",
+      "expected_output": "Reads the existing SPEC.md to understand current task CRUD behaviors. Adds archiving behaviors to the existing Task CRUD capability section rather than creating a new capability. Uses 'changed' as the spec record change type since it's modifying an existing capability.",
+      "files": [
+        "skills/propose-spec/evals/fixtures/GOAL.md",
+        "skills/propose-spec/evals/fixtures/ROADMAP.md",
+        "skills/propose-spec/evals/fixtures/SPEC.md"
+      ],
+      "assertions": [
+        {
+          "id": "reads-existing-spec",
+          "description": "Reads the existing SPEC.md file to understand current task CRUD behaviors before proposing changes"
+        },
+        {
+          "id": "adds-to-existing-capability",
+          "description": "Adds archiving behaviors to the existing Task CRUD capability rather than creating a separate new capability"
+        },
+        {
+          "id": "uses-changed-type",
+          "description": "Uses 'changed' (not 'added') as the change type since this is an update to an existing capability"
+        },
+        {
+          "id": "preserves-existing-behaviors",
+          "description": "Does not remove or overwrite existing Task CRUD behaviors — the archiving behaviors are additive"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "name": "no-implementation",
+      "prompt": "Define the spec for task tagging — users can add tags to tasks and filter by tags. Once the spec is defined, go ahead and implement it too.",
+      "expected_output": "Defines the spec behaviors for task tagging using Given/When/Then. When the user asks to also implement, the skill defines and records only the spec — it does NOT write any implementation code, create modules, or add tests. It may acknowledge the implementation request but defers it to a separate step.",
+      "files": [
+        "skills/propose-spec/evals/fixtures/GOAL.md",
+        "skills/propose-spec/evals/fixtures/ROADMAP.md"
+      ],
+      "assertions": [
+        {
+          "id": "defines-spec-behaviors",
+          "description": "Defines Given/When/Then behaviors for task tagging"
+        },
+        {
+          "id": "does-not-write-code",
+          "description": "Does NOT write any implementation code (no source files created or edited for the feature itself)"
+        },
+        {
+          "id": "does-not-create-modules",
+          "description": "Does NOT create feature modules, test files, or any implementation artifacts"
+        },
+        {
+          "id": "plan-is-spec-only",
+          "description": "The plan (if entered) contains only spec documentation steps — no implementation steps like 'create module', 'implement endpoint', or 'add tests'"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "name": "skip-record-for-casual",
+      "prompt": "What should happen when a user tries to create a task without a title?",
+      "expected_output": "Answers the behavioral question directly — describes the expected behavior (e.g., user is informed that a title is required). Does NOT enter plan mode, create a branch, make a commit, or propose a formal spec record. Treats it as a casual question.",
+      "files": [
+        "skills/propose-spec/evals/fixtures/GOAL.md",
+        "skills/propose-spec/evals/fixtures/ROADMAP.md"
+      ],
+      "assertions": [
+        {
+          "id": "answers-directly",
+          "description": "Provides a direct answer about the expected behavior — describes what should happen from the user's perspective"
+        },
+        {
+          "id": "no-plan-mode",
+          "description": "Does NOT invoke EnterPlanMode — treats this as a casual question"
+        },
+        {
+          "id": "no-branch-or-commit",
+          "description": "Does NOT propose creating a branch, making a commit, or tagging a spec record"
+        },
+        {
+          "id": "no-formal-workflow",
+          "description": "Does NOT walk through the full propose-spec workflow (no numbered steps, no branch workflow, no spec/NNN-slug)"
         }
       ]
     }

@@ -1,9 +1,15 @@
 ---
 name: propose-spec
 description: >
-  Trigger when defining feature behavior, writing acceptance criteria, or planning
-  capabilities before implementation. Also trigger for "what should this feature do?"
-  or "how should X behave?". NOT for architecture or implementation tasks.
+  Trigger when defining, updating, or removing feature behavior in docs/SPEC.md:
+  writing acceptance criteria, adding/changing/removing behaviors, planning capabilities
+  before implementation, or discussing what a feature should do from the user's perspective.
+  Trigger phrases include: "what should this feature do?", "how should X behave?",
+  "update the spec for X", "add a behavior for Y", "remove the Z capability",
+  "change the acceptance criteria", "define the spec", "what are the edge cases for X?".
+  Specs describe outcomes, not implementation — if the user describes behavior in terms of
+  API endpoints or database schemas, this skill reframes as user-observable outcomes.
+  NOT for architecture decisions, implementation tasks, code changes, or reading history.
 ---
 
 # /propose-spec
@@ -116,7 +122,10 @@ Ask:
 
 ## Step 3: Enter Plan Mode
 
-Once approved, enter plan mode (via `EnterPlanMode` tool) and build the full cycle plan there.
+Once approved — skip this step for casual questions (quick behavioral questions, "what should X do?"
+queries, or questions where the user doesn't mention formal records, spec tags, or recording):
+
+Enter plan mode (via `EnterPlanMode` tool) and build the full cycle plan there.
 The plan must be **self-contained** — when `/plan` starts, it has no memory of the prior
 conversation. Include everything needed to execute the entire workflow:
 
@@ -144,19 +153,15 @@ SPEC-NNN: [capability] — [one-sentence capability statement]
 - None — uses existing stack [if no new decisions needed]
 
 ### Branch
-`spec/NNN-slug` — holds both the spec commit and implementation code.
+`spec/NNN-slug` — holds the spec documentation commit.
 
 ### Steps
 1. `git checkout -b spec/NNN-slug`
 2. Update docs/SPEC.md (or docs/specs/) — add capability section with behaviors and acceptance criteria
 3. `git add` the updated spec file(s)
 4. `git commit` with spec record template message (read `templates/spec-record-template.md` for format)
-5. [Implementation step — e.g., Create feature module]
-6. [Implementation step — e.g., Implement happy path behavior]
-7. [Implementation step — e.g., Implement error cases]
-8. [Implementation step — e.g., Add tests for each acceptance criterion]
-9. `git checkout <starting-branch> && git merge --no-ff spec/NNN-slug -m "Merge SPEC-NNN: Title"`
-10. `git tag spec/NNN-slug spec/NNN-slug && git branch -d spec/NNN-slug`
+5. `git checkout <starting-branch> && git merge --no-ff spec/NNN-slug -m "Merge SPEC-NNN: Title"`
+6. `git tag spec/NNN-slug spec/NNN-slug && git branch -d spec/NNN-slug`
 
 ### Acceptance Criteria
 - [ ] [From the spec — each criterion maps to a testable behavior]
@@ -169,7 +174,7 @@ before implementation begins.
 
 ### Branch Workflow
 
-The `spec/NNN-slug` branch contains **both** the spec documentation and implementation code:
+The `spec/NNN-slug` branch contains the spec documentation commit:
 
 1. Determine next spec number: count existing tags via `git tag -l "spec/*"`.
 2. Derive slug from capability name (lowercase, hyphens).
@@ -192,10 +197,9 @@ The `spec/NNN-slug` branch contains **both** the spec documentation and implemen
 6. `git add docs/SPEC.md` or `git add docs/specs/`
 7. `git commit` with spec record template as message (read `templates/spec-record-template.md` for format).
    Set `Change type` to `added`, `changed`, or `removed` as appropriate.
-8. Implement the capability: code changes, tests — commit as needed on the same branch.
-9. `git checkout $starting_branch`
-10. `git merge --no-ff spec/NNN-slug -m "Merge SPEC-NNN: Title"`
-11. `git tag spec/NNN-slug spec/NNN-slug` — tag the branch tip for permanent discovery.
-12. `git branch -d spec/NNN-slug` — delete the branch (tag preserves it).
+8. `git checkout $starting_branch`
+9. `git merge --no-ff spec/NNN-slug -m "Merge SPEC-NNN: Title"`
+10. `git tag spec/NNN-slug spec/NNN-slug` — tag the branch tip for permanent discovery.
+11. `git branch -d spec/NNN-slug` — delete the branch (tag preserves it).
 
-The tag captures everything: the spec record (first commit message) and the implementation (subsequent commits).
+The tag captures the spec record commit.

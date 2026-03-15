@@ -81,27 +81,27 @@
       "id": 4,
       "name": "full-cycle-plan",
       "prompt": "I need to add a rate limiting layer to protect the API. I've decided to go with express-rate-limit — it's simple, in-process, and fits our single-process constraint. Please record this as an ADR.",
-      "expected_output": "Presents a full cycle plan that includes: the ADR decision summary, the branch name (adr/NNN-slug), concrete implementation steps (update ARCHITECTURE.md, install dependency, add middleware, add tests), and acceptance criteria. Suggests /plan to execute with clean context. The plan makes clear that both docs and code go on the same adr/ branch.",
+      "expected_output": "Enters plan mode (invokes EnterPlanMode tool) and builds a self-contained full cycle plan inside plan mode. The plan includes: project context summary (goal, architecture state), the ADR decision summary, the branch name (adr/NNN-slug), the complete git workflow (branch creation, ADR commit, implementation, merge --no-ff, tag, branch deletion), concrete implementation steps, and acceptance criteria.",
       "files": [
         "skills/propose-architecture/evals/fixtures/GOAL.md",
         "skills/propose-architecture/evals/fixtures/ARCHITECTURE.md"
       ],
       "assertions": [
         {
-          "id": "outputs-full-cycle-plan",
-          "description": "Outputs a structured plan that includes decision summary, branch name, implementation steps, and acceptance criteria — not just a doc-only ADR recording"
+          "id": "enters-plan-mode",
+          "description": "Invokes the EnterPlanMode tool to build the plan inside plan mode — does NOT just print the plan as text output"
+        },
+        {
+          "id": "plan-includes-context",
+          "description": "The plan includes a context section summarizing the project goal, current architecture state, or relevant ADRs — enough for /plan to execute without prior conversation"
+        },
+        {
+          "id": "plan-includes-branch-workflow",
+          "description": "The plan includes the complete git workflow: branch creation (git checkout -b adr/NNN-slug), ADR commit, merge --no-ff, tag, and branch deletion"
         },
         {
           "id": "plan-includes-implementation-steps",
           "description": "The plan includes concrete implementation steps beyond just updating ARCHITECTURE.md (e.g., install dependency, add middleware code, write tests)"
-        },
-        {
-          "id": "plan-includes-branch-name",
-          "description": "The plan specifies an adr/ branch name where both docs and code will live"
-        },
-        {
-          "id": "suggests-plan-command",
-          "description": "Suggests running /plan to execute the full cycle plan with a clean context"
         }
       ]
     }

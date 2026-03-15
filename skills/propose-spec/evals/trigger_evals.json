@@ -1,0 +1,114 @@
+[
+  {
+    "query": "Define the spec for user authentication",
+    "should_trigger": true
+  },
+  {
+    "query": "What should the task deletion feature do?",
+    "should_trigger": true
+  },
+  {
+    "query": "How should login behave when the password is wrong?",
+    "should_trigger": true
+  },
+  {
+    "query": "Write acceptance criteria for the team invitation flow",
+    "should_trigger": true
+  },
+  {
+    "query": "Update the spec for task management — add bulk delete behavior",
+    "should_trigger": true
+  },
+  {
+    "query": "Add a behavior for password reset to the auth spec",
+    "should_trigger": true
+  },
+  {
+    "query": "Remove the file upload capability from the spec",
+    "should_trigger": true
+  },
+  {
+    "query": "Change the acceptance criteria for user registration",
+    "should_trigger": true
+  },
+  {
+    "query": "What are the edge cases for task assignment?",
+    "should_trigger": true
+  },
+  {
+    "query": "Define what happens when a user tries to delete a task they don't own",
+    "should_trigger": true
+  },
+  {
+    "query": "I need to specify the behavior for team workspace sharing",
+    "should_trigger": true
+  },
+  {
+    "query": "What invariants should we have around task ownership?",
+    "should_trigger": true
+  },
+  {
+    "query": "Plan the capabilities for notification preferences",
+    "should_trigger": true
+  },
+  {
+    "query": "How should the system behave when a team member is removed?",
+    "should_trigger": true
+  },
+  {
+    "query": "We need to add error cases for the search feature spec",
+    "should_trigger": true
+  },
+  {
+    "query": "What should happen when a user's session expires mid-action?",
+    "should_trigger": true
+  },
+  {
+    "query": "Which database should I use for storing user data?",
+    "should_trigger": false
+  },
+  {
+    "query": "Compare Next.js vs Remix for our frontend",
+    "should_trigger": false
+  },
+  {
+    "query": "Fix the bug in the login endpoint where tokens expire early",
+    "should_trigger": false
+  },
+  {
+    "query": "Implement the task list endpoint with pagination",
+    "should_trigger": false
+  },
+  {
+    "query": "Add a unit test for the JWT middleware",
+    "should_trigger": false
+  },
+  {
+    "query": "Why did we choose PostgreSQL over MongoDB?",
+    "should_trigger": false
+  },
+  {
+    "query": "Refactor the tasks controller to use async/await consistently",
+    "should_trigger": false
+  },
+  {
+    "query": "Should I use the repository pattern for database access?",
+    "should_trigger": false
+  },
+  {
+    "query": "Set up the project with docs/GOAL.md and docs/ROADMAP.md",
+    "should_trigger": false
+  },
+  {
+    "query": "Deploy the staging environment to AWS",
+    "should_trigger": false
+  },
+  {
+    "query": "Should I work on team workspaces or notifications next?",
+    "should_trigger": false
+  },
+  {
+    "query": "Scan this codebase and generate an ARCHITECTURE.md",
+    "should_trigger": false
+  }
+]
