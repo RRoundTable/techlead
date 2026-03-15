@@ -138,3 +138,11 @@ queries, or questions where the user doesn't mention formal decisions, ADRs, or 
 
 When the decision is implemented in code:
 1. Update `docs/ARCHITECTURE.md` if needed.
+
+## After Recording
+
+After the ADR is recorded, suggest:
+> ADR recorded. Ready to plan implementation? Run `/plan` — it will use this architectural
+> decision and the current docs as the foundation for your implementation plan.
+
+Note: `/plan` starts a fresh context, so all recording must be done before suggesting it.

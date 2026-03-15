@@ -150,3 +150,9 @@ When the capability is ready to implement:
 1. Ensure the capability is in docs/ROADMAP.md's "Now" section.
 2. Use the acceptance criteria as a checklist during implementation.
 3. Run `/propose-architecture` if the capability requires new technology decisions.
+
+After recording is complete, suggest:
+> Spec recorded. Ready to plan implementation? Run `/plan` — it will use the acceptance criteria
+> from this spec as the foundation for your implementation plan.
+
+Note: `/plan` starts a fresh context, so all recording must be done before suggesting it.

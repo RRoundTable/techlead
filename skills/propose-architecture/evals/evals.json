@@ -76,6 +76,30 @@
           "description": "Reasoning references the project's actual context (single-process, no distributed state, simplicity preference) rather than generic advice"
         }
       ]
+    },
+    {
+      "id": 4,
+      "name": "suggests-plan-after-recording",
+      "prompt": "I need to add a rate limiting layer to protect the API. I've decided to go with express-rate-limit — it's simple, in-process, and fits our single-process constraint. Please record this as an ADR.",
+      "expected_output": "Records the ADR following the full workflow (branch, commit, merge, tag). After recording is complete, suggests running /plan to create an implementation plan based on the architectural decision. Does NOT suggest /plan before recording is done.",
+      "files": [
+        "skills/propose-architecture/evals/fixtures/GOAL.md",
+        "skills/propose-architecture/evals/fixtures/ARCHITECTURE.md"
+      ],
+      "assertions": [
+        {
+          "id": "records-adr",
+          "description": "Attempts to record an ADR (creates branch, commits, tags) — does not skip recording"
+        },
+        {
+          "id": "suggests-plan-after-recording",
+          "description": "After recording, suggests /plan for implementation planning"
+        },
+        {
+          "id": "plan-suggestion-is-post-recording",
+          "description": "The /plan suggestion appears AFTER the recording steps, not before or instead of recording"
+        }
+      ]
     }
   ]
 }

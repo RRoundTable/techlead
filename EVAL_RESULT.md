@@ -1,6 +1,6 @@
 # Evaluation Results
 
-**Date:** 2026-03-14
+**Date:** 2026-03-15
 **Model:** Claude Opus 4.6
 
 ---
@@ -12,13 +12,13 @@
 | **techlead-workflow** | 19/20 (95%) | 20/20 (100%) | 0/20 (0%) | +100% |
 | **check-alignment** | 20/20 (100%) | 9/9 (100%) | 2/9 (22%) | +78% |
 | **verify-code-quality** | 20/20 (100%) | 12/12 (100%) | 0/12 (0%) | +100% |
-| **propose-architecture** | 23/23 (100%) | 18/18 (100%) | 4/18 (22%) | +78% |
-| **propose-spec** | pending (23 cases) | 6/6 (100%) | 3/6 (50%) | +50% |
+| **propose-architecture** | 23/23 (100%) | 21/21 (100%) | 4/21 (19%) | +81% |
+| **propose-spec** | pending (23 cases) | 11/11 (100%) | 5/11 (45%) | +55% |
 | **analyze-architecture** | pending (24 cases) | 13/13 (100%) | 11/13 (85%) | +15% |
 | **init-techlead** | pending (no trigger evals) | 14/14 (100%) | 5/14 (36%) | +64% |
 | **restructure-docs** | pending (22 cases) | 15/16 (94%) | 7/16 (44%) | +50% |
 | **read-history** | pending | — | — | — |
-| **Total** | **82/83 (99%)** | **107/108 (99%)** | **32/108 (30%)** | **+69%** |
+| **Total** | **82/83 (99%)** | **115/116 (99%)** | **34/116 (29%)** | **+70%** |
 
 *Trigger evals pending for analyze-architecture, init-techlead, restructure-docs, propose-spec, read-history. Totals reflect last completed trigger runs.*
 
@@ -328,6 +328,16 @@
 
 **Key finding:** Without the skill, Claude updates ARCHITECTURE.md directly on the working branch. The skill enforces the full ADR workflow: branch → commit → merge --no-ff → tag → delete branch. This is critical for `read-history` to work — without tags, past decisions are invisible.
 
+#### suggests-plan-after-recording — with_skill: 3/3 | without_skill: 0/3
+
+| Assertion | with_skill | without_skill |
+|-----------|------------|---------------|
+| records-adr | PASS — Full git workflow: branch, commit, merge --no-ff, tag, cleanup | FAIL — Wrote ADR as markdown file, no git branch/tag workflow |
+| suggests-plan-after-recording | PASS — Ends with "Ready to plan implementation? Run `/plan`" | FAIL — No mention of /plan |
+| plan-suggestion-is-post-recording | PASS — /plan suggestion is final line, after all 7 recording steps | FAIL — No /plan suggestion present |
+
+**Key finding:** The `/plan` suggestion is entirely skill-driven — baseline Claude never bridges from decision recording to implementation planning. The with-skill agent also enforces git-based ADR workflow while without-skill writes a plain markdown file.
+
 ### propose-spec
 
 #### spec-branch-recorded — with_skill: 6/6 | without_skill: 3/6
@@ -342,6 +352,18 @@
 | deletes-spec-branch | PASS — Deletes spec branch after tagging | FAIL — Never deleted branch |
 
 **Key finding:** Without the skill, Claude gets the content right (spec updates, tags) but skips the branch workflow (no proper branch, no merge, no cleanup). The skill enforces the full spec record workflow matching the ADR pattern.
+
+#### suggests-plan-after-recording — with_skill: 5/5 | without_skill: 2/5
+
+| Assertion | with_skill | without_skill |
+|-----------|------------|---------------|
+| reads-project-context | PASS — Reads GOAL.md and ROADMAP.md, notes "Now" milestone | PASS — References GOAL.md and ROADMAP.md context |
+| defines-given-when-then | PASS — 9 Given/When/Then behaviors (login, refresh, logout, errors) | PASS — 8 scenarios, though uses implementation language (HTTP methods, status codes) |
+| records-spec | PASS — Branch spec/001-user-authentication, commit, merge --no-ff, tag | FAIL — Wrote docs/SPEC.md directly on working branch, no git workflow |
+| suggests-plan-after-recording | PASS — "Ready to plan implementation? Run `/plan`" | FAIL — No mention of /plan |
+| plan-suggestion-is-post-recording | PASS — /plan suggestion is final line after Step 3 recording | FAIL — No /plan suggestion present |
+
+**Key finding:** Same pattern as propose-architecture: the `/plan` bridge and git recording workflow are entirely skill-driven. Without-skill agent also uses implementation language (POST /auth/login, 401 status codes) instead of user-observable outcomes — a bonus discrimination point not explicitly tested here.
 
 ### analyze-architecture
 

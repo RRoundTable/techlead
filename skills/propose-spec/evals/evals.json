@@ -1,0 +1,37 @@
+{
+  "skill_name": "propose-spec",
+  "evals": [
+    {
+      "id": 1,
+      "name": "suggests-plan-after-recording",
+      "prompt": "Define the spec for user authentication — login with email/password, get a JWT back, refresh tokens before they expire. That covers it. Go ahead and record the spec.",
+      "expected_output": "Gathers context from GOAL.md and ROADMAP.md. Defines behaviors as Given/When/Then for login, token refresh, and error cases. Records the spec (branch, commit, merge, tag). After recording is complete, suggests running /plan to create an implementation plan.",
+      "files": [
+        "skills/propose-spec/evals/fixtures/GOAL.md",
+        "skills/propose-spec/evals/fixtures/ROADMAP.md"
+      ],
+      "assertions": [
+        {
+          "id": "reads-project-context",
+          "description": "Reads GOAL.md and/or ROADMAP.md before defining behaviors"
+        },
+        {
+          "id": "defines-given-when-then",
+          "description": "Defines at least two Given/When/Then behaviors for the authentication capability"
+        },
+        {
+          "id": "records-spec",
+          "description": "Attempts to record the spec (creates branch, commits, tags) — does not skip recording"
+        },
+        {
+          "id": "suggests-plan-after-recording",
+          "description": "After recording, suggests /plan for implementation planning"
+        },
+        {
+          "id": "plan-suggestion-is-post-recording",
+          "description": "The /plan suggestion appears AFTER the recording steps, not before or instead of recording"
+        }
+      ]
+    }
+  ]
+}
