@@ -1,6 +1,6 @@
 {
   "name": "techlead",
-  "version": "1.8.0",
+  "version": "1.8.1",
   "description": "A strict senior developer persona that automatically enforces 5 core philosophies (Single Goal, YAGNI, Context-Aware Decisions, High Cohesion/Low Coupling, Fail Fast) across your coding workflow.",
   "author": {
     "name": "RRoundTable",
@@ -16,7 +16,6 @@
     "senior-developer",
     "best-practices"
   ],
-  "hooks": "./hooks/hooks.json",
   "skills": [
     "./skills/techlead-workflow",
     "./skills/check-alignment",
