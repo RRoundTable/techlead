@@ -17,13 +17,7 @@ See [The 5 Philosophies](docs/philosophy.md) for definitions, rationale, and ant
 ## Installation
 
 ```bash
-claude plugin add /path/to/techlead
-```
-
-Or use the plugin directory flag:
-
-```bash
-claude --plugin-dir /path/to/techlead
+claude plugin add github:RRoundTable/techlead
 ```
 
 ## Quick Start
