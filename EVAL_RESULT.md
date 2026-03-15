@@ -12,13 +12,13 @@
 | **techlead-workflow** | 19/20 (95%) | 20/20 (100%) | 0/20 (0%) | +100% |
 | **check-alignment** | 20/20 (100%) | 9/9 (100%) | 2/9 (22%) | +78% |
 | **verify-code-quality** | 20/20 (100%) | 12/12 (100%) | 0/12 (0%) | +100% |
-| **propose-architecture** | 23/23 (100%) | 21/21 (100%) | 4/21 (19%) | +81% |
-| **propose-spec** | pending (23 cases) | 11/11 (100%) | 5/11 (45%) | +55% |
+| **propose-architecture** | 23/23 (100%) | 17/17 (100%) | 4/17 (24%) | +76% |
+| **propose-spec** | pending (23 cases) | 10/10 (100%) | 4/10 (40%) | +60% |
 | **analyze-architecture** | pending (24 cases) | 13/13 (100%) | 11/13 (85%) | +15% |
 | **init-techlead** | pending (no trigger evals) | 14/14 (100%) | 5/14 (36%) | +64% |
 | **restructure-docs** | pending (22 cases) | 15/16 (94%) | 7/16 (44%) | +50% |
 | **read-history** | pending | — | — | — |
-| **Total** | **82/83 (99%)** | **115/116 (99%)** | **34/116 (29%)** | **+70%** |
+| **Total** | **82/83 (99%)** | **110/110 (100%)** | **32/110 (29%)** | **+71%** |
 
 *Trigger evals pending for analyze-architecture, init-techlead, restructure-docs, propose-spec, read-history. Totals reflect last completed trigger runs.*
 
@@ -328,15 +328,16 @@
 
 **Key finding:** Without the skill, Claude updates ARCHITECTURE.md directly on the working branch. The skill enforces the full ADR workflow: branch → commit → merge --no-ff → tag → delete branch. This is critical for `read-history` to work — without tags, past decisions are invisible.
 
-#### suggests-plan-after-recording — with_skill: 3/3 | without_skill: 0/3
+#### full-cycle-plan — with_skill: 4/4 | without_skill: 0/4
 
 | Assertion | with_skill | without_skill |
 |-----------|------------|---------------|
-| records-adr | PASS — Full git workflow: branch, commit, merge --no-ff, tag, cleanup | FAIL — Wrote ADR as markdown file, no git branch/tag workflow |
-| suggests-plan-after-recording | PASS — Ends with "Ready to plan implementation? Run `/plan`" | FAIL — No mention of /plan |
-| plan-suggestion-is-post-recording | PASS — /plan suggestion is final line, after all 7 recording steps | FAIL — No /plan suggestion present |
+| outputs-full-cycle-plan | PASS — Structured plan with Decision (ADR-001), Branch, 6 Steps, 4 Acceptance checkboxes | FAIL — Only an ADR document, no implementation plan |
+| plan-includes-implementation-steps | PASS — npm install, create rate-limit.js, apply middleware, add tests | FAIL — Mentions config in Consequences but no structured steps |
+| plan-includes-branch-name | PASS — Branch: adr/001-express-rate-limit for both docs and code | FAIL — Doc-only branch, no mention of code on same branch |
+| suggests-plan-command | PASS — "Ready to implement? Run /plan to execute this with a clean context." | FAIL — No mention of /plan |
 
-**Key finding:** The `/plan` suggestion is entirely skill-driven — baseline Claude never bridges from decision recording to implementation planning. The with-skill agent also enforces git-based ADR workflow while without-skill writes a plain markdown file.
+**Key finding:** The full cycle plan is entirely skill-driven — baseline Claude produces a doc-only ADR with no bridge to implementation. The skill outputs a complete plan: decision + branch + implementation steps + acceptance criteria + `/plan` suggestion. The branch is designed to hold both docs and code.
 
 ### propose-spec
 
@@ -353,17 +354,17 @@
 
 **Key finding:** Without the skill, Claude gets the content right (spec updates, tags) but skips the branch workflow (no proper branch, no merge, no cleanup). The skill enforces the full spec record workflow matching the ADR pattern.
 
-#### suggests-plan-after-recording — with_skill: 5/5 | without_skill: 2/5
+#### full-cycle-plan — with_skill: 5/5 | without_skill: 2/5
 
 | Assertion | with_skill | without_skill |
 |-----------|------------|---------------|
-| reads-project-context | PASS — Reads GOAL.md and ROADMAP.md, notes "Now" milestone | PASS — References GOAL.md and ROADMAP.md context |
-| defines-given-when-then | PASS — 9 Given/When/Then behaviors (login, refresh, logout, errors) | PASS — 8 scenarios, though uses implementation language (HTTP methods, status codes) |
-| records-spec | PASS — Branch spec/001-user-authentication, commit, merge --no-ff, tag | FAIL — Wrote docs/SPEC.md directly on working branch, no git workflow |
-| suggests-plan-after-recording | PASS — "Ready to plan implementation? Run `/plan`" | FAIL — No mention of /plan |
-| plan-suggestion-is-post-recording | PASS — /plan suggestion is final line after Step 3 recording | FAIL — No /plan suggestion present |
+| reads-project-context | PASS — Context Summary references Goal and Roadmap, notes "Now" milestone | PASS — Opens with GOAL.md and ROADMAP.md references |
+| defines-given-when-then | PASS — 8 Given/When/Then behaviors in user-observable language | PASS — 9 scenarios, though uses implementation language (POST /auth/login, 200, 401, JWT payload) |
+| outputs-full-cycle-plan | PASS — Full Cycle Plan with Spec, Branch, Architecture Decisions, 7 Steps, 9 Acceptance Criteria | FAIL — Only spec recording, no implementation plan |
+| plan-includes-implementation-steps | PASS — Implement registration, login, token middleware, refresh, error cases, tests | FAIL — No implementation steps in response |
+| suggests-plan-command | PASS — "Ready to implement? Run /plan to execute this with a clean context." | FAIL — No mention of /plan |
 
-**Key finding:** Same pattern as propose-architecture: the `/plan` bridge and git recording workflow are entirely skill-driven. Without-skill agent also uses implementation language (POST /auth/login, 401 status codes) instead of user-observable outcomes — a bonus discrimination point not explicitly tested here.
+**Key finding:** Same pattern as propose-architecture: the full cycle plan is entirely skill-driven. Without-skill agent produces a spec recording with no bridge to implementation. The with-skill agent also uses outcome-oriented language while without-skill uses implementation details (HTTP methods, status codes).
 
 ### analyze-architecture
 

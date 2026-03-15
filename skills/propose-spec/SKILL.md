@@ -114,9 +114,45 @@ Present the complete spec to the user:
 Ask:
 > Does this capture the intended behavior? Want to adjust any behaviors or add edge cases?
 
-## Step 3: Record
+## Step 3: Full Cycle Plan
 
-Once approved:
+Once approved, present a full cycle plan that covers the entire workflow from spec to implementation:
+
+```markdown
+## Full Cycle Plan: [Capability Name]
+
+### Spec
+SPEC-NNN: [capability] — [one-sentence capability statement]
+
+### Branch
+`spec/NNN-slug`
+
+### Architecture Decisions Needed
+- [If any new technology decisions are needed, list them here — each requires `/propose-architecture`]
+- None — uses existing stack [if no new decisions needed]
+
+### Steps
+1. Update docs/SPEC.md (or docs/specs/) — add capability section with behaviors and acceptance criteria
+2. [Implementation step — e.g., Create feature module]
+3. [Implementation step — e.g., Implement happy path behavior]
+4. [Implementation step — e.g., Implement error cases]
+5. [Implementation step — e.g., Add tests for each acceptance criterion]
+6. ...
+
+### Acceptance Criteria
+- [ ] [From the spec — each criterion maps to a testable behavior]
+- [ ] docs/SPEC.md reflects the new capability
+```
+
+Ask:
+> Ready to implement? Run `/plan` to execute this with a clean context.
+
+If the plan includes architecture decisions, those should be resolved via `/propose-architecture`
+before implementation begins.
+
+### Branch Workflow
+
+The `spec/NNN-slug` branch contains **both** the spec documentation and implementation code:
 
 1. Determine next spec number: count existing tags via `git tag -l "spec/*"`.
 2. Derive slug from capability name (lowercase, hyphens).
@@ -139,20 +175,10 @@ Once approved:
 6. `git add docs/SPEC.md` or `git add docs/specs/`
 7. `git commit` with spec record template as message (read `templates/spec-record-template.md` for format).
    Set `Change type` to `added`, `changed`, or `removed` as appropriate.
-8. `git checkout $starting_branch`
-9. `git merge --no-ff spec/NNN-slug -m "Merge SPEC-NNN: Title"`
-10. `git tag spec/NNN-slug spec/NNN-slug` — tag the branch tip for permanent discovery.
-11. `git branch -d spec/NNN-slug` — delete the branch (tag preserves it).
+8. Implement the capability: code changes, tests — commit as needed on the same branch.
+9. `git checkout $starting_branch`
+10. `git merge --no-ff spec/NNN-slug -m "Merge SPEC-NNN: Title"`
+11. `git tag spec/NNN-slug spec/NNN-slug` — tag the branch tip for permanent discovery.
+12. `git branch -d spec/NNN-slug` — delete the branch (tag preserves it).
 
-## After Spec is Defined
-
-When the capability is ready to implement:
-1. Ensure the capability is in docs/ROADMAP.md's "Now" section.
-2. Use the acceptance criteria as a checklist during implementation.
-3. Run `/propose-architecture` if the capability requires new technology decisions.
-
-After recording is complete, suggest:
-> Spec recorded. Ready to plan implementation? Run `/plan` — it will use the acceptance criteria
-> from this spec as the foundation for your implementation plan.
-
-Note: `/plan` starts a fresh context, so all recording must be done before suggesting it.
+The tag captures everything: the spec record (first commit message) and the implementation (subsequent commits).

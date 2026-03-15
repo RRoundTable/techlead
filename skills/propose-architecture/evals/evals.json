@@ -79,25 +79,29 @@
     },
     {
       "id": 4,
-      "name": "suggests-plan-after-recording",
+      "name": "full-cycle-plan",
       "prompt": "I need to add a rate limiting layer to protect the API. I've decided to go with express-rate-limit — it's simple, in-process, and fits our single-process constraint. Please record this as an ADR.",
-      "expected_output": "Records the ADR following the full workflow (branch, commit, merge, tag). After recording is complete, suggests running /plan to create an implementation plan based on the architectural decision. Does NOT suggest /plan before recording is done.",
+      "expected_output": "Presents a full cycle plan that includes: the ADR decision summary, the branch name (adr/NNN-slug), concrete implementation steps (update ARCHITECTURE.md, install dependency, add middleware, add tests), and acceptance criteria. Suggests /plan to execute with clean context. The plan makes clear that both docs and code go on the same adr/ branch.",
       "files": [
         "skills/propose-architecture/evals/fixtures/GOAL.md",
         "skills/propose-architecture/evals/fixtures/ARCHITECTURE.md"
       ],
       "assertions": [
         {
-          "id": "records-adr",
-          "description": "Attempts to record an ADR (creates branch, commits, tags) — does not skip recording"
+          "id": "outputs-full-cycle-plan",
+          "description": "Outputs a structured plan that includes decision summary, branch name, implementation steps, and acceptance criteria — not just a doc-only ADR recording"
         },
         {
-          "id": "suggests-plan-after-recording",
-          "description": "After recording, suggests /plan for implementation planning"
+          "id": "plan-includes-implementation-steps",
+          "description": "The plan includes concrete implementation steps beyond just updating ARCHITECTURE.md (e.g., install dependency, add middleware code, write tests)"
         },
         {
-          "id": "plan-suggestion-is-post-recording",
-          "description": "The /plan suggestion appears AFTER the recording steps, not before or instead of recording"
+          "id": "plan-includes-branch-name",
+          "description": "The plan specifies an adr/ branch name where both docs and code will live"
+        },
+        {
+          "id": "suggests-plan-command",
+          "description": "Suggests running /plan to execute the full cycle plan with a clean context"
         }
       ]
     }

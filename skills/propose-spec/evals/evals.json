@@ -3,9 +3,9 @@
   "evals": [
     {
       "id": 1,
-      "name": "suggests-plan-after-recording",
+      "name": "full-cycle-plan",
       "prompt": "Define the spec for user authentication — login with email/password, get a JWT back, refresh tokens before they expire. That covers it. Go ahead and record the spec.",
-      "expected_output": "Gathers context from GOAL.md and ROADMAP.md. Defines behaviors as Given/When/Then for login, token refresh, and error cases. Records the spec (branch, commit, merge, tag). After recording is complete, suggests running /plan to create an implementation plan.",
+      "expected_output": "Gathers context from GOAL.md and ROADMAP.md. Defines behaviors as Given/When/Then for login, token refresh, and error cases. Presents a full cycle plan that includes: the spec summary, the branch name (spec/NNN-slug), any architecture decisions needed, concrete implementation steps, and acceptance criteria from the spec. Suggests /plan to execute with clean context.",
       "files": [
         "skills/propose-spec/evals/fixtures/GOAL.md",
         "skills/propose-spec/evals/fixtures/ROADMAP.md"
@@ -20,16 +20,16 @@
           "description": "Defines at least two Given/When/Then behaviors for the authentication capability"
         },
         {
-          "id": "records-spec",
-          "description": "Attempts to record the spec (creates branch, commits, tags) — does not skip recording"
+          "id": "outputs-full-cycle-plan",
+          "description": "Outputs a structured plan that includes spec summary, branch name, implementation steps, and acceptance criteria — not just a doc-only spec recording"
         },
         {
-          "id": "suggests-plan-after-recording",
-          "description": "After recording, suggests /plan for implementation planning"
+          "id": "plan-includes-implementation-steps",
+          "description": "The plan includes concrete implementation steps beyond just updating SPEC.md (e.g., create auth module, implement login, add tests)"
         },
         {
-          "id": "plan-suggestion-is-post-recording",
-          "description": "The /plan suggestion appears AFTER the recording steps, not before or instead of recording"
+          "id": "suggests-plan-command",
+          "description": "Suggests running /plan to execute the full cycle plan with a clean context"
         }
       ]
     }

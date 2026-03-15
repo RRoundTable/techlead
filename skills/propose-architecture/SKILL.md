@@ -116,10 +116,40 @@ Be explicit about what trade-offs are being accepted. Then ask:
 - [source 2]
 ```
 
-## Step 4: Record ADR
+## Step 4: Full Cycle Plan
 
 Once approved — skip this step for casual questions (quick comparisons, "which would you pick?"
 queries, or questions where the user doesn't mention formal decisions, ADRs, or recording):
+
+Present a full cycle plan that covers the entire workflow from decision to implementation:
+
+```markdown
+## Full Cycle Plan: [TOPIC]
+
+### Decision
+ADR-NNN: [title] — [one-line summary of the chosen option and why]
+
+### Branch
+`adr/NNN-slug`
+
+### Steps
+1. Update docs/ARCHITECTURE.md — [what to add/change in Tech Stack, Key Patterns, or Constraints]
+2. [Implementation step — e.g., Install dependency, create module, add configuration]
+3. [Implementation step — e.g., Write feature code]
+4. [Implementation step — e.g., Add tests]
+5. ...
+
+### Acceptance
+- [ ] [How to verify the decision is correctly implemented]
+- [ ] docs/ARCHITECTURE.md reflects the new decision
+```
+
+Ask:
+> Ready to implement? Run `/plan` to execute this with a clean context.
+
+### Branch Workflow
+
+The `adr/NNN-slug` branch contains **both** the decision documentation and implementation code:
 
 1. Determine next ADR number: count existing tags via `git tag -l "adr/*"`.
 2. Derive slug from title (lowercase, hyphens).
@@ -127,22 +157,12 @@ queries, or questions where the user doesn't mention formal decisions, ADRs, or 
 4. `git checkout -b adr/NNN-slug`
 5. Update architecture docs if the decision affects Tech Stack, Key Patterns, or Constraints
    (use `docs/architecture/README.md` if it exists, else `docs/ARCHITECTURE.md`).
-6. `git add` the updated architecture file (or use `git commit --allow-empty` if no changes).
+6. `git add` the updated architecture file.
 7. `git commit` with ADR template as message (read `templates/adr-template.md` for format).
-8. `git checkout $starting_branch`
-9. `git merge --no-ff adr/NNN-slug -m "Merge ADR-NNN: Title"`
-10. `git tag adr/NNN-slug adr/NNN-slug` — tag the branch tip for permanent discovery.
-11. `git branch -d adr/NNN-slug` — delete the branch (tag preserves it).
+8. Implement the decision: code changes, tests, configuration — commit as needed on the same branch.
+9. `git checkout $starting_branch`
+10. `git merge --no-ff adr/NNN-slug -m "Merge ADR-NNN: Title"`
+11. `git tag adr/NNN-slug adr/NNN-slug` — tag the branch tip for permanent discovery.
+12. `git branch -d adr/NNN-slug` — delete the branch (tag preserves it).
 
-## After Implementation
-
-When the decision is implemented in code:
-1. Update `docs/ARCHITECTURE.md` if needed.
-
-## After Recording
-
-After the ADR is recorded, suggest:
-> ADR recorded. Ready to plan implementation? Run `/plan` — it will use this architectural
-> decision and the current docs as the foundation for your implementation plan.
-
-Note: `/plan` starts a fresh context, so all recording must be done before suggesting it.
+The tag captures everything: the decision record (first commit message) and the implementation (subsequent commits).
