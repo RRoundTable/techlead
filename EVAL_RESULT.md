@@ -341,16 +341,16 @@
 
 **Key finding:** Without the skill, Claude updates ARCHITECTURE.md directly on the working branch. The skill enforces the full ADR workflow: branch → commit → merge --no-ff → tag → delete branch. This is critical for `read-history` to work — without tags, past decisions are invisible.
 
-#### full-cycle-plan — with_skill: 4/4 | without_skill: 0/4
+#### full-cycle-plan — pending re-run (4 assertions)
 
-| Assertion | with_skill | without_skill |
-|-----------|------------|---------------|
-| outputs-full-cycle-plan | PASS — Structured plan with Decision (ADR-001), Branch, 6 Steps, 4 Acceptance checkboxes | FAIL — Only an ADR document, no implementation plan |
-| plan-includes-implementation-steps | PASS — npm install, create rate-limit.js, apply middleware, add tests | FAIL — Mentions config in Consequences but no structured steps |
-| plan-includes-branch-name | PASS — Branch: adr/001-express-rate-limit for both docs and code | FAIL — Doc-only branch, no mention of code on same branch |
-| suggests-plan-command | PASS — "Ready to implement? Run /plan to execute this with a clean context." | FAIL — No mention of /plan |
+*Assertions updated to require EnterPlanMode invocation, context section, and branch workflow. Awaiting re-run.*
 
-**Key finding:** The full cycle plan is entirely skill-driven — baseline Claude produces a doc-only ADR with no bridge to implementation. The skill outputs a complete plan: decision + branch + implementation steps + acceptance criteria + `/plan` suggestion. The branch is designed to hold both docs and code.
+| Assertion | Status |
+|-----------|--------|
+| enters-plan-mode | pending — must invoke EnterPlanMode tool, not print plan as text |
+| plan-includes-context | pending — plan must include project goal/architecture context for /plan |
+| plan-includes-branch-workflow | pending — plan must include full git cycle (branch, commit, merge --no-ff, tag, delete) |
+| plan-includes-implementation-steps | pending — concrete implementation steps beyond ARCHITECTURE.md update |
 
 ### propose-spec
 
@@ -367,17 +367,18 @@
 
 **Key finding:** Without the skill, Claude gets the content right (spec updates, tags) but skips the branch workflow (no proper branch, no merge, no cleanup). The skill enforces the full spec record workflow matching the ADR pattern.
 
-#### full-cycle-plan — with_skill: 5/5 | without_skill: 2/5
+#### full-cycle-plan — pending re-run (6 assertions)
 
-| Assertion | with_skill | without_skill |
-|-----------|------------|---------------|
-| reads-project-context | PASS — Context Summary references Goal and Roadmap, notes "Now" milestone | PASS — Opens with GOAL.md and ROADMAP.md references |
-| defines-given-when-then | PASS — 8 Given/When/Then behaviors in user-observable language | PASS — 9 scenarios, though uses implementation language (POST /auth/login, 200, 401, JWT payload) |
-| outputs-full-cycle-plan | PASS — Full Cycle Plan with Spec, Branch, Architecture Decisions, 7 Steps, 9 Acceptance Criteria | FAIL — Only spec recording, no implementation plan |
-| plan-includes-implementation-steps | PASS — Implement registration, login, token middleware, refresh, error cases, tests | FAIL — No implementation steps in response |
-| suggests-plan-command | PASS — "Ready to implement? Run /plan to execute this with a clean context." | FAIL — No mention of /plan |
+*Assertions updated to require EnterPlanMode invocation, context section, and branch workflow. Awaiting re-run.*
 
-**Key finding:** Same pattern as propose-architecture: the full cycle plan is entirely skill-driven. Without-skill agent produces a spec recording with no bridge to implementation. The with-skill agent also uses outcome-oriented language while without-skill uses implementation details (HTTP methods, status codes).
+| Assertion | Status |
+|-----------|--------|
+| reads-project-context | pending — reads GOAL.md and/or ROADMAP.md before defining behaviors |
+| defines-given-when-then | pending — at least two Given/When/Then behaviors |
+| enters-plan-mode | pending — must invoke EnterPlanMode tool, not print plan as text |
+| plan-includes-context | pending — plan must include project goal/roadmap context for /plan |
+| plan-includes-branch-workflow | pending — plan must include full git cycle (branch, commit, merge --no-ff, tag, delete) |
+| plan-includes-implementation-steps | pending — concrete implementation steps beyond SPEC.md update |
 
 ### analyze-architecture
 

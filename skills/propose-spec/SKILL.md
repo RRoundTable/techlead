@@ -114,38 +114,55 @@ Present the complete spec to the user:
 Ask:
 > Does this capture the intended behavior? Want to adjust any behaviors or add edge cases?
 
-## Step 3: Full Cycle Plan
+## Step 3: Enter Plan Mode
 
-Once approved, present a full cycle plan that covers the entire workflow from spec to implementation:
+Once approved, enter plan mode (via `EnterPlanMode` tool) and build the full cycle plan there.
+The plan must be **self-contained** — when `/plan` starts, it has no memory of the prior
+conversation. Include everything needed to execute the entire workflow:
 
 ```markdown
 ## Full Cycle Plan: [Capability Name]
 
+### Context
+[Paste the context summary from Step 1 — project goal, roadmap milestone, current spec state,
+relevant spec tags. This is critical: /plan has no prior context.]
+
 ### Spec
 SPEC-NNN: [capability] — [one-sentence capability statement]
 
-### Branch
-`spec/NNN-slug`
+**Behaviors:**
+[Paste the complete Given/When/Then behaviors from Step 2]
+
+**Acceptance criteria:**
+[Paste from Step 2]
+
+**Invariants** (if any):
+[Paste from Step 2]
 
 ### Architecture Decisions Needed
 - [If any new technology decisions are needed, list them here — each requires `/propose-architecture`]
 - None — uses existing stack [if no new decisions needed]
 
+### Branch
+`spec/NNN-slug` — holds both the spec commit and implementation code.
+
 ### Steps
-1. Update docs/SPEC.md (or docs/specs/) — add capability section with behaviors and acceptance criteria
-2. [Implementation step — e.g., Create feature module]
-3. [Implementation step — e.g., Implement happy path behavior]
-4. [Implementation step — e.g., Implement error cases]
-5. [Implementation step — e.g., Add tests for each acceptance criterion]
-6. ...
+1. `git checkout -b spec/NNN-slug`
+2. Update docs/SPEC.md (or docs/specs/) — add capability section with behaviors and acceptance criteria
+3. `git add` the updated spec file(s)
+4. `git commit` with spec record template message (read `templates/spec-record-template.md` for format)
+5. [Implementation step — e.g., Create feature module]
+6. [Implementation step — e.g., Implement happy path behavior]
+7. [Implementation step — e.g., Implement error cases]
+8. [Implementation step — e.g., Add tests for each acceptance criterion]
+9. `git checkout <starting-branch> && git merge --no-ff spec/NNN-slug -m "Merge SPEC-NNN: Title"`
+10. `git tag spec/NNN-slug spec/NNN-slug && git branch -d spec/NNN-slug`
 
 ### Acceptance Criteria
 - [ ] [From the spec — each criterion maps to a testable behavior]
 - [ ] docs/SPEC.md reflects the new capability
+- [ ] Spec tag `spec/NNN-slug` exists and is discoverable via `git tag -l "spec/*"`
 ```
-
-Ask:
-> Ready to implement? Run `/plan` to execute this with a clean context.
 
 If the plan includes architecture decisions, those should be resolved via `/propose-architecture`
 before implementation begins.

@@ -121,36 +121,44 @@ Be explicit about what trade-offs are being accepted. Then ask:
 - [source 2]
 ```
 
-## Step 4: Full Cycle Plan
+## Step 4: Enter Plan Mode
 
 Once approved — skip this step for casual questions (quick comparisons, "which would you pick?"
 queries, or questions where the user doesn't mention formal decisions, ADRs, or recording):
 
-Present a full cycle plan that covers the entire workflow from decision to implementation:
+Enter plan mode (via `EnterPlanMode` tool) and build the full cycle plan there. The plan must be
+**self-contained** — when `/plan` starts, it has no memory of the prior conversation. Include
+everything needed to execute the entire workflow:
 
 ```markdown
 ## Full Cycle Plan: [TOPIC]
+
+### Context
+[Paste the context summary from Step 1 — project goal, current architecture state, relevant ADRs.
+This is critical: /plan has no prior context.]
 
 ### Decision
 ADR-NNN: [title] — [one-line summary of the chosen option and why]
 
 ### Branch
-`adr/NNN-slug`
+`adr/NNN-slug` — holds both the ADR commit and implementation code.
 
 ### Steps
-1. Update docs/ARCHITECTURE.md — [what to add/change in Tech Stack, Key Patterns, or Constraints]
-2. [Implementation step — e.g., Install dependency, create module, add configuration]
-3. [Implementation step — e.g., Write feature code]
-4. [Implementation step — e.g., Add tests]
-5. ...
+1. `git checkout -b adr/NNN-slug`
+2. Update docs/ARCHITECTURE.md — [what to add/change in Tech Stack, Key Patterns, or Constraints]
+3. `git add` the updated architecture file
+4. `git commit` with ADR template message (read `templates/adr-template.md` for format)
+5. [Implementation step — e.g., Install dependency, create module, add configuration]
+6. [Implementation step — e.g., Write feature code]
+7. [Implementation step — e.g., Add tests]
+8. `git checkout <starting-branch> && git merge --no-ff adr/NNN-slug -m "Merge ADR-NNN: Title"`
+9. `git tag adr/NNN-slug adr/NNN-slug && git branch -d adr/NNN-slug`
 
 ### Acceptance
 - [ ] [How to verify the decision is correctly implemented]
 - [ ] docs/ARCHITECTURE.md reflects the new decision
+- [ ] ADR tag `adr/NNN-slug` exists and is discoverable via `git tag -l "adr/*"`
 ```
-
-Ask:
-> Ready to implement? Run `/plan` to execute this with a clean context.
 
 ### Branch Workflow
 
