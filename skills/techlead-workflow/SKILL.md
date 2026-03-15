@@ -94,7 +94,7 @@ docs/
 | Condition | Skill |
 |-----------|-------|
 | `/init-techlead`, set up project governance, docs/GOAL.md missing | `init-techlead` |
-| `/propose-architecture`, choose between technologies, "which X should I use?", compare A vs B | `propose-architecture` |
+| `/propose-architecture`, any design decision affecting architecture: tech choices, API design, data model, module structure, integration patterns, design patterns, "which X should I use?" | `propose-architecture` |
 | `/propose-spec`, define feature behavior, acceptance criteria, "how should X behave?" | `propose-spec` |
 | `/read-history`, look up past decisions, "why did we choose X?" | `read-history` |
 | Scan existing codebase to produce docs/ARCHITECTURE.md, reverse-engineer project structure | `analyze-architecture` |

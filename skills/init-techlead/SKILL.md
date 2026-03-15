@@ -94,7 +94,7 @@ Techlead initialized:
 
 ADRs are stored as git commits with adr/ tags.
 Spec records are stored as git commits with spec/ tags.
-Use /propose-architecture for architectural decisions.
+Use /propose-architecture for architectural and design decisions (tech choices, API design, data models, module structure).
 Use /propose-spec to define feature specifications.
 
 Start coding — alignment checks are now active.

@@ -1,12 +1,17 @@
 ---
 name: propose-architecture
 description: >
-  Trigger when choosing between technologies, adding dependencies, or facing any
-  architectural question. Also trigger for "which X should I use?", "compare A vs B",
-  or technology trade-off questions. Also trigger before implementing any
-  architecture-changing decision: adding a new service, layer, or module; introducing
-  a new pattern (event-driven, CQRS, microservices, etc.); adding a significant new
-  dependency (Redis, RabbitMQ, Elasticsearch, etc.); or restructuring existing architecture.
+  Trigger when facing any design decision that would affect docs/ARCHITECTURE.md:
+  choosing between technologies or adding dependencies; API design decisions
+  (endpoint structure, versioning, request/response shape); data model design
+  (schema structure, relationships, normalization vs denormalization); module or
+  directory structure decisions ("where should this code go?", "how should I
+  organize this?"); integration patterns (how services or modules communicate);
+  design pattern choices (repository pattern, service layer, middleware, etc.);
+  adding a new service, layer, or module; introducing a new architectural pattern
+  (event-driven, CQRS, microservices, etc.); or restructuring existing architecture.
+  Also trigger for "which X should I use?", "compare A vs B", or any technology
+  or design trade-off question.
 ---
 
 # /propose-architecture

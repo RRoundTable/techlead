@@ -12,13 +12,13 @@
 | **techlead-workflow** | 19/20 (95%) | 20/20 (100%) | 0/20 (0%) | +100% |
 | **check-alignment** | 20/20 (100%) | 9/9 (100%) | 2/9 (22%) | +78% |
 | **verify-code-quality** | 20/20 (100%) | 12/12 (100%) | 0/12 (0%) | +100% |
-| **propose-architecture** | 23/23 (100%) | 17/17 (100%) | 4/17 (24%) | +76% |
+| **propose-architecture** | 36/36 (100%) | 17/17 (100%) | 4/17 (24%) | +76% |
 | **propose-spec** | pending (23 cases) | 10/10 (100%) | 4/10 (40%) | +60% |
 | **analyze-architecture** | pending (24 cases) | 13/13 (100%) | 11/13 (85%) | +15% |
 | **init-techlead** | pending (no trigger evals) | 14/14 (100%) | 5/14 (36%) | +64% |
 | **restructure-docs** | pending (22 cases) | 15/16 (94%) | 7/16 (44%) | +50% |
 | **read-history** | pending | — | — | — |
-| **Total** | **82/83 (99%)** | **110/110 (100%)** | **32/110 (29%)** | **+71%** |
+| **Total** | **95/96 (99%)** | **110/110 (100%)** | **32/110 (29%)** | **+71%** |
 
 *Trigger evals pending for analyze-architecture, init-techlead, restructure-docs, propose-spec, read-history. Totals reflect last completed trigger runs.*
 
@@ -111,9 +111,9 @@
 
 **Analysis:** Improved from 75% to 100% after rewriting the description. Key fix: explicitly framing specific violation scans as trigger patterns and adding "even if the user asks about just one specific sub-check" directive.
 
-### propose-architecture — 23/23 (100%)
+### propose-architecture — 36/36 (100%)
 
-*Extended from 20 to 23 cases to cover pre-implementation architecture changes.*
+*Extended from 23 to 36 cases to cover broader design decisions (API design, data model, module structure, integration patterns, design patterns).*
 
 | Result | Type | Query |
 |--------|------|-------|
@@ -130,6 +130,14 @@
 | PASS | trigger | I want to introduce a CQRS pattern for the task module |
 | PASS | trigger | I'm going to add a new abstraction layer between controllers and services |
 | PASS | trigger | Should I add a CDN in front of the API? |
+| PASS | trigger | How should I structure the API endpoints for the task module? |
+| PASS | trigger | Should we version our API with URL paths or headers? |
+| PASS | trigger | I need to design the database schema for users and their teams |
+| PASS | trigger | Should I normalize the task-tags relationship or embed tags in the task document? |
+| PASS | trigger | Where should the notification logic live — in the task feature or a separate module? |
+| PASS | trigger | How should the auth module communicate with the user module? |
+| PASS | trigger | Should I use the repository pattern for database access? |
+| PASS | trigger | How should I organize the project directory structure for the new billing feature? |
 | PASS | no-trigger | Fix the bug in the login endpoint where tokens expire early |
 | PASS | no-trigger | Add a unit test for the JWT middleware |
 | PASS | no-trigger | Implement the task list endpoint with pagination |
@@ -140,8 +148,13 @@
 | PASS | no-trigger | Explain how JWT refresh tokens work |
 | PASS | no-trigger | Scan this codebase and generate an ARCHITECTURE.md |
 | PASS | no-trigger | Why did we choose PostgreSQL over MongoDB? |
+| PASS | no-trigger | Add the name field to the user response DTO |
+| PASS | no-trigger | Write the SQL migration for the tasks table we designed |
+| PASS | no-trigger | Implement the repository pattern in the tasks module as decided in ADR-003 |
+| PASS | no-trigger | Rename the /api/v1/tasks endpoint to /api/v1/items |
+| PASS | no-trigger | Move this helper function from utils.ts to the shared/ directory |
 
-**Analysis:** Perfect 100%. Extended to cover pre-implementation interception: "I'm going to add X" patterns all trigger correctly. The description addition ("Also trigger before implementing any architecture-changing decision: adding a new service, layer, or module...") cleanly discriminates architecture-changing intentions from implementation work (bug fixes, refactors, feature coding). No false positives on read/history queries.
+**Analysis:** Perfect 100%. Description broadened to cover all design decisions that would affect docs/ARCHITECTURE.md — API design, data model, module structure, integration patterns, and design pattern choices. The "would affect docs/ARCHITECTURE.md" anchor cleanly discriminates design decisions (trigger) from implementation of already-decided designs (no-trigger). New no-trigger cases confirm that executing decisions (writing migrations, implementing patterns from ADRs, renaming endpoints, moving files) correctly does not trigger.
 
 ### propose-spec — pending (23 cases)
 
