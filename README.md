@@ -52,26 +52,33 @@ flowchart TD
     A(["/init-techlead"]) --> B{"Existing docs\nfound?"}
     B -- Yes --> C["Ask: overwrite or skip?"]
     B -- No --> D
-    C --> D["Detect existing source code"]
-    D --> E["Interview user\n— goal, success criteria, out of scope,\ncurrent priorities, tech stack"]
-    E --> F["Generate all files:\nGOAL.md + ROADMAP.md + SPEC.md\nARCHITECTURE.md + CLAUDE.md"]
-    F --> G(["Alignment checks are now active"])
+    C --> D{"Non-standard files\nin docs/?"}
+    D -- Yes --> E["Suggest /restructure-docs\nbefore continuing"]
+    D -- No --> F
+    E --> F["Detect existing source code"]
+    F --> G["Interview user\n— goal, success criteria, out of scope,\ncurrent priorities, tech stack"]
+    G --> H{"Source code\nfound?"}
+    H -- Yes --> I["Scan codebase → derive\nGiven/When/Then specs"]
+    I --> J
+    H -- No --> J["Generate all files:\nGOAL.md + ROADMAP.md + SPEC.md\nARCHITECTURE.md + CLAUDE.md"]
+    J --> K(["Alignment checks are now active"])
 ```
 
 ### After Setup
 
 ```mermaid
 flowchart TD
-    C(["Day-to-day development"])
+    S(["Session starts"]) --> H["SessionStart hook injects\nTechlead workflow + enforcement rules"]
+    H --> C(["Day-to-day development"])
 
-    C --> D["PreToolUse hook fires\non Write / Edit"]
-    D --> E{"check-alignment\nMatches GOAL.md?\nIn ROADMAP Now?\nConforms to SPEC.md?"}
+    C --> D{"Code change\nrequested?"}
+    D -- Yes --> E["check-alignment\nMatches GOAL.md?\nIn ROADMAP Now?\nConforms to SPEC.md?"]
     E -- Aligned --> F["Write / Edit code"]
     E -- Misaligned --> G["Stop — ask user to\nclarify or reprioritize"]
     G --> C
 
-    F --> H{"User commits"}
-    H --> I["verify-code-quality\n5 philosophies + spec conformance"]
+    F --> H2{"User commits?"}
+    H2 -- Yes --> I["verify-code-quality\n5 philosophies + spec conformance"]
     I -- Pass --> J(["Commit"])
     I -- Violation --> K["Report file:line + fix"]
     K --> F
@@ -86,6 +93,18 @@ flowchart TD
     P --> Q["Define Given/When/Then\nbehaviors + acceptance criteria"]
     Q --> R["Record spec change\n(git tag spec/NNN)"]
     R --> C
+
+    C --> T["/analyze-architecture"]
+    T --> U["Scan codebase → generate\nARCHITECTURE.md with diagrams"]
+    U --> C
+
+    C --> V["/read-history"]
+    V --> W["Search ADR + spec records\nfrom git tags"]
+    W --> C
+
+    C --> X["/restructure-docs"]
+    X --> Y["Classify existing docs →\nmigrate to canonical format"]
+    Y --> C
 ```
 
 ## How It Works
@@ -101,6 +120,8 @@ flowchart TD
 | **propose-architecture** | `/propose-architecture` or "compare A vs B" | Research, trade-off matrix, recommendation, and ADR recording |
 | **propose-spec** | `/propose-spec` or "what should X do?" | Define feature specs as user-observable Given/When/Then behaviors |
 | **read-history** | `/read-history` | Search and display ADRs and spec records from git tags |
+| **analyze-architecture** | `/analyze-architecture` or "document this project's architecture" | Scan codebase and generate ARCHITECTURE.md with diagrams |
+| **restructure-docs** | `/restructure-docs` or "migrate my docs" | Classify existing docs and migrate to canonical format |
 
 ### Hooks
 
