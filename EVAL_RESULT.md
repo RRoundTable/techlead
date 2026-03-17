@@ -1,6 +1,6 @@
 # Evaluation Results
 
-**Date:** 2026-03-15
+**Date:** 2026-03-17
 **Model:** Claude Opus 4.6
 
 ---
@@ -13,12 +13,12 @@
 | **check-alignment** | 20/20 (100%) | 9/9 (100%) | 2/9 (22%) | +78% |
 | **verify-code-quality** | 20/20 (100%) | 12/12 (100%) | 0/12 (0%) | +100% |
 | **propose-architecture** | 36/36 (100%) | 17/17 (100%) | 4/17 (24%) | +76% |
-| **propose-spec** | pending (23 cases) | 10/10 (100%) | 4/10 (40%) | +60% |
+| **propose-spec** | pending (23 cases) | 25/26 (96%) | 12/26 (46%) | +50% |
 | **analyze-architecture** | pending (24 cases) | 13/13 (100%) | 11/13 (85%) | +15% |
 | **init-techlead** | pending (no trigger evals) | 14/14 (100%) | 5/14 (36%) | +64% |
 | **restructure-docs** | pending (22 cases) | 15/16 (94%) | 7/16 (44%) | +50% |
 | **read-history** | pending | — | — | — |
-| **Total** | **95/96 (99%)** | **110/110 (100%)** | **32/110 (29%)** | **+71%** |
+| **Total** | **95/96 (99%)** | **125/126 (99%)** | **40/126 (32%)** | **+67%** |
 
 *Trigger evals pending for analyze-architecture, init-techlead, restructure-docs, propose-spec, read-history. Totals reflect last completed trigger runs.*
 
@@ -354,31 +354,66 @@
 
 ### propose-spec
 
-#### spec-branch-recorded — with_skill: 6/6 | without_skill: 3/6
+#### full-cycle-plan — with_skill: 6/7 | without_skill: 2/7
 
 | Assertion | with_skill | without_skill |
 |-----------|------------|---------------|
-| creates-spec-branch | PASS — Creates git branch with spec/ prefix | FAIL — Used git plumbing instead of checkout -b |
-| updates-spec-md | PASS — Updates docs/SPEC.md with Given/When/Then | PASS — Updates docs/SPEC.md |
-| commits-spec-template | PASS — Commits with spec record template format | PASS — Commits with template |
-| merges-with-no-ff | PASS — Merges spec branch with --no-ff flag | FAIL — Bypassed merge workflow |
-| creates-spec-tag | PASS — Creates git tag with spec/ prefix | PASS — Creates tag |
-| deletes-spec-branch | PASS — Deletes spec branch after tagging | FAIL — Never deleted branch |
+| reads-project-context | PASS — Reads GOAL.md and ROADMAP.md before defining behaviors | PASS — Also reads both docs |
+| defines-given-when-then | PASS — 6 Given/When/Then behaviors for auth | PASS — Uses Given/When/Then (with impl details) |
+| enters-plan-mode | FAIL — Executed branch workflow directly instead of using EnterPlanMode | FAIL — No plan at all |
+| plan-includes-context | PASS — Context section with goal, milestone, spec state | FAIL — No plan created |
+| plan-includes-branch-workflow | PASS — Full git cycle: branch, commit, merge --no-ff, tag, delete | FAIL — No branch workflow |
+| plan-excludes-implementation-steps | PASS — Only spec documentation steps in plan | FAIL — Spec contains impl details (HTTP methods, status codes) |
+| suggests-propose-architecture | PASS — "Would you like to run /propose-architecture?" | FAIL — No mention |
 
-**Key finding:** Without the skill, Claude gets the content right (spec updates, tags) but skips the branch workflow (no proper branch, no merge, no cleanup). The skill enforces the full spec record workflow matching the ADR pattern.
+**Key finding:** The new `suggests-propose-architecture` assertion passes with-skill. The `enters-plan-mode` failure is pre-existing — agent interprets "go ahead and record" as execute rather than plan.
 
-#### full-cycle-plan — pending re-run (6 assertions)
+#### outcome-not-output — with_skill: 4/4 | without_skill: 1/4
 
-*Assertions updated to require EnterPlanMode invocation, context section, and branch workflow. Awaiting re-run.*
+| Assertion | with_skill | without_skill |
+|-----------|------------|---------------|
+| reframes-http-methods | PASS — No HTTP methods or API paths in spec | FAIL — Uses "POST /api/tasks" throughout |
+| reframes-status-codes | PASS — No status codes in spec | FAIL — Uses 201, 401, 422 throughout |
+| uses-observable-outcomes | PASS — "task is created and immediately visible in their task list" | FAIL — "response status is 201", "response body contains" |
+| uses-given-when-then | PASS — All 5 behaviors use Given/When/Then | PASS — Also uses Given/When/Then format |
 
-| Assertion | Status |
-|-----------|--------|
-| reads-project-context | pending — reads GOAL.md and/or ROADMAP.md before defining behaviors |
-| defines-given-when-then | pending — at least two Given/When/Then behaviors |
-| enters-plan-mode | pending — must invoke EnterPlanMode tool, not print plan as text |
-| plan-includes-context | pending — plan must include project goal/roadmap context for /plan |
-| plan-includes-branch-workflow | pending — plan must include full git cycle (branch, commit, merge --no-ff, tag, delete) |
-| plan-includes-implementation-steps | pending — concrete implementation steps beyond SPEC.md update |
+**Key finding:** Strongest outcome-language discriminator. Without skill, Claude echoes the user's implementation details verbatim. With skill, reframes entirely as user-observable outcomes.
+
+#### existing-spec-update — with_skill: 5/5 | without_skill: 3/5
+
+| Assertion | with_skill | without_skill |
+|-----------|------------|---------------|
+| reads-existing-spec | PASS — Reads SPEC.md, notes "Task CRUD covers create, view, update, and delete" | PASS — Reads and describes existing behaviors |
+| adds-to-existing-capability | PASS — Updates Task CRUD capability statement to include "archive" | PASS — Adds to existing section |
+| uses-changed-type | PASS — Commit uses "Change type: changed", "Capability: Task CRUD" | FAIL — No spec record or change type at all |
+| preserves-existing-behaviors | PASS — Existing behaviors preserved; archiving is additive | PASS — Existing behaviors preserved |
+| suggests-propose-architecture | PASS — "Would you like to run /propose-architecture?" | FAIL — No mention |
+
+**Key finding:** After adding decision criteria ("same resource, same actor, shared invariants → update"), the skill correctly identifies archiving as an update to Task CRUD rather than a new capability. Without skill, content is reasonable but no spec recording workflow.
+
+#### no-implementation — with_skill: 5/5 | without_skill: 1/5
+
+| Assertion | with_skill | without_skill |
+|-----------|------------|---------------|
+| defines-spec-behaviors | PASS — 8 Given/When/Then behaviors for task tagging | PASS — Also defines behaviors (with impl details) |
+| does-not-write-code | PASS — "No source code, tests, or configuration files were created" | FAIL — Built entire Node.js/Express app (6 source files) |
+| does-not-create-modules | PASS — Only docs/SPEC.md written | FAIL — Created src/models, src/routes, src/middleware, tests |
+| plan-is-spec-only | PASS — Plan has only spec documentation steps | FAIL — No plan; went straight to implementation |
+| suggests-propose-architecture | PASS — "Would you like to run /propose-architecture?" | FAIL — Implemented directly |
+
+**Key finding:** Strongest overall discriminator. Without skill, Claude built a complete app (models, routes, middleware, tests, package.json) when asked to "implement it too." The "Scope: Documentation Only" constraint completely prevents this.
+
+#### skip-record-for-casual — with_skill: 5/5 | without_skill: 5/5
+
+| Assertion | with_skill | without_skill |
+|-----------|------------|---------------|
+| answers-directly | PASS — 3 Given/When/Then scenarios for missing title | PASS — Direct answer with edge cases |
+| no-plan-mode | PASS — Skipped plan mode | PASS — No plan mode |
+| no-branch-or-commit | PASS — No git workflow | PASS — No git workflow |
+| no-formal-workflow | PASS — Direct behavioral answer | PASS — Direct answer |
+| no-architecture-prompt | PASS — No /propose-architecture suggestion | PASS — No mention |
+
+**Note:** Non-discriminating case — both handle casual questions well. Confirms the skill correctly suppresses formal workflow and architecture prompt for quick questions.
 
 ### analyze-architecture
 
@@ -559,6 +594,6 @@ The highest-delta assertions continue to be "does NOT" checks: does NOT contain 
 1. **analyze-architecture:** Add harder eval cases to increase delta above +15%. Test codebase scanning without README, detecting ARCHITECTURE.md drift, polyglot repos.
 2. **restructure-docs:** Fix the `supplementary-handling` with_skill failure — skill should note missing canonical files rather than fabricating them.
 3. **Trigger evals:** Run pending triggers for analyze-architecture (24 cases), restructure-docs (22 cases), propose-spec (23 cases). Create trigger evals for init-techlead and read-history.
-4. **propose-spec:** The existing 6-case behavioral eval set (outcome-not-output, existing-spec-update, etc.) has not been run yet. Run `/eval-behavior propose-spec` to get full coverage.
+4. **propose-spec:** 25/26 (96%) with-skill. Single failure: `enters-plan-mode` in full-cycle-plan — agent executes directly instead of using EnterPlanMode tool. New behaviors validated: "Scope: Documentation Only" prevents code writing (5/5), `/propose-architecture` prompt fires on formal workflows (3/3) and suppresses on casual questions (1/1).
 5. **read-history:** No behavioral or trigger evals exist. Create and run both.
 6. **Regression check:** Re-run all trigger evals periodically to catch regressions from skill description changes.

@@ -34,6 +34,10 @@
         {
           "id": "plan-excludes-implementation-steps",
           "description": "The plan does NOT include implementation steps like creating feature modules, writing code, implementing endpoints, or adding tests — it only includes spec documentation steps (update SPEC.md, commit, merge, tag)"
+        },
+        {
+          "id": "suggests-propose-architecture",
+          "description": "After the spec is defined or the plan is created, asks the user if they want to run /propose-architecture to define how the capability should be implemented"
         }
       ]
     },
@@ -91,6 +95,10 @@
         {
           "id": "preserves-existing-behaviors",
           "description": "Does not remove or overwrite existing Task CRUD behaviors — the archiving behaviors are additive"
+        },
+        {
+          "id": "suggests-propose-architecture",
+          "description": "After the spec update is defined or the plan is created, asks the user if they want to run /propose-architecture"
         }
       ]
     },
@@ -119,6 +127,10 @@
         {
           "id": "plan-is-spec-only",
           "description": "The plan (if entered) contains only spec documentation steps — no implementation steps like 'create module', 'implement endpoint', or 'add tests'"
+        },
+        {
+          "id": "suggests-propose-architecture",
+          "description": "After the spec is defined or the plan is created, asks the user if they want to run /propose-architecture to define implementation"
         }
       ]
     },
@@ -147,6 +159,10 @@
         {
           "id": "no-formal-workflow",
           "description": "Does NOT walk through the full propose-spec workflow (no numbered steps, no branch workflow, no spec/NNN-slug)"
+        },
+        {
+          "id": "no-architecture-prompt",
+          "description": "Does NOT suggest running /propose-architecture — casual questions should not trigger the architecture follow-up"
         }
       ]
     }

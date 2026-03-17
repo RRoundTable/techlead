@@ -28,6 +28,12 @@ Example: `/propose-spec "User authentication"` or `/propose-spec "Team workspace
 Also activates automatically for questions like "What should this feature do?",
 "How should login behave?", or "Define acceptance criteria for task deletion."
 
+## Scope: Documentation Only
+
+This skill edits **only** `docs/GOAL.md`, `docs/ROADMAP.md`, `docs/SPEC.md` (or `docs/specs/`).
+It must **never** create or modify source code, tests, configuration files, or any file outside `docs/`.
+If the user asks for implementation alongside the spec, defer implementation to a separate step after the spec is recorded.
+
 ## Core Principle: Outcomes, Not Outputs
 
 Specs describe **what a user can observe**, not how the system implements it.
@@ -61,6 +67,7 @@ Before defining behaviors, ground yourself in the project's current state:
    - **Single-file** (`docs/SPEC.md`): read it directly.
    - **Multi-file** (`docs/specs/`): read `README.md` for the capability index and invariants, then read the per-capability file if updating an existing capability.
    - Is this a new capability or an update to an existing one? If updating, load the existing behaviors and acceptance criteria.
+   - **How to decide:** If the user says "update X to add Y" or the new behavior extends an existing capability's scope (e.g., adding archiving to CRUD), it's an **update** — modify the existing section. Only create a new capability section when the behavior is genuinely independent (different actor, different resource, no shared invariants).
 4. List spec tags (`git tag -l "spec/*"`); read relevant ones via `git log <tag> --format="%B" -1`.
    Past spec changes carry context — understand the evolution before making changes.
 5. Briefly summarize the relevant context to the user — keep it to 3-5 lines max.
@@ -203,3 +210,15 @@ The `spec/NNN-slug` branch contains the spec documentation commit:
 11. `git branch -d spec/NNN-slug` — delete the branch (tag preserves it).
 
 The tag captures the spec record commit.
+
+## Step 4: Propose Architecture
+
+After the spec is recorded (or after the plan is created), ask the user:
+
+> The spec is recorded. Would you like to run `/propose-architecture` to define how this capability should be implemented?
+
+If the plan listed architecture decisions needed, emphasize this:
+
+> This spec requires architecture decisions (listed above). Want to run `/propose-architecture` to resolve them?
+
+Do not run `/propose-architecture` automatically — always ask first.
